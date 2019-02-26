@@ -1,0 +1,31 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": {
+    "default": 10,
+    "max": 50
+  },
+  "authentication": {
+    "secret": "401bd02c9a2c89d385bc19d9dbfbfc38322a73d2fa232aabb4b2adef975d201d69a1d139caa8ca8092d055a454e9d68b38f6df5a4a62ac5d1759d50bb79dbe8900b404caf1bb6ed6db57c48e48dbc47d9a8c54b832dd03a2b01d4f00e48b2116f86d09d7d33e3b6cf886562d5a7fe02cc91a8b54204bdd4070f21ef22a866240662cb750f9f8ee1a682d6f3ee9e83b604c370ac70096f47fe1ea5f070fc1f66ab5a0f8b61db3c4fa068396169b5e4e658dd9063794fea70eff387200e5bd0b009586f7adbb44434fb76c88350a3eb37614e625211b00e7aed616a77f2774792566d50c39ae03acd5c9aba27e10cdc367fd1cd4c3a53224500266ab5bcac37d3e",
+    "strategies": ["jwt", "local"],
+    "path": "/authentication",
+    "service": "users",
+    "jwt": {
+      "header": {
+        "typ": "access"
+      },
+      "audience": "https://yourdomain.com",
+      "subject": "anonymous",
+      "issuer": "feathers",
+      "algorithm": "HS256",
+      "expiresIn": "1d"
+    },
+    "local": {
+      "entity": "user",
+      "usernameField": "username",
+      "passwordField": "password"
+    }
+  },
+  "mongodb": "mongodb://localhost:27017/reddit"
+}

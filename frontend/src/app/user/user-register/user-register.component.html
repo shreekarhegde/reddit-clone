@@ -1,35 +1,19 @@
 <div *ngIf="isNextButtonClicked === false" class="container">
   <div class="row">
-    <img
-      class="side-image"
-      style="height: 820px"
-      src="http://i.imgur.com/zd8Ud.jpg"
-    />
+    <img class="side-image" style="height: 820px" src="http://i.imgur.com/zd8Ud.jpg" />
 
     <div class="col-md-10">
       <div class="row">
         <div class="col-md-12 content">
           <h5 class="text-sign-in">Join the world wide conversation</h5>
           <p class="signin-content">
-            By having a Reddit account, you can subscribe, vote, and comment on
-            all your favorite Reddit content.
+            By having a Reddit account, you can subscribe, vote, and comment on all your favorite Reddit content.
           </p>
           <p class="signin-content">Sign up.</p>
           <form #f="ngForm" (ngSubmit)="getUserEmail(f)">
-            <input
-              type="text"
-              class="input-group email"
-              placeholder="Email"
-              name="email"
-              ngModel
-            />
+            <input type="text" class="input-group email" placeholder="Email" name="email" ngModel />
 
-            <input
-              type="submit"
-              class="btn btn-primary mt-4 signin-btn"
-              name="NEXT"
-              value="NEXT"
-            />
+            <input type="submit" class="btn btn-primary mt-4 signin-btn" name="NEXT" value="NEXT" />
           </form>
 
           <footer>
@@ -41,8 +25,7 @@
             </div>
             <div class="terms-and-policy mt-3">
               <p>
-                By signing up, you agree to our Terms and that you have read our
-                Privacy Policy and Content Policy.
+                By signing up, you agree to our Terms and that you have read our Privacy Policy and Content Policy.
               </p>
             </div>
           </footer>
@@ -61,34 +44,40 @@
     </div>
     <div class="row pb-3 ml-3">
       <p>
-        Your username is how other community members will see you. This name
-        will be used to credit you for things you share on Reddit. What should
-        we call you?
+        Your username is how other community members will see you. This name will be used to credit you for things you share on Reddit. What
+        should we call you?
       </p>
     </div>
     <div class="border-bottom"></div>
-    <div class="mt-3">
-      <input
-        name="username"
-        placeholder="CHOOSE A USERNAME"
-        type="text"
-        class="username pb-1 w-25 ml-3"
-      />
-    </div>
-    <div class="mt-3">
-      <input
-        name="password"
-        placeholder="PASSWORD"
-        type="password"
-        class="password pb-1 w-25 ml-3"
-      />
-    </div>
+    <form #registerForm="ngForm">
+      <div class="mt-3">
+        <input
+          id="username"
+          [(ngModel)]="username"
+          name="username"
+          placeholder="CHOOSE A USERNAME"
+          type="text"
+          class="username pb-1 w-25 ml-3"
+        />
+      </div>
+      <div class="mt-3">
+        <input
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          placeholder="PASSWORD"
+          type="password"
+          class="password pb-1 w-25 ml-3"
+        />
+      </div>
+    </form>
+
     <div class=" row bg-light" id="back-next">
       <div class="col-sm m-3">
         <a class="btn btn-link" (click)="backToEmail()">Back</a>
       </div>
       <div class="col-sm"></div>
-      <div class="col-sm"><p class="float-right btn btn-link m-3">Next</p></div>
+      <div class="col-sm"><p class="float-right btn btn-link m-3" (click)="post()">Next</p></div>
     </div>
   </div>
 </div>

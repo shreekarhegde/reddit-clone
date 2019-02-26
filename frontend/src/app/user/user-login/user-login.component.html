@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row">
+    <img
+      class="side-image"
+      style="height: 820px"
+      src="http://i.imgur.com/zd8Ud.jpg"
+    />
+
+    <div class="col-md-10">
+      <div class="row">
+        <div class="col-md-12 content">
+          <img
+            class="reddit-icon"
+            src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_reddit-512.png"
+          />
+          <h5 class="text-sign-in">Sign in</h5>
+          <input type="text" class="input-group user-detail" />
+          <input type="text" class="input-group user-detail" />
+          <button type="button" class="btn btn-primary mt-4 signin">
+            SIGN IN
+          </button>
+          <footer>
+            <div>
+              <button class="btn btn-link mt-2 reset-link">
+                Forgot username
+              </button>
+              <button class="btn btn-link mt-2 ml-2 reset-link">
+                Forgot password
+              </button>
+            </div>
+            <div class="signup-link">
+              <p class="mt-4">New to Reddit?</p>
+              <button class="btn btn-link mt-2 ml-2 reset-link mt-4">
+                <a [routerLink]="'/users/register'">SIGN UP</a>
+              </button>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+.content {
+  margin-top: 250px;
+  height: 400px;
+  margin-left: 20px;
+}
+.side-image {
+  width: 140px !important;
+}
+.reddit-icon {
+  height: 40px;
+}
+.text-sign-in {
+  margin-top: 15px;
+}
+.user-detail {
+  width: 350px;
+  margin-top: 15px;
+  height: 45px;
+}
+.signin {
+  width: 150px;
+  height: 40px;
+}
+.reset-link {
+  font-size: 12px;
+}
+.signup-link {
+  display: flex;
+}

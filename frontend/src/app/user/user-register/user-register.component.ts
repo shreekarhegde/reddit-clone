@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpService } from '../../services/http.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-user-register',
   templateUrl: './user-register.component.html',
   styleUrls: ['./user-register.component.css']
 })
 export class UserRegisterComponent implements OnInit {
-  constructor(public http: HttpService) {}
+  constructor(public http: HttpService, public router: Router) {}
   public isNextButtonClicked = false;
   public email;
   public username;
@@ -33,7 +34,9 @@ export class UserRegisterComponent implements OnInit {
         console.log('post: user-------->', user);
         this.http.postRequest(this.authUrl, { strategy: 'local', username: this.username, password: this.password }).subscribe(res => {
           if (res.hasOwnProperty('accessToken')) {
+            console.log('from post subscribe success');
             localStorage.setItem('token', res['accessToken']);
+            this.router.navigateByUrl('');
           }
         });
       },

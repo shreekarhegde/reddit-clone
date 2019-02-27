@@ -1,0 +1,63 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+.top-nav-1 {
+  height: 50px;
+}
+.top-nav-2 {
+  height: 30px;
+}
+.reddit-icon {
+  height: 33px;
+}
+.col-md-1 {
+  display: flex;
+  justify-content: flex-end;
+}
+.bg-white {
+  height: 30px;
+  width: 200px;
+}
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 10px;
+  text-overflow: '';
+  background-image: url('https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png');
+
+  background-repeat: no-repeat;
+  background-position: 170px;
+}
+select:hover {
+  border-color: black !important;
+}
+.has-search .form-control {
+  padding-left: 35px;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+.form-control:hover {
+  background-color: white !important;
+}
+.form-control {
+  height: 30px;
+}
+.form-control::placeholder {
+  color: #aaa;
+  font-size: 15px;
+}
+.icon:hover {
+  background: #aaa;
+}

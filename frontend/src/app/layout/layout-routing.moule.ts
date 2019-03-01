@@ -1,11 +1,12 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { TopNavigationComponent } from './top-navigation/top-navigation.component';
+import { LayoutComponent } from './layout/layout.component';
 
 const routes: Routes = [
   {
     path: '',
-    children: [{ path: '', component: TopNavigationComponent }]
+    component: LayoutComponent,
+    children: [{ path: '', loadChildren: '../home/home.module#HomeModule' }]
   }
 ];
 
@@ -13,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class NavigationRoutingModule {}
+export class LayoutRoutingModule {}

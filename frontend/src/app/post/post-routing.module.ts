@@ -1,11 +1,11 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { TopNavigationComponent } from './top-navigation/top-navigation.component';
+import { DisplayPostComponent } from './display-post/display-post.component';
 
 const routes: Routes = [
   {
-    path: '',
-    children: [{ path: '', component: TopNavigationComponent }]
+    path: 'submit',
+    children: [{ path: '', component: DisplayPostComponent }]
   }
 ];
 
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class NavigationRoutingModule {}
+export class PostRoutingModule {}

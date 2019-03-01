@@ -1,9 +1,12 @@
+/* eslint-disable indent */
+/* eslint-disable quotes */
+/* eslint-disable no-undef */
 const authentication = require('@feathersjs/authentication');
 const jwt = require('@feathersjs/authentication-jwt');
 const local = require('@feathersjs/authentication-local');
+let id = '';
 
-
-module.exports = function (app) {
+module.exports = function(app) {
   const config = app.get('authentication');
 
   // Set up authentication with the secret
@@ -16,11 +19,19 @@ module.exports = function (app) {
   // to create a new valid JWT (e.g. local or oauth2)
   app.service('authentication').hooks({
     before: {
+      create: [authentication.hooks.authenticate(config.strategies)],
+      remove: [authentication.hooks.authenticate('jwt')]
+    },
+    after: {
       create: [
-        authentication.hooks.authenticate(config.strategies)
-      ],
-      remove: [
-        authentication.hooks.authenticate('jwt')
+        context => {
+          if (context.hasOwnProperty('params')) {
+            id = context.params.user._id;
+          }
+        },
+        hook => {
+          hook.result['id'] = id;
+        }
       ]
     }
   });

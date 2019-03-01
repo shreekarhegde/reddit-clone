@@ -4,19 +4,18 @@
 }
 .top-nav-1 {
   height: 50px;
+  background: white;
 }
-.top-nav-2 {
-  height: 30px;
-}
+
 .reddit-icon {
-  height: 33px;
+  height: 30px;
 }
 .col-md-1 {
   display: flex;
   justify-content: flex-end;
 }
 .bg-white {
-  height: 30px;
+  height: 35px;
   width: 200px;
 }
 select {
@@ -30,7 +29,7 @@ select {
   background-position: 170px;
 }
 select:hover {
-  border-color: black !important;
+  border-color: rgb(224, 221, 221) !important;
 }
 .has-search .form-control {
   padding-left: 35px;
@@ -42,7 +41,7 @@ select:hover {
   display: block;
   width: 30px;
   height: 30px;
-  line-height: 30px;
+  line-height: 35px;
   text-align: center;
   pointer-events: none;
   color: #aaa;
@@ -52,7 +51,7 @@ select:hover {
   background-color: white !important;
 }
 .form-control {
-  height: 30px;
+  height: 35px;
 }
 .form-control::placeholder {
   color: #aaa;
@@ -60,4 +59,11 @@ select:hover {
 }
 .icon:hover {
   background: #aaa;
+}
+.icon {
+  margin-top: 1px;
+  height: 35px !important;
+}
+.reddit {
+  margin-top: 10px;
 }

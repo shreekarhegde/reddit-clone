@@ -12,6 +12,10 @@ export class HttpService {
     return this.http.post(url, data).pipe(catchError(this.handleError));
   }
 
+  getRequest(url, data) {
+    return this.http.get(url, data);
+  }
+
   handleError(errorResponse: HttpErrorResponse) {
     if (errorResponse.error instanceof ErrorEvent) {
       console.log('client side error---->', errorResponse.error.message);

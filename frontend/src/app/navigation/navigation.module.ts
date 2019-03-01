@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomeComponent } from './home/home.component';
+import { TopNavigationComponent } from './top-navigation/top-navigation.component';
 import { NavigationRoutingModule } from './navigation-routing.module';
+import { ViewFiltersComponent } from './view-filters/view-filters.component';
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [TopNavigationComponent, ViewFiltersComponent],
   imports: [CommonModule, NavigationRoutingModule],
-  exports: []
+  exports: [TopNavigationComponent]
 })
 export class NavigationModule {}

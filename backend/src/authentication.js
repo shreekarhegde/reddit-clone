@@ -27,7 +27,6 @@ module.exports = function(app) {
       create: [
         context => {
           if (context.hasOwnProperty('params')) {
-            console.log(context.params);
             id = context.params.user._id;
             name = context.params.user.username;
           }

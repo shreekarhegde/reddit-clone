@@ -10,7 +10,8 @@ module.exports = function(app) {
   const options = {
     Model,
     paginate,
-    multi: true
+    multi: true,
+    whitelist: ['$populate']
   };
 
   // Initialize our service with any options it requires

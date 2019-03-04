@@ -1,10 +1,11 @@
+/* eslint-disable no-console */
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
 const processPosts = require('../../hooks/process-posts');
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
     create: [processPosts()],

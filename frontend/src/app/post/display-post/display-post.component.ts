@@ -10,20 +10,23 @@ const jwtDecode = require('jwt-decode');
   styleUrls: ['./display-post.component.css']
 })
 export class DisplayPostComponent implements OnInit {
-  public url = 'http://localhost:3030/posts';
+  public postsUrl = 'http://localhost:3030/posts';
+  public commentsUrl = 'http://localhost:3030/comments';
   public query;
   public userID;
   public accessToken;
   public headerParams;
   public posts = [];
+  public comments = [];
   public username;
+
   constructor(public http: HttpService, public tokenService: TokenService) {}
 
   async ngOnInit() {
-    console.log(this.tokenService.getToken(), 'token service from display post');
     this.accessToken = (await this.tokenService.getToken()['user']['accessToken'])
       ? await this.tokenService.getToken()['user']['accessToken']
       : await this.tokenService.getToken()['user'];
+
     this.headerParams = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -32,16 +35,28 @@ export class DisplayPostComponent implements OnInit {
     };
     var decoded = jwtDecode(this.accessToken);
     this.userID = decoded.userId;
-    console.log(decoded);
+    this.query = '?$populate=userID';
 
-    // console.log('token from display post', this.accessToken);
-    this.query = '/?userID=' + this.userID;
-    // console.log('query from display post', this.query);
-    await this.http.getRequest(this.url + this.query, this.headerParams).subscribe(
-      res => {
-        if (res.hasOwnProperty('data')) {
-          console.log('ngOnInit: posts----->', res);
-          this.posts = res['data'];
+    await this.http.getRequest(this.postsUrl + this.query, this.headerParams).subscribe(
+      async posts => {
+        if (posts.hasOwnProperty('data')) {
+          console.log('ngOnInit: posts----->', posts);
+          this.posts = await posts['data'];
+
+          this.posts.forEach(async post => {
+            post['comments'] = [];
+            let postQuery = '/?postID=' + post['_id'];
+            await this.http.getRequest(this.commentsUrl + postQuery, this.headerParams).subscribe(
+              async res => {
+                if (res.hasOwnProperty('data')) {
+                  post['comments'] = await res['data'];
+                }
+              },
+              err => {
+                console.log(err);
+              }
+            );
+          });
         }
       },
       err => {

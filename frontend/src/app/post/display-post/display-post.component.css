@@ -235,3 +235,10 @@
   word-wrap: break-word;
   font-family: 'Rokkitt', serif;
 }
+
+/* ------------------------------- */
+/* remove li bullets
+---------------------------------- */
+ul {
+  list-style-type: none;
+}

@@ -13,7 +13,7 @@ export class HttpService {
   }
 
   getRequest(url, data) {
-    return this.http.get(url, data);
+    return this.http.get(url, data).pipe(catchError(this.handleError));
   }
 
   handleError(errorResponse: HttpErrorResponse) {

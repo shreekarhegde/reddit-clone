@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable indent */
 /* eslint-disable quotes */
 /* eslint-disable no-undef */
@@ -5,7 +6,7 @@ const authentication = require('@feathersjs/authentication');
 const jwt = require('@feathersjs/authentication-jwt');
 const local = require('@feathersjs/authentication-local');
 let id = '';
-
+let name = '';
 module.exports = function(app) {
   const config = app.get('authentication');
 
@@ -26,11 +27,14 @@ module.exports = function(app) {
       create: [
         context => {
           if (context.hasOwnProperty('params')) {
+            console.log(context.params);
             id = context.params.user._id;
+            name = context.params.user.username;
           }
         },
         hook => {
           hook.result['id'] = id;
+          hook.result['username'] = name;
         }
       ]
     }

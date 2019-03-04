@@ -13,7 +13,8 @@ module.exports = function(app) {
     {
       text: { type: String, required: true },
       userID: { type: mongooseSchema.Types.ObjectId, ref: 'users', required: true },
-      postID: { type: mongooseSchema.Types.ObjectId, ref: 'posts', required: true }
+      postID: { type: mongooseSchema.Types.ObjectId, ref: 'posts', required: true },
+      commentID: { type: mongooseSchema.Types.ObjectId, ref: 'comments' }
     },
     {
       timestamps: true

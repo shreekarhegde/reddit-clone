@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../services/http.service';
+import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
@@ -11,7 +13,7 @@ export class UserLoginComponent implements OnInit {
   public password;
   public isLoggedIn = false;
 
-  constructor(private http: HttpService, private router: Router) {}
+  constructor(private http: HttpService, private router: Router, private tokenService: TokenService) {}
 
   ngOnInit() {}
 
@@ -23,7 +25,7 @@ export class UserLoginComponent implements OnInit {
         user => {
           if (user.hasOwnProperty('accessToken')) {
             console.log('user from login------>', user);
-            localStorage.setItem('user', JSON.stringify({ user: user }));
+            this.tokenService.setToken(user['accessToken']);
             this.router.navigate(['']);
           }
         },

@@ -14,8 +14,7 @@ module.exports = function(app) {
       text: { type: String, required: true },
       userID: { type: mongooseSchema.Schema.Types.ObjectId, ref: 'users', required: true },
       community: { type: String, required: true },
-      upvotes: { type: Number },
-      downvotes: { type: Number },
+      votes: { type: String },
       isUpvoted: { type: Boolean },
       isDownvoted: { type: Boolean }
     },

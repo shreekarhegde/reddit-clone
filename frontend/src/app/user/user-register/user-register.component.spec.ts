@@ -22,11 +22,6 @@ describe('UserRegisterComponent', () => {
     fixture.detectChanges();
   });
 
-  it('length of email should be greater than 2', () => {
-    component['email'] = 'test@gmail.com';
-    expect(component.email.length).toBeGreaterThan(2);
-  });
-
   it('should create', () => {
     expect(component).toBeTruthy();
   });

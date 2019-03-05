@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../services/http.service';
+
 import { TokenService } from '../../services/token.service';
+
+import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 const jwtDecode = require('jwt-decode');
 
@@ -23,9 +25,11 @@ export class DisplayPostComponent implements OnInit {
   constructor(public http: HttpService, public tokenService: TokenService) {}
 
   async ngOnInit() {
-    this.accessToken = (await this.tokenService.getToken()['user']['accessToken'])
-      ? await this.tokenService.getToken()['user']['accessToken']
-      : await this.tokenService.getToken()['user'];
+    if (this.tokenService.getToken()) {
+      this.accessToken = (await this.tokenService.getToken()['user']['accessToken'])
+        ? await this.tokenService.getToken()['user']['accessToken']
+        : await this.tokenService.getToken()['user'];
+    }
 
     this.headerParams = {
       headers: new HttpHeaders({
@@ -33,8 +37,12 @@ export class DisplayPostComponent implements OnInit {
         Authorization: this.accessToken
       })
     };
-    var decoded = jwtDecode(this.accessToken);
-    this.userID = decoded.userId;
+
+    if (this.accessToken) {
+      var decoded = jwtDecode(this.accessToken, { header: true });
+      this.userID = decoded.userId;
+    }
+
     this.query = '?$populate=userID';
 
     await this.http.getRequest(this.postsUrl + this.query, this.headerParams).subscribe(

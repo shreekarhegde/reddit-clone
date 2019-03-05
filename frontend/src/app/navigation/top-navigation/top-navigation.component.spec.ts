@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TopNavigationComponent } from './top-navigation.component';
+import { ViewFiltersComponent } from '../view-filters/view-filters.component';
 
 describe('TopNavigationComponent', () => {
   let component: TopNavigationComponent;
@@ -8,7 +9,7 @@ describe('TopNavigationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TopNavigationComponent]
+      declarations: [TopNavigationComponent, ViewFiltersComponent]
     }).compileComponents();
   }));
 

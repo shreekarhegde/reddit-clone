@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../services/http.service';
 import { TokenService } from '../../services/token.service';
 import { HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
@@ -14,7 +16,7 @@ export class CreatePostComponent implements OnInit {
   public headerParams;
   public url = 'http://localhost:3030/posts';
   public accessToken;
-  constructor(public http: HttpService, public tokenService: TokenService) {}
+  constructor(public http: HttpService, public tokenService: TokenService, public router: Router) {}
 
   ngOnInit() {}
 
@@ -42,6 +44,9 @@ export class CreatePostComponent implements OnInit {
         this.http.postRequest(this.url, data, this.headerParams).subscribe(
           res => {
             console.log('post: success------------->', res);
+            if (res) {
+              this.router.navigate(['/comments']);
+            }
           },
           err => {
             console.log('post: err------------->', err);

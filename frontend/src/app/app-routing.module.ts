@@ -4,13 +4,10 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    // loadChildren: './layout/layout.module#LayoutModule'
     children: [
       {
         path: '',
         loadChildren: './layout/layout.module#LayoutModule'
-        // component: LayoutComponent,
-        // children: [{ path: '', loadChildren: '../home/home.module#HomeModule' }]
       }
     ]
   },

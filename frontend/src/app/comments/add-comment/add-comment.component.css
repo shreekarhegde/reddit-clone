@@ -1,0 +1,17 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+.profile-info {
+  background-color: rgb(51, 168, 255);
+}
+.circle {
+  text-align: center;
+  background-color: #fff;
+  border: 2px solid white;
+  height: 40px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  width: 40px;
+}

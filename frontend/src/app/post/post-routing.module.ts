@@ -4,7 +4,7 @@ import { DisplayPostComponent } from './display-post/display-post.component';
 
 const routes: Routes = [
   {
-    path: 'submit',
+    path: '',
     children: [{ path: '', component: DisplayPostComponent }]
   }
 ];

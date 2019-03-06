@@ -242,3 +242,35 @@
 ul {
   list-style-type: none;
 }
+
+/* ------------------------------- */
+/* post buttons
+---------------------------------- */
+
+.create-post {
+  margin: 2%;
+  width: 100%;
+  background-color: rgb(23, 119, 230);
+  color: white;
+}
+.create-community {
+  margin: 2%;
+  width: 100%;
+  background-color: white;
+  color: rgb(134, 214, 238);
+}
+
+/* .home {
+  height: 150px;
+} */
+.post {
+  height: 300px;
+}
+.planets-img {
+  height: 42px;
+  width: 245px;
+}
+.reddit-logo-animal {
+  height: 80px;
+  width: 30px;
+}

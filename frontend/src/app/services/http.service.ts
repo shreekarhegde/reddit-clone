@@ -8,8 +8,8 @@ import { Observable, of, Subject, throwError } from 'rxjs';
 export class HttpService {
   constructor(private http: HttpClient) {}
 
-  postRequest(url, data) {
-    return this.http.post(url, data).pipe(catchError(this.handleError));
+  postRequest(url, data, headerParams) {
+    return this.http.post(url, data, headerParams).pipe(catchError(this.handleError));
   }
 
   getRequest(url, data) {

@@ -21,7 +21,7 @@ export class UserLoginComponent implements OnInit {
     let url = 'http://localhost:3030/authentication';
     let data = { strategy: 'local', username: this.username, password: this.password };
     if (this.username && this.password) {
-      this.http.postRequest(url, data).subscribe(
+      this.http.postRequest(url, data, null).subscribe(
         user => {
           if (user.hasOwnProperty('accessToken')) {
             console.log('user from login------>', user);

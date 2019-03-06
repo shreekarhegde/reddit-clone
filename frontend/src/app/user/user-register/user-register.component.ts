@@ -31,17 +31,19 @@ export class UserRegisterComponent implements OnInit {
       username: this.username,
       password: this.password
     };
-    await this.http.postRequest(this.usersUrl, userDetails).subscribe(
+    await this.http.postRequest(this.usersUrl, userDetails, null).subscribe(
       user => {
         console.log('post: user-------->', user);
-        this.http.postRequest(this.authUrl, { strategy: 'local', username: this.username, password: this.password }).subscribe(res => {
-          if (res.hasOwnProperty('accessToken')) {
-            console.log('from post subscribe success');
-            // localStorage.setItem('user', JSON.stringify({ user: res }));
-            this.tokenService.setToken(res);
-            this.router.navigateByUrl('');
-          }
-        });
+        this.http
+          .postRequest(this.authUrl, { strategy: 'local', username: this.username, password: this.password }, null)
+          .subscribe(res => {
+            if (res.hasOwnProperty('accessToken')) {
+              console.log('from post subscribe success');
+              // localStorage.setItem('user', JSON.stringify({ user: res }));
+              this.tokenService.setToken(res);
+              this.router.navigateByUrl('');
+            }
+          });
       },
       err => {
         console.log('post: err-------->', err);

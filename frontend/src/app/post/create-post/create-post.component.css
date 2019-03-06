@@ -16,30 +16,20 @@
   height: 35px;
 }
 
-.image-filter {
-  height: 50px;
-  outline: none !important;
-  box-shadow: none;
-}
-.post-filter {
-  height: 50px;
-  outline: none !important;
-  box-shadow: none;
-}
+.image-filter,
+.post-filter,
 .link-filter {
   height: 50px;
   outline: none !important;
   box-shadow: none;
 }
-.link-fiter:hover {
-  background: lightblue;
-}
-.post-filter:hover {
-  background: lightblue;
-}
+
+.link-filter:hover,
+.post-filter:hover,
 .image-filter:hover {
   background: lightblue;
 }
+
 .title-input {
   height: 70px;
   border: black;
@@ -54,6 +44,7 @@ textarea {
 .bottom-buttons {
   margin-left: auto;
   margin-right: 15px;
+  margin-bottom: 10px;
 }
 .save-draft,
 .post {

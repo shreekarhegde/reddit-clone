@@ -40,18 +40,21 @@
                 </div>
               </div>
             </div>
-            <div class="row bg-white title-input ">
-              <div class="form-group w-100 p-3">
-                <input type="text" class="form-control w-100" id="title" placeholder="Title" />
+            <form>
+              <div class="row bg-white title-input ">
+                <div class="form-group w-100 p-3">
+                  <input type="text" class="form-control w-100" id="title" placeholder="Title" name="title" [(ngModel)]="title" />
+                </div>
               </div>
-            </div>
-            <div class="row w-100 bg-white h-75 rounded-bottom">
-              <textarea class="w-100 border mb-3 mr-3 ml-3" placeholder="Text(optional)"></textarea>
-              <div class="bottom-buttons">
-                <button class="save-draft btn btn-basic text-primary border-primary">SAVE DRAFT</button
-                ><button class="post ml-2 btn btn-primary">POST</button>
+              <div class="row w-100 bg-white h-75 rounded-bottom">
+                <textarea class="w-100 border mb-3 mr-3 ml-3" placeholder="Text(optional)" name="text" [(ngModel)]="text"></textarea>
+                <div class="bottom-buttons">
+                  <button class="save-draft btn btn-basic text-primary border-primary">SAVE DRAFT</button
+                  ><button class="post ml-2 btn btn-primary" (click)="post()">POST</button>
+                </div>
               </div>
-            </div>
+            </form>
+
             <div class="row"><div></div></div>
           </div>
         </div>

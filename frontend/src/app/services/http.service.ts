@@ -9,7 +9,11 @@ export class HttpService {
   constructor(private http: HttpClient) {}
 
   postRequest(url, data, headerParams) {
-    return this.http.post(url, data, headerParams).pipe(catchError(this.handleError));
+    if (headerParams) {
+      return this.http.post(url, data, headerParams).pipe(catchError(this.handleError));
+    } else {
+      return this.http.post(url, data).pipe(catchError(this.handleError));
+    }
   }
 
   getRequest(url, data) {

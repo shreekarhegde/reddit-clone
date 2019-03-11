@@ -31,6 +31,7 @@ export class UserRegisterComponent implements OnInit {
       username: this.username,
       password: this.password
     };
+
     await this.http.postRequest(this.usersUrl, userDetails, null).subscribe(
       user => {
         console.log('post: user-------->', user);

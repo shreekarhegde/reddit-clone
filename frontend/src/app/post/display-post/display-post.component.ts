@@ -3,7 +3,6 @@ import { HttpService } from '../../services/http.service';
 import { TokenService } from '../../services/token.service';
 import { UserDetailsService } from '../../services/user-details.service';
 import { Component, OnInit } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-display-post',
@@ -25,8 +24,6 @@ export class DisplayPostComponent implements OnInit {
 
   async ngOnInit() {
     this.headerParams = await this.tokenService.checkTokenAndSetHeader();
-
-    // console.log(this.headerParams);
 
     this.query = '?$populate=userID';
 

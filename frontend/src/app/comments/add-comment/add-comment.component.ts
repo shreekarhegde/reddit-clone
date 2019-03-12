@@ -8,6 +8,7 @@ import { UserDetailsService } from '../../services/user-details.service';
 export class AddCommentComponent implements OnInit {
   public usersUrl = 'http://localhost:3030/users';
   public profileName;
+
   constructor(public userDetailsService: UserDetailsService) {}
 
   ngOnInit() {

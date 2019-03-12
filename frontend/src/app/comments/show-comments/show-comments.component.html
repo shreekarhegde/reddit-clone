@@ -1,0 +1,12 @@
+<div class="row" *ngFor="let comment of comments">
+  <div class="col-md-12">
+    <div class="row">
+      <ul>
+        <li>
+          <h5>{{ comment.title }}</h5>
+          <app-show-comments [comments]="comment.children" *ngIf="comment.children"></app-show-comments>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

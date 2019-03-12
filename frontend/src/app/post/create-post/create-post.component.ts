@@ -3,6 +3,7 @@ import { HttpService } from '../../services/http.service';
 import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
 import { UserDetailsService } from '../../services/user-details.service';
+import { DataService } from 'src/app/services/data-service.service';
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
@@ -20,7 +21,8 @@ export class CreatePostComponent implements OnInit {
     public http: HttpService,
     public tokenService: TokenService,
     public router: Router,
-    public userDetailsService: UserDetailsService
+    public userDetailsService: UserDetailsService,
+    public dataService: DataService
   ) {}
 
   ngOnInit() {}
@@ -46,7 +48,8 @@ export class CreatePostComponent implements OnInit {
         res => {
           console.log('post: success------------->', res);
           if (res) {
-            this.router.navigate(['/comments']);
+            // this.dataService.setData(res);
+            this.router.navigate(['/comments', res['_id']]);
           }
         },
         err => {

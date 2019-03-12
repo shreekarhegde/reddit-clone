@@ -1,10 +1,12 @@
-<div class="row" *ngFor="let comment of comments">
+<div class="row">
   <div class="col-md-12">
     <div class="row">
       <ul>
-        <li>
+        <li *ngFor="let comment of comments">
+          <!-- <h5 [attr.data-toggle]="comment.title" data-target="#demo">{{ comment.title }}</h5> -->
           <h5>{{ comment.title }}</h5>
-          <app-show-comments [comments]="comment.children" *ngIf="comment.children"></app-show-comments>
+          <!-- <app-show-comments [comments]="comment.children" *ngIf="comment.children" id="demo" [class]="comment.title"></app-show-comments> -->
+          <app-show-comments [comments]="comment.children"></app-show-comments>
         </li>
       </ul>
     </div>

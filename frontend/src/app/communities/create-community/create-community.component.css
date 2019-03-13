@@ -1,0 +1,60 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+.border-bottom {
+  border-color: whitesmoke !important;
+}
+.drafts {
+  margin-top: 21px;
+  margin-bottom: 0px;
+  margin-left: auto;
+  font-size: 12px;
+}
+.dropdown {
+  width: 300px !important;
+  height: 35px;
+}
+
+.image-filter,
+.post-filter,
+.link-filter {
+  height: 50px;
+  outline: none !important;
+  box-shadow: none;
+}
+
+.link-filter:hover,
+.post-filter:hover,
+.image-filter:hover {
+  background: lightblue;
+}
+
+.title-input {
+  height: 70px;
+  border: black;
+}
+
+input[id='title'] {
+  padding: 15px;
+}
+textarea {
+  padding: 15px;
+}
+.bottom-buttons {
+  margin-left: auto;
+  margin-right: 15px;
+  margin-bottom: 10px;
+}
+.save-draft,
+.post {
+  height: 30px;
+  width: 100px;
+  font-size: 13px;
+}
+input[class='dropdown-item'] {
+  padding: 5px;
+}
+.empty {
+  height: 15px;
+}

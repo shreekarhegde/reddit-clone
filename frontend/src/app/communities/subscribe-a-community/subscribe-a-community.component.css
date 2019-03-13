@@ -1,0 +1,29 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+b {
+  font-size: 10px;
+}
+div button small {
+  width: 100%;
+}
+button {
+  width: 100%;
+  background-color: rgb(23, 119, 230);
+  color: white;
+}
+small {
+  word-wrap: break-word;
+}
+.sub {
+  font-size: 10px;
+}
+.info {
+  display: flex;
+  flex-direction: column;
+}
+.subscribe-button {
+  padding-top: 10px;
+}

@@ -268,9 +268,15 @@ ul {
 }
 .planets-img {
   height: 42px;
-  width: 245px;
 }
 .reddit-logo-animal {
   height: 80px;
   width: 30px;
+}
+.planets-img img {
+  height: 100%;
+  width: 100%;
+}
+.sub {
+  width: 100%;
 }

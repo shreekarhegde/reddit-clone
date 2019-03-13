@@ -1,0 +1,48 @@
+<div class="row m-1">
+  <div class="col-md-1"></div>
+  <div class="col-md-7">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row border-bottom">
+          <h5 class="pt-3 create-post ">Create a community</h5>
+          <p class=" drafts btn btn-link">DRAFTS</p>
+        </div>
+        <div class="row empty"></div>
+        <div class="row border">
+          <div class="col-md-12">
+            <form>
+              <div class="row bg-white title-input ">
+                <div class="form-group w-100 p-3">
+                  <input type="text" class="form-control w-100 pl-3" id="name" placeholder="name" name="name" [(ngModel)]="name" />
+                </div>
+              </div>
+              <div class="row bg-white title-input ">
+                <div class="form-group w-100 p-3">
+                  <input type="text" class="form-control w-100" id="title" placeholder="Title" name="title" [(ngModel)]="title" />
+                </div>
+              </div>
+              <div class="row w-100 bg-white h-75 rounded-bottom">
+                <textarea
+                  class="w-100 border mb-3 mr-3 ml-3"
+                  placeholder="Add a description"
+                  name="Description"
+                  [(ngModel)]="description"
+                ></textarea>
+                <div class="bottom-buttons">
+                  <button class="save-draft btn btn-basic text-primary border-primary">SAVE DRAFT</button
+                  ><button class="post ml-2 btn btn-primary" (click)="createCommunity()">CREATE</button>
+                </div>
+              </div>
+            </form>
+
+            <div class="row">
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3"></div>
+  <div class="col-md-1"></div>
+</div>

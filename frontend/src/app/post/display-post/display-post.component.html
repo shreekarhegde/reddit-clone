@@ -102,10 +102,10 @@
 
   <!--/ col-lg-3 -->
 
-  <div class="col-md-2 bg-white post">
-    <div class="row home">
+  <div class="col-md-2 post ">
+    <div class="row home bg-white">
       <div class="col-md-12">
-        <div class="row"><img src="https://www.redditstatic.com/desktop2x/img/id-cards/home-banner@2x.png" class="planets-img" /></div>
+        <div class="row planets-img"><img src="https://www.redditstatic.com/desktop2x/img/id-cards/home-banner@2x.png" /></div>
         <div class="row">
           <div class="col-md-12">
             <div class="row">
@@ -121,8 +121,14 @@
         </div>
       </div>
     </div>
-    <div class="row"><button class="btn  create-post " routerLink="/submit">CREATE POST</button></div>
-    <div class="row"><button class="btn border-primary  create-community">CREATE COMMUNITY</button></div>
+    <div class="row bg-white"><button class="btn  create-post " routerLink="/submit">CREATE POST</button></div>
+    <div class="row bg-white">
+      <button class="btn border-primary  create-community" [routerLink]="['communities']">CREATE COMMUNITY</button>
+    </div>
+    <div class="row">
+      <app-subscribe-a-community class="sub"></app-subscribe-a-community>
+    </div>
   </div>
+
   <div class="col-md-2 ">4</div>
 </div>

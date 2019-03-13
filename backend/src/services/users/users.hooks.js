@@ -55,7 +55,7 @@ function addUserToCommunity() {
           .service('/users')
           .patch({ _id: userID }, { $push: { communities: communityID } })
           .then(res => {
-            console.log(res);
+            hook['result'] = res;
           })
           .catch(err => {
             console.log(err);

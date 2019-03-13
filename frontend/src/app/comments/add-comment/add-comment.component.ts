@@ -14,6 +14,7 @@ export class AddCommentComponent implements OnInit {
   public postsUrl = 'http://localhost:3030/posts';
   public profileName;
   public postTitle;
+  public postedBy;
   public postDescription;
   public headerParams;
   public postID;
@@ -27,17 +28,17 @@ export class AddCommentComponent implements OnInit {
   async ngOnInit() {
     this.headerParams = await this.tokenService.checkTokenAndSetHeader();
 
-    // await this.userDetailsService
-    //   .getUserProfile()
-    //   .then(user => {
-    //     console.log('user: addComment------>', user);
-    //     if (user.hasOwnProperty('username')) {
-    //       this.profileName = user['username'];
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+    await this.userDetailsService
+      .getUserProfile()
+      .then(user => {
+        console.log('user: addComment------>', user);
+        if (user.hasOwnProperty('username')) {
+          this.profileName = user['username'];
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
 
     // let userID = await this.userDetailsService.getUserID();
 
@@ -59,7 +60,7 @@ export class AddCommentComponent implements OnInit {
       post => {
         console.log('add-comment: posts------->', post);
         if (post) {
-          this.profileName = post['userID']['username'];
+          this.postedBy = post['userID']['username'];
 
           this.postTitle = post['title'];
           this.postDescription = post['text'];

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { TokenService } from './token.service';
 import { HttpHeaders } from '@angular/common/http';
-
-const jwtDecode = require('jwt-decode');
+import * as jwtDecode from 'jwt-decode';
+// const jwtDecode = require('jwt-decode');
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,8 @@ export class UserDetailsService {
 
   getUserID() {
     let token = this.tokenService.getToken();
-    console.log(token);
-    var decoded = jwtDecode(token.user);
+    console.log('getUserID: token', token);
+    var decoded = jwtDecode(token.user.accessToken);
     this._userID = decoded.userId;
     console.log('userid from  getUserId--------->', this._userID);
     return this._userID;

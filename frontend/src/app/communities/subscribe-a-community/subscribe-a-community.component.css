@@ -25,5 +25,6 @@ small {
   flex-direction: column;
 }
 .subscribe-button {
-  padding-top: 10px;
+  padding-top: 5px;
+  outline: none;
 }

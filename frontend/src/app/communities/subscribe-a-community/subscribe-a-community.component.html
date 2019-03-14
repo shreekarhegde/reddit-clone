@@ -3,11 +3,22 @@
     <div class="row p-2">
       <small><b>TRENDING COMMUNITIES</b> </small>
     </div>
-    <div class="row m-1">
-      <div class="col-md-2 "></div>
-      <div class="col-md-6 text-center info"><small class="m-1 pb-1">community</small><small>50k subscribers</small></div>
+    <div class="row m-1" *ngFor="let community of communities">
+      <div class="col-md-2 ">
+        <img
+          src="https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/2796048/1162/776/m1/fpnw/wm0/1-.jpg?1496515548&s=9ac5a58ce97387782c1de38b3a413c81"
+          alt=""
+          class="w-100"
+        />
+      </div>
+      <div class="col-md-6 text-center info">
+        <small class="mr-2">{{ community.name }}</small
+        ><small>50k subscribers</small>
+      </div>
       <div class="col-md-4 subscribe-button">
-        <button class="pb-1"><small class="sub">SUBSCRIBE</small></button>
+        <button class="pb-1 btn" (click)="subscribe(community._id)">
+          <small class="sub">{{ community.isSubscribed === true ? 'SUBSCRIBED' : 'SUBSCRIBE' }}</small>
+        </button>
       </div>
     </div>
   </div>

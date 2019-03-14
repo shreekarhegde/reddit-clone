@@ -20,6 +20,10 @@ export class HttpService {
     return this.http.get(url, data).pipe(catchError(this.handleError));
   }
 
+  patchRequest(url, data, headerParams) {
+    return this.http.patch(url, data, headerParams).pipe(catchError(this.handleError));
+  }
+
   handleError(errorResponse: HttpErrorResponse) {
     if (errorResponse.error instanceof ErrorEvent) {
       console.log('client side error---->', errorResponse.error.message);

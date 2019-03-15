@@ -16,9 +16,11 @@ export class UserDetailsService {
   constructor(public httpService: HttpService, public tokenService: TokenService) {}
 
   getUserID() {
-    let token = this.tokenService.getToken();
-    console.log('getUserID: token', token);
-    var decoded = jwtDecode(token.user.accessToken);
+    let store = this.tokenService.getToken();
+    console.log('getUserID: token', store);
+
+    let token = store['user'].hasOwnProperty('accessToken') ? store['user']['accessToken'] : store['user'];
+    var decoded = jwtDecode(token);
     this._userID = decoded.userId;
     console.log('userid from  getUserId--------->', this._userID);
     return this._userID;

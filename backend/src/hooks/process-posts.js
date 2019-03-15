@@ -12,6 +12,7 @@ module.exports = function(options = {}) {
       const jwt = params.headers.authorization;
       const payload = decode(jwt);
       context['data']['userID'] = payload.userId;
+      console.log('context------>', context);
     }
     return context;
   };

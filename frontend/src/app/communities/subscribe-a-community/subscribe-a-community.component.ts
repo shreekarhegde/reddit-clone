@@ -15,13 +15,18 @@ export class SubscribeACommunityComponent implements OnInit {
   constructor(public tokenService: TokenService, public httpService: HttpService, public userDetailsService: UserDetailsService) {}
 
   async ngOnInit() {
+    let user = await this.userDetailsService.getUserProfile();
+    console.log('userCommunities: ngOnInit------->', user['communities']);
+
     this.headerParams = await this.tokenService.checkTokenAndSetHeader();
     this.httpService.getRequest(this.communitiesUrl, this.headerParams).subscribe(
       communities => {
-        console.log('get communities------->', communities);
+        console.log('all communities------->', communities['data']);
         if (communities.hasOwnProperty('data')) {
           for (let i = 0; i < communities['data'].length; i++) {
-            this.communities.push(communities['data'][i]);
+            if (user['communities'].indexOf(communities['data'][i]['_id']) < 0) {
+              this.communities.push(communities['data'][i]);
+            }
           }
         }
       },
@@ -40,10 +45,11 @@ export class SubscribeACommunityComponent implements OnInit {
     console.log('subscriber id------->', data);
 
     console.log('header params--------->', this.headerParams);
-    this.httpService.patchRequest(`${this.communitiesUrl}/${id}`, data, this.headerParams).subscribe(
+    let query = `?id=${id}`;
+    await this.httpService.patchRequest(`http://localhost:3030/update-community` + query, data, this.headerParams).subscribe(
       res => {
+        console.log('here');
         console.log('community subscribe----->', res);
-        let index = this.communities.findIndex(community => community._id === id);
       },
       err => {
         console.log(err);

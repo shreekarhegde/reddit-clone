@@ -80,3 +80,10 @@ function addCommunityToUser() {
     });
   };
 }
+
+function addPostToCommunity() {
+  return hook => {
+    let communityID = hook['params']['id'];
+    console.log(JSON.parse(JSON.stringify(hook)));
+  };
+}

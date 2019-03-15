@@ -5,6 +5,7 @@ import { DisplayPostComponent } from '../post/display-post/display-post.componen
 import { AddCommentComponent } from '../comments/add-comment/add-comment.component';
 import { CreateCommunityComponent } from '../communities/create-community/create-community.component';
 import { SubscribeACommunityComponent } from '../communities/subscribe-a-community/subscribe-a-community.component';
+import { CommunityDetailsComponent } from '../communities/community-details/community-details.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,8 @@ const routes: Routes = [
       { path: '', component: DisplayPostComponent },
       { path: '', component: SubscribeACommunityComponent },
       { path: 'comments/:id', component: AddCommentComponent },
-      { path: 'communities', component: CreateCommunityComponent }
+      { path: 'communities', component: CreateCommunityComponent },
+      { path: 'communities/:id', component: CommunityDetailsComponent }
     ]
   }
 ];

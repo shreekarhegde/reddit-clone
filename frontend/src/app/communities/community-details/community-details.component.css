@@ -1,0 +1,60 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+.community-name {
+  padding-left: 100px;
+}
+.first-row {
+  background-color: rgb(225, 197, 81);
+}
+.second-row {
+  background-color: rgb(250, 245, 224);
+  padding-left: 100px;
+}
+.border-bottom {
+  color: brown;
+  padding: 5px;
+  border-width: 5px !important;
+  border-bottom-color: brown !important;
+}
+.create-post {
+  margin: 2%;
+  width: 100%;
+  background-color: rgb(225, 197, 81);
+  color: white;
+}
+.subscribed {
+  margin: 2%;
+  width: 100%;
+  background-color: white;
+  color: rgb(225, 197, 81);
+  border-color: rgb(225, 197, 81);
+}
+
+.post {
+  height: 300px;
+}
+.card-header {
+  height: 30px;
+  align-content: center;
+  background-color: rgb(225, 197, 81);
+}
+.reddit-logo-animal {
+  height: 80px;
+  width: 30px;
+}
+.planets-img img {
+  height: 100%;
+  width: 100%;
+}
+.sub {
+  width: 100%;
+}
+small {
+  font-size: 10px !important;
+}
+.total-subscribers {
+  display: flex;
+  flex-direction: column;
+}

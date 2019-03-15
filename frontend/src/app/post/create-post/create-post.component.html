@@ -10,14 +10,16 @@
         <div class="row">
           <div class="dropdown bg-white mt-3 mb-2 rounded">
             <button type="button" class="btn w-100 text-left pl-1 pt-1" data-toggle="dropdown">
-              choose a community
+              {{ communityName }}
               <i class="fas fa-caret-down float-right mt-1 pr-2"></i>
             </button>
-            <div class="dropdown-menu w-100 ">
+            <div class="dropdown-menu w-100">
               <input class="dropdown-item" href="#" placeholder="search communities" />
-              <a class="dropdown-item" href="#">Link 1</a>
-              <a class="dropdown-item" href="#">Link 2</a>
-              <a class="dropdown-item" href="#">Link 3</a>
+              <ul>
+                <li class="dropdown-item" href="#" *ngFor="let community of communities" (click)="selectChange(community._id)">
+                  {{ community.name }}
+                </li>
+              </ul>
             </div>
           </div>
         </div>

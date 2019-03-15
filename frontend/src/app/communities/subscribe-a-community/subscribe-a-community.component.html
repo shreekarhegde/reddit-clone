@@ -17,7 +17,7 @@
       </div>
       <div class="col-md-4 subscribe-button">
         <button class="pb-1 btn" (click)="subscribe(community._id)">
-          <small class="sub">{{ community.isSubscribed === true ? 'SUBSCRIBED' : 'SUBSCRIBE' }}</small>
+          <small class="sub">{{ community.isSubscribed === false ? 'SUBSCRIBE' : 'SUBSCRIBED' }}</small>
         </button>
       </div>
     </div>

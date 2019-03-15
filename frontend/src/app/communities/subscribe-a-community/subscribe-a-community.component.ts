@@ -25,6 +25,8 @@ export class SubscribeACommunityComponent implements OnInit {
         if (communities.hasOwnProperty('data')) {
           for (let i = 0; i < communities['data'].length; i++) {
             if (user['communities'].indexOf(communities['data'][i]['_id']) < 0) {
+              communities['data'][i]['isSubscribed'] = false;
+              console.log('----------------', communities['data'][i]);
               this.communities.push(communities['data'][i]);
             }
           }
@@ -48,8 +50,9 @@ export class SubscribeACommunityComponent implements OnInit {
     let query = `?id=${id}`;
     await this.httpService.patchRequest(`http://localhost:3030/update-community` + query, data, this.headerParams).subscribe(
       res => {
-        console.log('here');
-        console.log('community subscribe----->', res);
+        console.log('community: subscribe----->', res);
+        let index = this.communities.findIndex(community => community['_id'] === res['_id']);
+        this.communities[index]['isSubscribed'] = true;
       },
       err => {
         console.log(err);

@@ -1,9 +1,7 @@
 module.exports = {
   before: {
     all: [],
-    find: [
-      // createStructure()
-    ],
+    find: [createStructure()],
     get: [],
     create: [],
     update: [],
@@ -32,62 +30,54 @@ module.exports = {
   }
 };
 
-// function createStructure(option) {
-//   return function(hook) {
-//     console.log(hook);
-//     return new Promise(async (resolve, reject) => {
-//       console.log('createStructure: start');
-//       await createChildrenArray(hook);
-//       console.log('createStructure: end');
-//       // console.log('createStructure: hook', hook);
+function createStructure(option) {
+  return function(hook) {
+    return new Promise(async (resolve, reject) => {
+      console.log('Start');
+      let commentService = hook.app.service('/comments');
+      let firstLevelQuery = hook.params.query;
+      let comments = await createChildrenArray(commentService, firstLevelQuery);
+      console.log('first level: createStructure', JSON.parse(JSON.stringify(comments)));
+      hook['result'] = comments;
+      // console.log('createStructure: hook', hook);
+      return resolve(hook);
+    });
+  };
+}
 
-//       return resolve(hook);
-//     });
-//   };
-// }
+function createChildrenArray(service, query) {
+  return new Promise(async resolve => {
+    console.log('parent Id------->', JSON.parse(JSON.stringify(query)));
 
-// function createChildrenArray(hook) {
-//   return new Promise(async (resolve, reject) => {
-//     console.log('parent Id------->', JSON.parse(JSON.stringify(hook.params.query)));
-//     // hook.app
-//     //   .service('/comments')
-//     //   .find({ query: hook.params.query })
-//     //   .then(async comments => {
-//     let comments = await getComments(hook);
-//     console.log('child comments------------->', comments);
+    let comments = await getComments(service, query);
+    console.log(' comments: createChildrenArray------------->', JSON.parse(JSON.stringify(comments)));
 
-//     // hook['result'] = comments;
+    if (comments['data'].length > 0) {
+      for (let i = 0; i < comments.data.length; i++) {
+        console.log(i);
+        let iterationLevelQuery = {
+          parentCommentID: comments['data'][i]['_id']
+        };
+        comments['data'][i]['children'] = await createChildrenArray(service, iterationLevelQuery);
+      }
+      return resolve(comments);
+    } else {
+      return resolve([]);
+    }
+  });
+}
 
-//     for (let i = 0; i < comments.data.length; i++) {
-//       hook.params.query = {
-//         parentCommentID: comments['data'][i]['_id']
-//       };
-//       console.log(i);
-
-//       // comments['data'][i]['children'] = comments['data'];
-
-//       createChildrenArray(hook);
-//     }
-
-//     // hook['result'] = comments;
-
-//     return resolve(hook);
-//     // })
-//     // .catch(err => {
-//     //   console.log(err);
-//     // });
-//   });
-// }
-
-// function getComments(hook) {
-//   return hook.app
-//     .service('/comments')
-//     .find({ query: hook.params.query })
-//     .then(comments => {
-//       // console.log(comments);
-//       return comments;
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// }
+function getComments(service, query) {
+  return new Promise(async (resolve, reject) => {
+    return service
+      .find({ query: query })
+      .then(comments => {
+        console.log('get comments: comments----------->', JSON.parse(JSON.stringify(comments)));
+        return resolve(comments);
+      })
+      .catch(err => {
+        console.log(err);
+        return reject(err);
+      });
+  });
+}

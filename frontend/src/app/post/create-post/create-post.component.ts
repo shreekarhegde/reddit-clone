@@ -4,6 +4,7 @@ import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
 import { UserDetailsService } from '../../services/user-details.service';
 import { DataService } from 'src/app/services/data-service.service';
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
@@ -27,7 +28,8 @@ export class CreatePostComponent implements OnInit {
     public tokenService: TokenService,
     public router: Router,
     public userDetailsService: UserDetailsService,
-    public dataService: DataService
+    public dataService: DataService,
+    public snackbar: MatSnackBar
   ) {}
 
   async ngOnInit() {
@@ -35,18 +37,24 @@ export class CreatePostComponent implements OnInit {
 
     await this.http.getRequest(this.communitiesUrl, this.headerParams).subscribe(
       communities => {
-        console.log('communities: createpost------------>', communities['data']);
-        this.communities = communities['data'];
+        if (communities) {
+          console.log('communities: createpost------------>', communities['data']);
+          this.communities = communities['data'];
+        }
       },
       err => {
         console.log(err);
+        const snackbarRef = this.snackbar.open('something went wrong', '', {
+          duration: 2000,
+          verticalPosition: 'top',
+          panelClass: 'login-snackbar'
+        });
       }
     );
   }
 
   async post() {
-    console.log('in post');
-    this.userID = this.userDetailsService.getUserID();
+    this.userID = await this.userDetailsService.getUserID();
     console.log('userID: post-------->', this.userID);
 
     if (this.text) {
@@ -63,16 +71,18 @@ export class CreatePostComponent implements OnInit {
         res => {
           console.log('post: success------------->', res);
           if (res) {
-            // this.dataService.setData(res);
             this.router.navigate(['/comments', res['_id']]);
           }
         },
         err => {
-          console.log('post: err------------->', err);
+          console.log(err);
+          const snackbarRef = this.snackbar.open('something went wrong', '', {
+            duration: 2000,
+            verticalPosition: 'top',
+            panelClass: 'login-snackbar'
+          });
         }
       );
-    } else {
-      console.log('from else');
     }
   }
 

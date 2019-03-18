@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { HttpService } from '../../services/http.service';
 import { Router } from '@angular/router';
 import { TokenService } from '../../services/token.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-user-register',
@@ -10,7 +11,7 @@ import { TokenService } from '../../services/token.service';
   styleUrls: ['./user-register.component.css']
 })
 export class UserRegisterComponent implements OnInit {
-  constructor(public http: HttpService, public router: Router, public tokenService: TokenService) {}
+  constructor(public http: HttpService, public router: Router, public tokenService: TokenService, public snackbar: MatSnackBar) {}
   public isNextButtonClicked = false;
   public email;
   public username;
@@ -40,7 +41,6 @@ export class UserRegisterComponent implements OnInit {
           .subscribe(res => {
             if (res.hasOwnProperty('accessToken')) {
               console.log('res from register', res);
-              // localStorage.setItem('user', JSON.stringify({ user: res }));
               this.tokenService.setToken(res);
               this.router.navigateByUrl('');
             }
@@ -48,6 +48,11 @@ export class UserRegisterComponent implements OnInit {
       },
       err => {
         console.log('post: err-------->', err);
+        const snackbarRef = this.snackbar.open('please choose a user name and password', '', {
+          duration: 2000,
+          verticalPosition: 'top',
+          panelClass: 'login-snackbar'
+        });
       }
     );
   }

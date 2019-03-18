@@ -1,5 +1,5 @@
 import { HttpService } from '../../services/http.service';
-
+import { MatSnackBar } from '@angular/material';
 import { TokenService } from '../../services/token.service';
 import { UserDetailsService } from '../../services/user-details.service';
 import { Component, OnInit } from '@angular/core';
@@ -19,38 +19,53 @@ export class DisplayPostComponent implements OnInit {
   public posts = [];
   public comments = [];
   public username;
+  public showSpinner = true;
 
-  constructor(public http: HttpService, public tokenService: TokenService, public userDetailsService: UserDetailsService) {}
+  constructor(
+    public http: HttpService,
+    public tokenService: TokenService,
+    public userDetailsService: UserDetailsService,
+    public snackbar: MatSnackBar
+  ) {}
 
   async ngOnInit() {
     this.headerParams = await this.tokenService.checkTokenAndSetHeader();
 
-    this.query = '?$populate=userID';
+    this.query = '?$populate=userID&$populate=communityID';
 
     await this.http.getRequest(this.postsUrl + this.query, this.headerParams).subscribe(
       async posts => {
         if (posts.hasOwnProperty('data')) {
+          this.showSpinner = false;
           console.log('ngOnInit: posts----->', posts);
           this.posts = await posts['data'];
 
           this.posts.forEach(async post => {
+            console.log('post: display post------>', post);
             post['comments'] = [];
             let postQuery = '/?postID=' + post['_id'];
             await this.http.getRequest(this.commentsUrl + postQuery, this.headerParams).subscribe(
-              async res => {
+              res => {
                 if (res.hasOwnProperty('data')) {
-                  post['comments'] = await res['data'];
+                  post['comments'] = res['data'];
                 }
               },
               err => {
                 console.log(err);
+                const snackbarRef = this.snackbar.open('something went wrong', '', {
+                  duration: 2000,
+                  verticalPosition: 'top',
+                  panelClass: 'login-snackbar'
+                });
               }
             );
           });
+        } else {
+          this.showSpinner = true;
         }
       },
       err => {
-        console.log('ngOnInit: err--->here', err);
+        console.log('ngOnInit: err--->', err);
       }
     );
   }

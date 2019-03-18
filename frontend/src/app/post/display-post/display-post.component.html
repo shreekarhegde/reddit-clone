@@ -4,103 +4,46 @@
   <div class="col-md-6 ">
     <ul>
       <li *ngFor="let post of posts">
-        <div class="cardbox shadow-lg bg-white">
-          <div class="cardbox-heading">
-            <!-- START dropdown-->
-            <div class="dropdown float-right">
-              <button class="btn btn-flat btn-flat-icon" type="button" data-toggle="dropdown" aria-expanded="false">
-                <em class="fa fa-ellipsis-h"></em>
-              </button>
-              <div
-                class="dropdown-menu dropdown-scale dropdown-menu-right"
-                role="menu"
-                style="position: absolute; transform: translate3d(-136px, 28px, 0px); top: 0px; left: 0px; will-change: transform;"
-              >
-                <a class="dropdown-item" href="#">Hide post</a>
-                <a class="dropdown-item" href="#">Stop following</a>
-                <a class="dropdown-item" href="#">Report</a>
+        <div class="row mb-3 mr-3 border bg-white">
+          <div class="col-md-1">
+            <div class="vote-buttons p-3 h-100">
+              <i class="fas fa-arrow-up"></i>
+              <p class="votes">12</p>
+              <i class="fas fa-arrow-down"></i>
+            </div>
+          </div>
+          <div class="col-md-11">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row bg-white m-3">
+                  <div class="content">
+                    <div class="community-name">
+                      <p>{{ post.communityID.name }}</p>
+                    </div>
+                    <div class="username">
+                      <p>{{ post.userID.username }}</p>
+                    </div>
+                    <div class="header pt-2">
+                      <h4>{{ post.title }}</h4>
+                    </div>
+                    <div>
+                      <p class="pt-3 pb-3">{{ post.text }}</p>
+                    </div>
+                    <div class="icons">
+                      <i class="fas fa-comment-alt"></i><span class="ml-1">0</span> <i class="fas fa-share ml-3"></i
+                      ><span class="ml-1">Share</span> <i class="fas fa-check ml-3"></i><span class="ml-1">Approve</span>
+                      <i class="fas fa-trash-alt ml-3"></i><span class="ml-1">Remove</span> <i class="fas fa-dumpster ml-3"> </i
+                      ><span class="ml-1">Spam</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <!--/ dropdown -->
-            <div class="media m-0">
-              <div class="d-flex mr-3">
-                <a href=""
-                  ><img
-                    class="img-fluid rounded-circle"
-                    src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/4.jpg"
-                    alt="User"
-                /></a>
-              </div>
-              <div class="media-body">
-                <p class="m-0">{{ post.userID.username }}</p>
-
-                <small
-                  ><span><i class="icon ion-md-time"></i> {{ post.updatedAt | date: 'medium' }}</span></small
-                >
-              </div>
-            </div>
-            <!--/ media -->
           </div>
-          <!--/ cardbox-heading -->
-
-          <div class="cardbox-item">
-            <!-- <img class="img-fluid" src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/1.jpg" alt="Image" /> -->
-          </div>
-          <div class="post-description ml-4 mr-5">
-            {{ post.text }}
-          </div>
-          <!--/ cardbox-item -->
-          <div class="cardbox-base">
-            <ul class="float-right">
-              <li>
-                <a><i class="fa fa-comments" [routerLink]="['comments', post._id]"></i></a>
-              </li>
-              <li>
-                <a
-                  ><em class="mr-5">{{ post.comments.length }}</em></a
-                >
-              </li>
-              <li>
-                <a><i class="fa fa-share-alt"></i></a>
-              </li>
-              <li>
-                <a><em class="mr-3">03</em></a>
-              </li>
-            </ul>
-            <ul>
-              <li>
-                <a><i class="fa fa-thumbs-up"></i></a>
-              </li>
-
-              <li>
-                <a
-                  ><span>{{ post.votes }} Upvotes</span></a
-                >
-              </li>
-            </ul>
-          </div>
-          <!--/ cardbox-base -->
-          <div class="cardbox-comments">
-            <span class="comment-avatar float-left">
-              <a href=""
-                ><img class="rounded-circle" src="http://www.themashabrand.com/templates/bootsnipp/post/assets/img/users/6.jpg" alt="..."
-              /></a>
-            </span>
-            <div class="search">
-              <input placeholder="Write a comment" type="text" />
-            </div>
-            <!--/. Search -->
-          </div>
-          <!--/ cardbox-like -->
         </div>
       </li>
     </ul>
-
-    <!--/ cardbox -->
   </div>
-  <!--/ col-lg-6 -->
-
-  <!--/ col-lg-3 -->
 
   <div class="col-md-2 post ">
     <div class="row home bg-white">
@@ -132,3 +75,4 @@
 
   <div class="col-md-2 ">4</div>
 </div>
+<mat-spinner *ngIf="showSpinner" class="spin"></mat-spinner>

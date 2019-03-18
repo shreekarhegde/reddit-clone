@@ -4,10 +4,10 @@ import { UserRegisterComponent } from './user-register/user-register.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserRoutingModule } from './user-routing.module';
 import { FormsModule } from '@angular/forms';
-
+import { MatSnackBarModule } from '@angular/material';
 @NgModule({
   declarations: [UserRegisterComponent, UserLoginComponent],
-  imports: [CommonModule, UserRoutingModule, FormsModule],
+  imports: [CommonModule, UserRoutingModule, FormsModule, MatSnackBarModule],
   exports: []
 })
 export class UserModule {}

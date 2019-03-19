@@ -33,6 +33,8 @@ export class DisplayPostComponent implements OnInit {
 
     this.query = '?$populate=userID&$populate=communityID';
 
+    this.userID = await this.userDetailsService.getUserID();
+
     await this.http.getRequest(this.postsUrl + this.query, this.headerParams).subscribe(
       async posts => {
         if (posts.hasOwnProperty('data')) {
@@ -69,6 +71,41 @@ export class DisplayPostComponent implements OnInit {
       },
       err => {
         console.log('ngOnInit: err--->', err);
+      }
+    );
+  }
+
+  upvote(id) {
+    let voteUrl = 'http://localhost:3030/votes';
+    let query = `?text=upvote&postID=${id}&userID=${this.userID}`;
+
+    this.http.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
+      res => {
+        console.log('upvoted', res);
+        let index = this.posts.findIndex(post => post['_id'] == id);
+        console.log('index of upvoted post---------->', index);
+        this.posts[index]['totalVotes'] = res['totalVotes'];
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+  downvote(id) {
+    let voteUrl = 'http://localhost:3030/votes';
+    let query = `?text=downvote&postID=${id}&userID=${this.userID}`;
+
+    this.http.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
+      res => {
+        console.log('downvoted', res);
+
+        let index = this.posts.findIndex(post => post['_id'] == id);
+        console.log('index of downvoted post---------->', index);
+        this.posts[index]['totalVotes'] = res['totalVotes'];
+        console.log(this.posts[index]);
+      },
+      err => {
+        console.log(err);
       }
     );
   }

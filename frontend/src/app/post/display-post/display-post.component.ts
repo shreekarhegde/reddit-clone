@@ -38,15 +38,18 @@ export class DisplayPostComponent implements OnInit {
         if (posts.hasOwnProperty('data')) {
           this.showSpinner = false;
           console.log('ngOnInit: posts----->', posts);
-          this.posts = await posts['data'];
+          this.posts = posts['data'];
 
           this.posts.forEach(async post => {
             console.log('post: display post------>', post);
             post['comments'] = [];
             let postQuery = '/?postID=' + post['_id'];
-            await this.http.getRequest(this.commentsUrl + postQuery, this.headerParams).subscribe(
-              res => {
+            console.log(postQuery);
+            this.http.getRequest(this.commentsUrl + postQuery, this.headerParams).subscribe(
+              async res => {
                 if (res.hasOwnProperty('data')) {
+                  console.log('all comments------->', res);
+
                   post['comments'] = res['data'];
                 }
               },

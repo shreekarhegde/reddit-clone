@@ -17,12 +17,12 @@ export class UserDetailsService {
 
   getUserID() {
     let store = this.tokenService.getToken();
-    console.log('getUserID: token', store);
+    // console.log('getUserID: token', store);
 
     let token = store['user'].hasOwnProperty('accessToken') ? store['user']['accessToken'] : store['user'];
     var decoded = jwtDecode(token);
     this._userID = decoded.userId;
-    console.log('userid from  getUserId--------->', this._userID);
+    // console.log('userid from  getUserId--------->', this._userID);
     return this._userID;
   }
 
@@ -34,8 +34,8 @@ export class UserDetailsService {
     return new Promise(resolve => {
       this.httpService.getRequest(`${this.url}/${userID}`, this.headerParams).subscribe(
         user => {
-          console.log('user from getUserProfile--------->', user);
-          resolve(user);
+          // console.log('user from getUserProfile--------->', user);
+          return resolve(user);
         },
         err => {
           console.log(err);

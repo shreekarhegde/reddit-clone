@@ -30,7 +30,8 @@
                       <p class="pt-3 pb-3">{{ post.text }}</p>
                     </div>
                     <div class="icons">
-                      <i class="fas fa-comment-alt"></i><span class="ml-1">0</span> <i class="fas fa-share ml-3"></i
+                      <i class="fas fa-comment-alt" [routerLink]="['/comments', post._id]"></i
+                      ><span class="ml-1">{{ post.comments.length }}</span> <i class="fas fa-share ml-3"></i
                       ><span class="ml-1">Share</span> <i class="fas fa-check ml-3"></i><span class="ml-1">Approve</span>
                       <i class="fas fa-trash-alt ml-3"></i><span class="ml-1">Remove</span> <i class="fas fa-dumpster ml-3"> </i
                       ><span class="ml-1">Spam</span>

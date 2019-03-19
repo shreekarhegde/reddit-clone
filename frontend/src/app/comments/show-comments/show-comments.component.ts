@@ -13,7 +13,10 @@ export class ShowCommentsComponent implements OnInit {
   public commentsUrl = 'http://localhost:3030/comments';
   public postID;
   public headerParams;
+  public firstLevelComments = [];
+  public childComments;
   @Input() comments;
+
   constructor(
     public httpService: HttpService,
     public userDetailsService: UserDetailsService,
@@ -23,9 +26,12 @@ export class ShowCommentsComponent implements OnInit {
 
   async ngOnInit() {
     this.headerParams = await this.tokenService.checkTokenAndSetHeader();
+
+    //get post id sent from display post component
     this.activeRoute.params.subscribe(
       params => {
         this.postID = params['id'];
+        console.log('postID--------->', this.postID);
       },
       err => {
         console.log('add-comment: err------->', err);
@@ -34,16 +40,36 @@ export class ShowCommentsComponent implements OnInit {
 
     let query = `?postID=${this.postID}&$populate=userID`;
 
-    await this.httpService.getRequest(`${this.commentsUrl}` + query, this.headerParams).subscribe(
-      comments => {
-        console.log('show-comments: comments------->', comments);
-        if (comments) {
-          console.log(comments);
-        }
-      },
-      err => {
-        console.log(err);
-      }
-    );
+    //get all comments and check for first level comments. If parentCommentID is null, find their child comments.
+    // this.httpService.getRequest(`${this.commentsUrl}` + query, this.headerParams).subscribe(
+    //   async comments => {
+    //     console.log('show-comments: all comments------->', comments);
+    //     if (comments) {
+    //       for (let i = 0; i < comments['data'].length; i++) {
+    //         console.log(comments['data'][i].hasOwnProperty('parentCommentID'));
+    //         if (!comments['data'][i].hasOwnProperty('parentCommentID')) {
+    //           console.log('first level comments-------->', comments['data'][i]);
+    //           let query = '/?parentCommentID=' + comments['data'][i]['_id'];
+
+    //           let commentsResponse = await this.httpService.getRequest('http://localhost:3030/child-comments' + query, this.headerParams);
+
+    //           commentsResponse.subscribe(
+    //             async res => {
+    //               if (res['data']) {
+    //                 console.log('res.data----------->', res['data']);
+    //               }
+    //             },
+    //             err => {
+    //               console.log(err);
+    //             }
+    //           );
+    //         }
+    //       }
+    //     }
+    //   },
+    //   err => {
+    //     console.log(err);
+    //   }
+    // );
   }
 }

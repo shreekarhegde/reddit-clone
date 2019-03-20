@@ -1,17 +1,38 @@
 <div class="row">
   <div class="col-md-12">
-    <div class="row" *ngFor="let comment of comments">
-      <ul>
-        <li>
-          <!-- <h5 [attr.data-toggle]="comment.title" data-target="#demo">{{ comment.title }}</h5> -->
-          <h5>{{ comment.text }}</h5>
-          <!-- <app-show-comments *ngIf="comment.comments" id="demo" [comments]="comment.comments" [class]="comment.title"></app-show-comments> -->
-          <!-- <app-show-comments
-            *ngIf="comment.children.data && comment.children.data.length && !ngOnInit()"
-            [comments]="comment.children.data"
-          ></app-show-comments> -->
-        </li>
-      </ul>
-    </div>
+    <ng-template *ngIf="!reOcurringCall">
+      <div class="row" *ngFor="let c1 of firstLevelComments">
+        <div class="row" *ngFor="let comment of c1.innerComments">
+          <ul>
+            <li>
+              <!-- <h5 [attr.data-toggle]="comment.title" data-target="#demo">{{ comment.title }}</h5> -->
+              <h5>{{ comment.text }}</h5>
+              <!-- <app-show-comments *ngIf="comment.comments" id="demo" [comments]="comment.comments" [class]="comment.title"></app-show-comments> -->
+              <app-show-comments
+                *ngIf="comment.children.data && comment.children.data.length && !ngOnInit()"
+                [innerComments]="comment.children.data"
+                [reOcurringCall]="true"
+              ></app-show-comments>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template *ngIf="reOcurringCall">
+      <div class="row" *ngFor="let comment of innerComments">
+        <ul>
+          <li>
+            <!-- <h5 [attr.data-toggle]="comment.title" data-target="#demo">{{ comment.title }}</h5> -->
+            <h5>{{ comment.text }}</h5>
+            <!-- <app-show-comments *ngIf="comment.comments" id="demo" [comments]="comment.comments" [class]="comment.title"></app-show-comments> -->
+            <app-show-comments
+              *ngIf="comment.children.data && comment.children.data.length && !ngOnInit()"
+              [innerComments]="comment.children.data"
+              [reOcurringCall]="true"
+            ></app-show-comments>
+          </li>
+        </ul>
+      </div>
+    </ng-template>
   </div>
 </div>

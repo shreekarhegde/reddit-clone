@@ -15,13 +15,11 @@ module.exports = function(app) {
       text: { type: String },
       userID: { type: mongooseSchema.Schema.Types.ObjectId, ref: 'users', required: true },
       communityID: { type: mongooseSchema.Schema.Types.ObjectId, ref: 'communities', required: true },
-      upvotes: { type: Number },
-      downvotes: { type: Number },
-      totalVotes: { type: Number },
+      upvotes: { type: Number, default: 0 },
+      downvotes: { type: Number, default: 0 },
+      totalVotes: { type: Number, default: 0 },
       upvotedBy: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'users', required: true }],
-      downvotedBy: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'users', required: true }],
-      isUpvoted: { type: Boolean },
-      isDownvoted: { type: Boolean }
+      downvotedBy: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'users', required: true }]
     },
     {
       timestamps: true

@@ -71,6 +71,7 @@ function addCommunityToUser() {
         .service('users')
         .patch({ _id: userID }, { $push: { communities: communityID } })
         .then(res => {
+          hook['res'] = res;
           return resolve(hook);
         })
         .catch(err => {
@@ -78,12 +79,5 @@ function addCommunityToUser() {
           return reject(err);
         });
     });
-  };
-}
-
-function addPostToCommunity() {
-  return hook => {
-    let communityID = hook['params']['id'];
-    console.log(JSON.parse(JSON.stringify(hook)));
   };
 }

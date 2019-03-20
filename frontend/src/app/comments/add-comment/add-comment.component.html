@@ -10,9 +10,9 @@
       <div class="col-md-9">
         <div class="row bg-white m-3">
           <div class="vote-buttons p-3 h-100">
-            <i class="fas fa-arrow-up"></i>
-            <p class="votes">12</p>
-            <i class="fas fa-arrow-down"></i>
+            <i class="fas fa-arrow-up" (click)="upvote(postID)"></i>
+            <p class="votes">{{ totalVotes }}</p>
+            <i class="fas fa-arrow-down" (click)="downvote(postID)"></i>
           </div>
           <div class="content pt-1">
             <div>

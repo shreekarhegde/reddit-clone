@@ -22,6 +22,8 @@ export class AddCommentComponent implements OnInit {
   public postID;
   public totalVotes;
   public userID;
+  public comments;
+  public isDeleted = false;
   constructor(
     public userDetailsService: UserDetailsService,
     public httpService: HttpService,
@@ -63,12 +65,26 @@ export class AddCommentComponent implements OnInit {
           this.postedBy = post['userID']['username'];
           this.totalVotes = post['totalVotes'];
           this.postTitle = post['title'];
+
+          //get no.of comments
+          let postQuery = `/?postID=${post['_id']}`;
+          this.httpService.getRequest(`http://localhost:3030/comments` + postQuery, this.headerParams).subscribe(
+            res => {
+              this.comments = res['data']['length'];
+            },
+            err => {
+              console.log('err: ngOnInit: add-comment--------->', err);
+            }
+          );
+
           this.postDescription = post['text'];
           if (post['upvotedBy'].indexOf(this.userID) >= 0) {
             console.log('add-comment-------->upvoted true');
+            //set bool to true if userID is present in upvoters array of a post
             this.bool = true;
           } else if (post['downvotedBy'].indexOf(this.userID) >= 0) {
             console.log('add-comment-------->downvoted true');
+            //set bool to false if userID is present in downvoters array of a post
             this.bool = false;
           }
         }
@@ -80,12 +96,10 @@ export class AddCommentComponent implements OnInit {
   }
 
   upvote(id) {
-    console.log(this.bool, 'expected');
-    if (id && !this.bool) {
+    //allow upvote only if bool is false
+    if (id && this.bool !== true) {
       let voteUrl = 'http://localhost:3030/votes';
       let query = `?text=upvote&postID=${id}&userID=${this.userID}`;
-
-      console.log('-------not upvoted--------');
       this.httpService.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
         res => {
           this.totalVotes = res['totalVotes'];
@@ -98,8 +112,10 @@ export class AddCommentComponent implements OnInit {
       );
     }
   }
+
   downvote(id) {
-    if (id && this.bool) {
+    //allow downvote only if bool is true
+    if (id && this.bool !== false) {
       let voteUrl = 'http://localhost:3030/votes';
       let query = `?text=downvote&postID=${id}&userID=${this.userID}`;
 
@@ -114,5 +130,19 @@ export class AddCommentComponent implements OnInit {
         }
       );
     }
+  }
+
+  deletePost(postID) {
+    console.log('postid: add-comment ------->', postID);
+    this.httpService.deleteRequest(`${this.postsUrl}/${postID}`, this.headerParams).subscribe(
+      res => {
+        console.log('delete post: add comment: res----->', res);
+        this.isDeleted = true;
+      },
+      err => {
+        this.isDeleted = false;
+        console.log('delete post: add comment: err------>', err);
+      }
+    );
   }
 }

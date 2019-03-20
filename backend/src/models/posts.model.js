@@ -18,8 +18,8 @@ module.exports = function(app) {
       upvotes: { type: Number, default: 0 },
       downvotes: { type: Number, default: 0 },
       totalVotes: { type: Number, default: 0 },
-      upvotedBy: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'users', required: true }],
-      downvotedBy: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'users', required: true }]
+      upvotedBy: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'users', required: true, unique: true }],
+      downvotedBy: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'users', required: true, unique: true }]
     },
     {
       timestamps: true

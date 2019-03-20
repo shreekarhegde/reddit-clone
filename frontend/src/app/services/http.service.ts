@@ -24,6 +24,10 @@ export class HttpService {
     return this.http.patch(url, data, headerParams).pipe(catchError(this.handleError));
   }
 
+  deleteRequest(url, headerParams) {
+    return this.http.delete(url, headerParams).pipe(catchError(this.handleError));
+  }
+
   handleError(errorResponse: HttpErrorResponse) {
     if (errorResponse.error instanceof ErrorEvent) {
       console.log('client side error---->', errorResponse.error.message);

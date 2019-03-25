@@ -29,13 +29,9 @@ export class ShowCommentsComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    console.log('show-comments: this.reOcurringCall -->', this.reOcurringCall);
-    if (this.reOcurringCall) return;
-
     this.headerParams = await this.tokenService.checkTokenAndSetHeader();
 
     this.userID = await this.userDetailsService.getUserID();
-
     //get post id sent from display post component
     this.activeRoute.params.subscribe(
       params => {
@@ -46,6 +42,8 @@ export class ShowCommentsComponent implements OnInit {
         console.log('add-comment: err------->', err);
       }
     );
+    console.log('show-comments: this.reOcurringCall -->', this.reOcurringCall);
+    if (this.reOcurringCall) return;
 
     let query = `?postID=${this.postID}&$populate=userID`;
 
@@ -96,6 +94,7 @@ export class ShowCommentsComponent implements OnInit {
           parentCommentID: parentCommentID,
           userID: this.userID
         };
+        console.log('data----------->', data);
         if (data) {
           this.httpService.postRequest(this.commentsUrl, data, this.headerParams).subscribe(
             res => {

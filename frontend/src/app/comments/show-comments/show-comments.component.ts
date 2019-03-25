@@ -11,11 +11,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ShowCommentsComponent implements OnInit {
   public commentsUrl = 'http://localhost:3030/comments';
-  public postID;
-  public headerParams;
+  public postID = '';
+  public headerParams = {};
   public firstLevelComments = [];
-  public childComments;
-  // @Input() comments = [];
+  public childComments = [];
   @Input() innerComments = [];
   @Input() reOcurringCall = false;
 
@@ -51,20 +50,17 @@ export class ShowCommentsComponent implements OnInit {
         console.log('show-comments: all comments------->', comments);
         if (comments) {
           for (let i = 0; i < comments['data'].length; i++) {
-            console.log(comments['data'][i].hasOwnProperty('parentCommentID'));
+            // console.log(comments['data'][i].hasOwnProperty('parentCommentID'));
             if (!comments['data'][i].hasOwnProperty('parentCommentID')) {
-              console.log('first level comments-------->', comments['data'][i]);
+              // console.log('first level comments-------->', comments['data'][i]);
               let query = '/?parentCommentID=' + comments['data'][i]['_id'];
 
               let commentsResponse = await this.httpService.getRequest('http://localhost:3030/child-comments' + query, this.headerParams);
 
               commentsResponse.subscribe(
-                async res => {
-                  if (res['data']) {
-                    console.log('res.data----------->', res['data']);
-                    this.firstLevelComments.push({ self: comments['data'][i], innerComments: res['data'] });
-                    // this.innerComments = res['data'];
-                  }
+                res => {
+                  this.firstLevelComments.push({ self: comments['data'][i], innerComments: res['data'] });
+                  console.log('firstlevel comments: show-comments----->', this.firstLevelComments);
                 },
                 err => {
                   console.log(err);

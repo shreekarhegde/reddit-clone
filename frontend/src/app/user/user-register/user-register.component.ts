@@ -13,9 +13,9 @@ import { MatSnackBar } from '@angular/material';
 export class UserRegisterComponent implements OnInit {
   constructor(public http: HttpService, public router: Router, public tokenService: TokenService, public snackbar: MatSnackBar) {}
   public isNextButtonClicked = false;
-  public email;
-  public username;
-  public password;
+  public email = '';
+  public username = '';
+  public password = '';
   public usersUrl = 'http://localhost:3030/users';
   public authUrl = 'http://localhost:3030/authentication';
 

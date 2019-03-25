@@ -58,6 +58,14 @@ export class DisplayPostComponent implements OnInit {
                 if (res.hasOwnProperty('data')) {
                   console.log('all comments------->', res);
                   post['comments'] = res['data'];
+                  let comments = res['data'];
+                  //get all children comments. If parentCommentID of a comment is null, it's a first level comment.
+                  for (let i = 0; i < comments['length']; i++) {
+                    if (!comments[i].hasOwnProperty('parentCommentID')) {
+                      let commentsQuery = `parentCommentID=${comments[i]}`;
+                      this.http.getRequest;
+                    }
+                  }
                 }
               },
               err => {

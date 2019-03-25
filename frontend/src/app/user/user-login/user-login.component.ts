@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../../services/http.service';
 import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
@@ -8,11 +8,10 @@ import { MatSnackBar } from '@angular/material';
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
   styleUrls: ['./user-login.component.css']
-  // encapsulation: ViewEncapsulation.None //removes default properties of set by angular for external packages like snackbar and spinner
 })
 export class UserLoginComponent implements OnInit {
-  public username;
-  public password;
+  public username = '';
+  public password = '';
   public isLoggedIn = false;
 
   constructor(private http: HttpService, private router: Router, private tokenService: TokenService, public snackbar: MatSnackBar) {}

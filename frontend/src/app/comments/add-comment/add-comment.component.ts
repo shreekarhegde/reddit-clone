@@ -10,20 +10,22 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./add-comment.component.css']
 })
 export class AddCommentComponent implements OnInit {
-  public post;
-  public bool;
-  public usersUrl = 'http://localhost:3030/users';
-  public postsUrl = 'http://localhost:3030/posts';
-  public profileName;
-  public postTitle;
-  public postedBy;
-  public postDescription;
-  public headerParams;
-  public postID;
-  public totalVotes;
-  public userID;
-  public comments;
-  public isDeleted = false;
+  public bool: boolean;
+  public usersUrl: string = 'http://localhost:3030/users';
+  public postsUrl: string = 'http://localhost:3030/posts';
+  public commentsUrl: string = 'http://localhost:3030/comments';
+  public profileName: string = '';
+  public postTitle: string = '';
+  public postedBy: string = '';
+  public postDescription: string = '';
+  public headerParams: string = '';
+  public postID: string = '';
+  public totalVotes: number = 0;
+  public userID: string = '';
+  public comments: object[] = [];
+  public isDeleted: boolean = false;
+  public text: string = '';
+  public parentCommentID: string = '';
   constructor(
     public userDetailsService: UserDetailsService,
     public httpService: HttpService,
@@ -144,5 +146,22 @@ export class AddCommentComponent implements OnInit {
         console.log('delete post: add comment: err------>', err);
       }
     );
+  }
+
+  comment() {
+    let data = {
+      text: this.text,
+      postID: this.postID,
+      userID: this.userID
+    };
+    this.httpService.postRequest(this.commentsUrl, data, this.headerParams).subscribe(
+      res => {
+        console.log('res: comment: add-comment------------>', res);
+      },
+      err => {
+        console.log('err: comment: add-comment------------>', err);
+      }
+    );
+    console.log('firstlevel', data);
   }
 }

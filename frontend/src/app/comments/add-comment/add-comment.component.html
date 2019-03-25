@@ -37,9 +37,19 @@
               </p>
             </div>
             <div class="comment-box">
-              <div><textarea cols="117" rows="9" class="p-2" placeholder="What are your thoughts?"></textarea></div>
+              <div>
+                <textarea
+                  cols="117"
+                  rows="9"
+                  class="p-2"
+                  placeholder="What are your thoughts?"
+                  name="text"
+                  id="text"
+                  [(ngModel)]="text"
+                ></textarea>
+              </div>
               <div class="text-right">
-                <button class="btn btn-primary mr-4 mb-4">
+                <button class="btn btn-primary mr-4 mb-4" (click)="comment(null, null)">
                   <p class="comment-btn-text">COMMENT</p>
                 </button>
               </div>

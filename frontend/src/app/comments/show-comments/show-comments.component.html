@@ -2,29 +2,57 @@
   <div class="col-md-12">
     <ng-container *ngIf="!reOcurringCall">
       <div class="row" *ngFor="let c1 of firstLevelComments">
-        <div class="row" *ngFor="let comment of c1.innerComments">
+        <ng-container *ngIf="c1.innerComments">
+          <div class="row" *ngFor="let innerComment of c1.innerComments">
+            <ul>
+              <li>
+                <form #f="ngForm" (ngSubmit)="comment(f)">
+                  <h4>{{ c1.self.text }}</h4>
+                  <label for="#{{ c1.self._id }}">reply</label>
+                  <input type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel />
+                  <input type="submit" id="btn{{ c1.self._id }}" />
+                  <h6>{{ innerComment.text }}</h6>
+                  <label for="#{{ innerComment._id }}">reply</label>
+                  <input type="text" name="{{ innerComment._id }}" id="{{ innerComment._id }}" ngModel />
+                  <input type="submit" id="btn{{ innerComment._id }}" />
+                </form>
+
+                <app-show-comments
+                  *ngIf="innerComment.children.data && innerComment.children.data.length"
+                  [innerComments]="innerComment.children.data"
+                  [reOcurringCall]="true"
+                ></app-show-comments>
+              </li>
+            </ul>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="!c1.innerComments || !c1.innerComments.length">
           <ul>
             <li>
-              <p>{{ c1.self.text }}</p>
-              <h5>{{ comment.text }}</h5>
-              <app-show-comments
-                *ngIf="comment.children.data && comment.children.data.length"
-                [innerComments]="comment.children.data"
-                [reOcurringCall]="true"
-              ></app-show-comments>
+              <form #f="ngForm" (ngSubmit)="comment(f)">
+                <h5>{{ c1.self.text }}</h5>
+                <input type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel />
+                <button type="submit">submit</button>
+              </form>
             </li>
           </ul>
-        </div>
+        </ng-container>
       </div>
     </ng-container>
     <ng-container *ngIf="reOcurringCall">
-      <div class="row" *ngFor="let comment of innerComments">
+      <div class="row" *ngFor="let innerComment of innerComments">
         <ul>
           <li>
-            <h5>{{ comment.text }}</h5>
+            <form #f="ngForm" (ngSubmit)="comment(f)">
+              <h6>{{ innerComment.text }}</h6>
+              <label for="#{{ innerComment._id }}">reply</label>
+              <input type="text" name="{{ innerComment._id }}" id="{{ innerComment._id }}" ngModel />
+              <input type="submit" id="btn{{ innerComment._id }}" />
+            </form>
+
             <app-show-comments
-              *ngIf="comment.children.data && comment.children.data.length"
-              [innerComments]="comment.children.data"
+              *ngIf="innerComment.children.data && innerComment.children.data.length"
+              [innerComments]="innerComment.children.data"
               [reOcurringCall]="true"
             ></app-show-comments>
           </li>

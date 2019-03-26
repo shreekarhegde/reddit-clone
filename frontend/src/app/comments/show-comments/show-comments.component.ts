@@ -29,8 +29,6 @@ export class ShowCommentsComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    if (this.reOcurringCall) return;
-
     this.headerParams = await this.tokenService.checkTokenAndSetHeader();
 
     this.userID = await this.userDetailsService.getUserID();
@@ -45,6 +43,7 @@ export class ShowCommentsComponent implements OnInit {
         console.log('add-comment: err------->', err);
       }
     );
+    if (this.reOcurringCall) return;
 
     console.log('show-comments: this.reOcurringCall -->', this.reOcurringCall);
 

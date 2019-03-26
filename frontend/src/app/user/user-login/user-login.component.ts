@@ -10,9 +10,9 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./user-login.component.css']
 })
 export class UserLoginComponent implements OnInit {
-  public username = '';
-  public password = '';
-  public isLoggedIn = false;
+  public username: string = '';
+  public password: string = '';
+  public isLoggedIn: boolean = false;
 
   constructor(private http: HttpService, private router: Router, private tokenService: TokenService, public snackbar: MatSnackBar) {}
 

@@ -5,8 +5,8 @@ import { HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class TokenService {
-  public _accessToken;
-  public _headerParams;
+  public _accessToken: string = '';
+  public _headerParams: object = {};
   constructor() {}
 
   setToken(data) {

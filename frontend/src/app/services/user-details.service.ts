@@ -9,10 +9,10 @@ import * as jwtDecode from 'jwt-decode';
   providedIn: 'root'
 })
 export class UserDetailsService {
-  public _userID;
-  public url = 'http://localhost:3030/users';
-  public headerParams;
-  public accessToken;
+  public _userID: string = '';
+  public url: string = 'http://localhost:3030/users';
+  public headerParams: object = {};
+  public accessToken: string = '';
   constructor(public httpService: HttpService, public tokenService: TokenService) {}
 
   getUserID() {

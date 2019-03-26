@@ -11,17 +11,17 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./create-post.component.css']
 })
 export class CreatePostComponent implements OnInit {
-  public communityName = 'choose a community';
-  public text;
-  public title;
-  public selectedCommunity;
-  public userID;
-  public headerParams;
-  public communities;
-  public postsUrl = 'http://localhost:3030/posts';
-  public usersUrl = 'http://localhost:3030/users';
-  public communitiesUrl = 'http://localhost:3030/communities';
-  public accessToken;
+  public communityName: string = 'choose a community';
+  public text: string = '';
+  public title: string = '';
+  public selectedCommunity: string = '';
+  public userID: string = '';
+  public headerParams: object = {};
+  public communities: object[] = [];
+  public postsUrl: string = 'http://localhost:3030/posts';
+  public usersUrl: string = 'http://localhost:3030/users';
+  public communitiesUrl: string = 'http://localhost:3030/communities';
+  public accessToken: string = '';
 
   constructor(
     public http: HttpService,

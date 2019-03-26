@@ -18,7 +18,7 @@ export class AddCommentComponent implements OnInit {
   public postTitle: string = '';
   public postedBy: string = '';
   public postDescription: string = '';
-  public headerParams: string = '';
+  public headerParams: object = {};
   public postID: string = '';
   public totalVotes: number = 0;
   public userID: string = '';

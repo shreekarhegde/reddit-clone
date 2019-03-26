@@ -9,10 +9,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./create-community.component.css']
 })
 export class CreateCommunityComponent implements OnInit {
-  public title;
-  public name;
-  public description;
-  public communityUrl = 'http://localhost:3030/communities';
+  public title: string = '';
+  public name: string = '';
+  public description: string = '';
+  public communityUrl: string = 'http://localhost:3030/communities';
   constructor(
     public httpService: HttpService,
     public tokenService: TokenService,

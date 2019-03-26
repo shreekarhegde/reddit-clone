@@ -9,9 +9,9 @@ import { UserDetailsService } from 'src/app/services/user-details.service';
   styleUrls: ['./subscribe-a-community.component.css']
 })
 export class SubscribeACommunityComponent implements OnInit {
-  public communities = [];
-  public headerParams;
-  public communitiesUrl = 'http://localhost:3030/communities';
+  public communities: object[] = [];
+  public headerParams: object = {};
+  public communitiesUrl: string = 'http://localhost:3030/communities';
   constructor(public tokenService: TokenService, public httpService: HttpService, public userDetailsService: UserDetailsService) {}
 
   async ngOnInit() {

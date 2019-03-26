@@ -10,16 +10,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./display-post.component.css']
 })
 export class DisplayPostComponent implements OnInit {
-  public postsUrl = 'http://localhost:3030/posts';
-  public commentsUrl = 'http://localhost:3030/comments';
-  public query;
-  public userID;
-  public accessToken;
-  public headerParams;
-  public posts = [];
-  public comments = [];
-  public username;
-  public showSpinner = true;
+  public postsUrl: string = 'http://localhost:3030/posts';
+  public commentsUrl: string = 'http://localhost:3030/comments';
+  public query: string = '';
+  public userID: string = '';
+  public accessToken: string = '';
+  public headerParams: object = {};
+  public posts: object[] = [];
+  public comments: object[] = [];
+  public username: string = '';
+  public showSpinner: boolean = true;
 
   constructor(
     public http: HttpService,

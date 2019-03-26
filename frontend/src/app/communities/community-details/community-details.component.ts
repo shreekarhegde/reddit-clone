@@ -9,12 +9,12 @@ import { MatSnackBar } from '@angular/material';
   styleUrls: ['./community-details.component.css']
 })
 export class CommunityDetailsComponent implements OnInit {
-  public communityID;
-  public headerParams;
-  public community;
-  public posts;
-  public postsUrl = 'http://localhost:3030/posts';
-  public communitiesUrl = 'http://localhost:3030/communities';
+  public communityID: string = '';
+  public headerParams: object = {};
+  public community: object = {};
+  public posts: object[] = [];
+  public postsUrl: string = 'http://localhost:3030/posts';
+  public communitiesUrl: string = 'http://localhost:3030/communities';
 
   constructor(
     public activeRoute: ActivatedRoute,

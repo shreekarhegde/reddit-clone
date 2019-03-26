@@ -29,9 +29,12 @@ export class ShowCommentsComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    if (this.reOcurringCall) return;
+
     this.headerParams = await this.tokenService.checkTokenAndSetHeader();
 
     this.userID = await this.userDetailsService.getUserID();
+
     //get post id sent from display post component
     this.activeRoute.params.subscribe(
       params => {
@@ -42,21 +45,18 @@ export class ShowCommentsComponent implements OnInit {
         console.log('add-comment: err------->', err);
       }
     );
+
     console.log('show-comments: this.reOcurringCall -->', this.reOcurringCall);
-    if (this.reOcurringCall) return;
 
     let query = `?postID=${this.postID}&$populate=userID`;
 
     //get all comments and check for first level comments. If parentCommentID is null, find their child comments.
-    this.httpService.getRequest(`${this.commentsUrl}` + query, this.headerParams).subscribe(
+    this.httpService.getRequest(this.commentsUrl + query, this.headerParams).subscribe(
       async comments => {
         console.log('show-comments: all comments------->', comments);
         if (comments) {
           for (let i = 0; i < comments['data'].length; i++) {
-            // console.log(comments['data'][i].hasOwnProperty('parentCommentID'));
             if (!comments['data'][i].hasOwnProperty('parentCommentID')) {
-              // console.log('first level comments-------->', comments['data'][i]);
-
               let query = '/?parentCommentID=' + comments['data'][i]['_id'];
 
               let commentsResponse = await this.httpService.getRequest('http://localhost:3030/child-comments' + query, this.headerParams);
@@ -84,7 +84,7 @@ export class ShowCommentsComponent implements OnInit {
   }
 
   comment(f: NgForm) {
-    console.log('form value----->', f.value);
+    //loop over f, find which input field has been submitted, take its id which is parentCommentID
     for (let parentCommentID in f.value) {
       if (f.value[parentCommentID]['length'] > 0) {
         let text = f.value[parentCommentID];
@@ -99,6 +99,10 @@ export class ShowCommentsComponent implements OnInit {
           this.httpService.postRequest(this.commentsUrl, data, this.headerParams).subscribe(
             res => {
               console.log('res: comment: show-comments----->', res);
+              // let children = { data: [] };
+              // children.data.push(res);
+              // this.innerComments.push({ children });
+              // console.log('inner comments after push---->', this.innerComments);
             },
             err => {
               console.log(err);

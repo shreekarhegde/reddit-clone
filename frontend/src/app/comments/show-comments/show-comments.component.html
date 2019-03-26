@@ -17,11 +17,8 @@
                   <input type="submit" id="btn{{ innerComment._id }}" />
                 </form>
 
-                <app-show-comments
-                  *ngIf="innerComment.children.data && innerComment.children.data.length"
-                  [innerComments]="innerComment.children.data"
-                  [reOcurringCall]="true"
-                ></app-show-comments>
+                <app-show-comments *ngIf="innerComment.children.data && innerComment.children.data.length"
+                  [innerComments]="innerComment.children.data" [reOcurringCall]="true"></app-show-comments>
               </li>
             </ul>
           </div>
@@ -50,11 +47,8 @@
               <input type="submit" id="btn{{ innerComment._id }}" />
             </form>
 
-            <app-show-comments
-              *ngIf="innerComment.children.data && innerComment.children.data.length"
-              [innerComments]="innerComment.children.data"
-              [reOcurringCall]="true"
-            ></app-show-comments>
+            <app-show-comments *ngIf="innerComment.children.data && innerComment.children.data.length" [innerComments]="innerComment.children.data"
+              [reOcurringCall]="true"></app-show-comments>
           </li>
         </ul>
       </div>

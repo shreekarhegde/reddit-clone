@@ -2,7 +2,8 @@ import { HttpService } from '../../services/http.service';
 import { MatSnackBar } from '@angular/material';
 import { TokenService } from '../../services/token.service';
 import { UserDetailsService } from '../../services/user-details.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { DataService } from 'src/app/services/data-service.service';
 
 @Component({
   selector: 'app-display-post',
@@ -20,12 +21,14 @@ export class DisplayPostComponent implements OnInit {
   public comments: object[] = [];
   public username: string = '';
   public showSpinner: boolean = true;
+  public subscribedCommunityID: string = '';
 
   constructor(
     public http: HttpService,
     public tokenService: TokenService,
     public userDetailsService: UserDetailsService,
-    public snackbar: MatSnackBar
+    public snackbar: MatSnackBar,
+    public dataService: DataService
   ) {}
 
   async ngOnInit() {
@@ -35,14 +38,30 @@ export class DisplayPostComponent implements OnInit {
 
     this.userID = await this.userDetailsService.getUserID();
 
-    await this.http.getRequest(this.postsUrl + this.query, this.headerParams).subscribe(
-      async posts => {
+    this.dataService.subscribedCommunity.subscribe(subscribedCommunityID => {
+      this.subscribedCommunityID = subscribedCommunityID;
+    });
+
+    let communityQuery = `?communityID=${this.subscribedCommunityID}`;
+
+    let postsFromSubscribedCommunity = this.http.getRequest(this.postsUrl + communityQuery, this.headerParams);
+
+    postsFromSubscribedCommunity.subscribe(
+      posts => {
+        console.log('postsFromSubscribedCommunity=========', posts);
+      },
+      err => {
+        console.log(err);
+      }
+    );
+
+    this.http.getRequest(this.postsUrl + this.query, this.headerParams).subscribe(
+      posts => {
         if (posts.hasOwnProperty('data')) {
-          this.showSpinner = false;
           console.log('ngOnInit: posts----->', posts);
           this.posts = posts['data'];
-          this.posts.forEach(async post => {
-            //check for creator of posts and enable delete button only true.
+          this.posts.forEach(post => {
+            //check for creator of posts and enable delete button only if true.
             if (this.userID === post['userID']['_id']) {
               post['creator'] = true;
             } else {
@@ -54,18 +73,10 @@ export class DisplayPostComponent implements OnInit {
             let postQuery = '/?postID=' + post['_id'];
             console.log(postQuery);
             this.http.getRequest(this.commentsUrl + postQuery, this.headerParams).subscribe(
-              async res => {
+              res => {
                 if (res.hasOwnProperty('data')) {
                   console.log('all comments------->', res);
                   post['comments'] = res['data'];
-                  let comments = res['data'];
-                  //get all children comments. If parentCommentID of a comment is null, it's a first level comment.
-                  for (let i = 0; i < comments['length']; i++) {
-                    if (!comments[i].hasOwnProperty('parentCommentID')) {
-                      let commentsQuery = `parentCommentID=${comments[i]}`;
-                      this.http.getRequest;
-                    }
-                  }
                 }
               },
               err => {
@@ -78,14 +89,18 @@ export class DisplayPostComponent implements OnInit {
               }
             );
           });
-        } else {
-          this.showSpinner = true;
         }
       },
       err => {
         console.log('ngOnInit: err--->', err);
       }
     );
+
+    //TODO
+    //unsubscribe at ngOnDestroy
+    //posts only from subscribed community
+    let communities = await this.userDetailsService.getUserProfile();
+    console.log('==========', communities);
   }
 
   upvote(id) {
@@ -140,6 +155,11 @@ export class DisplayPostComponent implements OnInit {
       res => {
         let index = this.posts.findIndex(post => post['_id'] === res['_id']);
         this.posts.splice(index, 1);
+        this.snackbar.open('post was deleted successfully', 'OK', {
+          duration: 1500,
+          verticalPosition: 'top',
+          panelClass: 'login-snackbar'
+        });
       },
       err => {
         console.log(err);

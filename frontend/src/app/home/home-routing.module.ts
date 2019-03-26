@@ -6,14 +6,16 @@ import { AddCommentComponent } from '../comments/add-comment/add-comment.compone
 import { CreateCommunityComponent } from '../communities/create-community/create-community.component';
 import { SubscribeACommunityComponent } from '../communities/subscribe-a-community/subscribe-a-community.component';
 import { CommunityDetailsComponent } from '../communities/community-details/community-details.component';
+import { CreatePostComponent } from '../post/create-post/create-post.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'r',
     component: HomeComponent,
     children: [
       { path: '', component: DisplayPostComponent },
       { path: '', component: SubscribeACommunityComponent },
+      { path: 'submit', component: CreatePostComponent },
       { path: 'comments/:id', component: AddCommentComponent },
       { path: 'communities', component: CreateCommunityComponent },
       { path: 'communities/:id', component: CommunityDetailsComponent }

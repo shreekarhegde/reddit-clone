@@ -15,6 +15,7 @@ export class CommunityDetailsComponent implements OnInit {
   public posts: object[] = [];
   public postsUrl: string = 'http://localhost:3030/posts';
   public communitiesUrl: string = 'http://localhost:3030/communities';
+  public commentsUrl: string = 'http://localhost:3030/comments';
 
   constructor(
     public activeRoute: ActivatedRoute,
@@ -65,6 +66,17 @@ export class CommunityDetailsComponent implements OnInit {
         if (res.hasOwnProperty('data')) {
           console.log('posts associated with community-------->', res);
           this.posts = res['data'];
+          this.posts.map(post => {
+            let postQuery = `postID=${post['_id']}`;
+            this.httpService.getRequest(`${this.commentsUrl}/?${postQuery}`, this.headerParams).subscribe(
+              res => {
+                post['comments'] = res['data'];
+              },
+              err => {
+                console.log(err);
+              }
+            );
+          });
         }
       },
       err => {

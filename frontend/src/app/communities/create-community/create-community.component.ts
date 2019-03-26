@@ -32,7 +32,7 @@ export class CreateCommunityComponent implements OnInit {
     if (data) {
       this.httpService.postRequest(this.communityUrl, data, headerParmas).subscribe(
         community => {
-          this.router.navigate(['/communities', community['_id']]);
+          this.router.navigate(['/r/communities', community['_id']]);
           console.log(community);
         },
         err => {

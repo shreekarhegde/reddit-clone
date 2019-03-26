@@ -6,7 +6,7 @@ import { CreatePostComponent } from '../post/create-post/create-post.component';
 const routes: Routes = [
   {
     path: '',
-    children: [{ path: '', component: DisplayPostComponent }, { path: 'submit', component: CreatePostComponent }]
+    children: [{ path: '', component: DisplayPostComponent }, { path: '', component: CreatePostComponent }]
   }
 ];
 

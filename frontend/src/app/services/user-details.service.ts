@@ -31,7 +31,7 @@ export class UserDetailsService {
     let userID = await this.getUserID();
     console.log('getUserProfile: userID--------->', this._userID);
     this.headerParams = await this.tokenService.checkTokenAndSetHeader();
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.httpService.getRequest(`${this.url}/${userID}`, this.headerParams).subscribe(
         user => {
           // console.log('user from getUserProfile--------->', user);
@@ -39,6 +39,7 @@ export class UserDetailsService {
         },
         err => {
           console.log(err);
+          return reject(err);
         }
       );
     });

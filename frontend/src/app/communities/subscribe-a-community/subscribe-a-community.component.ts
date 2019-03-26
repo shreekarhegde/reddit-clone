@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import { TokenService } from 'src/app/services/token.service';
 import { HttpService } from 'src/app/services/http.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
+import { EventEmitter } from 'events';
+import { DataService } from 'src/app/services/data-service.service';
 
 @Component({
   selector: 'app-subscribe-a-community',
@@ -12,7 +14,13 @@ export class SubscribeACommunityComponent implements OnInit {
   public communities: object[] = [];
   public headerParams: object = {};
   public communitiesUrl: string = 'http://localhost:3030/communities';
-  constructor(public tokenService: TokenService, public httpService: HttpService, public userDetailsService: UserDetailsService) {}
+  // @Output() subscribedCommunity = new EventEmitter();
+  constructor(
+    public tokenService: TokenService,
+    public httpService: HttpService,
+    public userDetailsService: UserDetailsService,
+    public dataService: DataService
+  ) {}
 
   async ngOnInit() {
     let user = await this.userDetailsService.getUserProfile();
@@ -48,11 +56,14 @@ export class SubscribeACommunityComponent implements OnInit {
 
     console.log('header params--------->', this.headerParams);
     let query = `?id=${id}`;
-    await this.httpService.patchRequest(`http://localhost:3030/update-community` + query, data, this.headerParams).subscribe(
+    this.httpService.patchRequest(`http://localhost:3030/update-community` + query, data, this.headerParams).subscribe(
       res => {
         console.log('community: subscribe----->', res);
         let index = this.communities.findIndex(community => community['_id'] === res['_id']);
         this.communities[index]['isSubscribed'] = true;
+        // this.subscribedCommunity.emit(id);
+        // this.dataService.setCommunityID(id);
+        this.dataService.shareCommunityID(id);
       },
       err => {
         console.log(err);

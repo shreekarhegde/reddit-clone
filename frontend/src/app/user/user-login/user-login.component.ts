@@ -32,7 +32,7 @@ export class UserLoginComponent implements OnInit {
               verticalPosition: 'top',
               panelClass: 'login-snackbar'
             });
-            this.router.navigate(['']);
+            this.router.navigate(['r']);
           }
         },
         err => {

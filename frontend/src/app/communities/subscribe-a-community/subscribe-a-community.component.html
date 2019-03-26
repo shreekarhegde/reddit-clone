@@ -13,7 +13,7 @@
       </div>
       <div class="col-md-6 text-center info">
         <small class="mr-2">{{ community.name }}</small
-        ><small>50k subscribers</small>
+        ><small>{{ community?.subscribers?.length }}</small>
       </div>
       <div class="col-md-4 subscribe-button">
         <button class="pb-1 btn" (click)="subscribe(community._id)">

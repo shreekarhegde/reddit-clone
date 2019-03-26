@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserDetailsService } from '../../services/user-details.service';
 import { HttpService } from '../../services/http.service';
 import { TokenService } from '../../services/token.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-add-comment',
@@ -31,7 +32,9 @@ export class AddCommentComponent implements OnInit {
     public userDetailsService: UserDetailsService,
     public httpService: HttpService,
     public tokenService: TokenService,
-    public activeRoute: ActivatedRoute
+    public activeRoute: ActivatedRoute,
+    public router: Router,
+    public snackbar: MatSnackBar
   ) {}
 
   async ngOnInit() {
@@ -71,7 +74,7 @@ export class AddCommentComponent implements OnInit {
 
           //get no.of comments
           let postQuery = `/?postID=${post['_id']}`;
-          this.httpService.getRequest(`http://localhost:3030/comments` + postQuery, this.headerParams).subscribe(
+          this.httpService.getRequest(this.commentsUrl + postQuery, this.headerParams).subscribe(
             res => {
               this.totalComments = res['data']['length'];
             },
@@ -141,6 +144,12 @@ export class AddCommentComponent implements OnInit {
       res => {
         console.log('delete post: add comment: res----->', res);
         this.isDeleted = true;
+        this.router.navigate(['r']);
+        const snackbarRef = this.snackbar.open('Deleted post successfully', 'OK', {
+          duration: 1500,
+          verticalPosition: 'top',
+          panelClass: 'login-snackbar'
+        });
       },
       err => {
         this.isDeleted = false;

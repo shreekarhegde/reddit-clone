@@ -1,18 +1,24 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Output, EventEmitter } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  public _data;
+  public _communityID: string = '';
+
+  @Output() subscribedCommunity = new EventEmitter();
 
   constructor() {}
 
-  setData(data) {
-    this._data = data;
-  }
+  // get communityID() {
+  //   return this._communityID;
+  // }
+  // set communityID(id) {
+  //   this._communityID = id;
+  // }
 
-  getData() {
-    return this._data;
+  shareCommunityID(id) {
+    this._communityID = id;
+    this.subscribedCommunity.emit(this._communityID);
   }
 }

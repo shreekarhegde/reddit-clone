@@ -42,7 +42,7 @@ export class UserRegisterComponent implements OnInit {
             if (res.hasOwnProperty('accessToken')) {
               console.log('res from register', res);
               this.tokenService.setToken(res);
-              this.router.navigateByUrl('');
+              this.router.navigateByUrl('r');
             }
           });
       },

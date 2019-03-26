@@ -101,7 +101,6 @@ export class ShowCommentsComponent implements OnInit {
               console.log('res: comment: show-comments----->', res);
               let children = { data: [] };
               children.data.push(res);
-              this.innerComments.push({ children });
               console.log('inner comments after push---->', this.innerComments);
             },
             err => {
@@ -114,11 +113,13 @@ export class ShowCommentsComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes['commentFromAddCommentComponent']['currentValue']);
-    console.log('comment from add comment: ngOnChanges---------->', this.commentFromAddCommentComponent);
-    let newComment = changes['commentFromAddCommentComponent']['currentValue'];
-    if (newComment) {
-      this.firstLevelComments.push({ self: newComment, innerComments: [] });
+    if (changes) {
+      // console.log(changes['commentFromAddCommentComponent']['currentValue']);
+      console.log('comment from add comment: ngOnChanges---------->', this.commentFromAddCommentComponent);
+      let newComment = changes['commentFromAddCommentComponent']['currentValue'];
+      if (newComment) {
+        this.firstLevelComments.push({ self: newComment, innerComments: [] });
+      }
     }
   }
 }

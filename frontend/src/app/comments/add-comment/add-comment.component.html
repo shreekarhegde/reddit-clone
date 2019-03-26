@@ -25,7 +25,7 @@
               <p class="pt-3 pb-3">{{ postDescription }}</p>
             </div>
             <div class="icons">
-              <i class="fas fa-comment-alt"></i><span class="ml-1">{{ comments }}</span> <i class="fas fa-share ml-3"></i
+              <i class="fas fa-comment-alt"></i><span class="ml-1">{{ totalComments }}</span> <i class="fas fa-share ml-3"></i
               ><span class="ml-1">Share</span> <i class="fas fa-check ml-3"></i><span class="ml-1">Approve</span>
               <i class="fas fa-trash-alt ml-3" (click)="deletePost(postID)"></i
               ><span class="ml-1" (click)="deletePost(postID)">Remove</span> <i class="fas fa-dumpster ml-3"> </i
@@ -54,7 +54,7 @@
                 </button>
               </div>
             </div>
-            <div><app-show-comments></app-show-comments></div>
+            <div><app-show-comments [commentFromAddCommentComponent]="newComment" [reOcurringCall]="false"></app-show-comments></div>
           </div>
         </div>
       </div>

@@ -30,11 +30,12 @@
             </ul>
           </div>
         </ng-container>
-        <ng-container *ngIf="!c1.innerComments || !c1.innerComments.length">
+        <ng-container *ngIf="(!c1.innerComments || !c1.innerComments.length) && c1.self.text">
           <ul>
             <li>
               <form #f="ngForm" (ngSubmit)="comment(f)">
                 <h5>{{ c1.self.text }}</h5>
+                <label for="#{{ c1.self._id }}">reply</label>
                 <input type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel />
                 <button type="submit">submit</button>
               </form>

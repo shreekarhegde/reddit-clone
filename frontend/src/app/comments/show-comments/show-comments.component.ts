@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, SimpleChanges } from '@angular/core';
 import { HttpService } from '../../services/http.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -20,6 +20,7 @@ export class ShowCommentsComponent implements OnInit {
   public childComments: object[] = [];
   @Input() innerComments = [];
   @Input() reOcurringCall = false;
+  @Input() commentFromAddCommentComponent: object = {};
   constructor(
     public httpService: HttpService,
     public userDetailsService: UserDetailsService,
@@ -98,10 +99,10 @@ export class ShowCommentsComponent implements OnInit {
           this.httpService.postRequest(this.commentsUrl, data, this.headerParams).subscribe(
             res => {
               console.log('res: comment: show-comments----->', res);
-              // let children = { data: [] };
-              // children.data.push(res);
-              // this.innerComments.push({ children });
-              // console.log('inner comments after push---->', this.innerComments);
+              let children = { data: [] };
+              children.data.push(res);
+              this.innerComments.push({ children });
+              console.log('inner comments after push---->', this.innerComments);
             },
             err => {
               console.log(err);
@@ -109,6 +110,15 @@ export class ShowCommentsComponent implements OnInit {
           );
         }
       }
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes['commentFromAddCommentComponent']['currentValue']);
+    console.log('comment from add comment: ngOnChanges---------->', this.commentFromAddCommentComponent);
+    let newComment = changes['commentFromAddCommentComponent']['currentValue'];
+    if (newComment) {
+      this.firstLevelComments.push({ self: newComment, innerComments: [] });
     }
   }
 }

@@ -22,10 +22,11 @@ export class AddCommentComponent implements OnInit {
   public postID: string = '';
   public totalVotes: number = 0;
   public userID: string = '';
-  public comments: object[] = [];
+  public totalComments: number = 0;
   public isDeleted: boolean = false;
   public text: string = '';
   public parentCommentID: string = '';
+  public newComment: object = {};
   constructor(
     public userDetailsService: UserDetailsService,
     public httpService: HttpService,
@@ -72,7 +73,7 @@ export class AddCommentComponent implements OnInit {
           let postQuery = `/?postID=${post['_id']}`;
           this.httpService.getRequest(`http://localhost:3030/comments` + postQuery, this.headerParams).subscribe(
             res => {
-              this.comments = res['data']['length'];
+              this.totalComments = res['data']['length'];
             },
             err => {
               console.log('err: ngOnInit: add-comment--------->', err);
@@ -156,12 +157,15 @@ export class AddCommentComponent implements OnInit {
     };
     this.httpService.postRequest(this.commentsUrl, data, this.headerParams).subscribe(
       res => {
-        console.log('res: comment: add-comment------------>', res);
+        if (res) {
+          console.log('res: comment: add-comment------------>', res);
+          this.newComment = res;
+          this.totalComments += 1;
+        }
       },
       err => {
         console.log('err: comment: add-comment------------>', err);
       }
     );
-    console.log('firstlevel', data);
   }
 }

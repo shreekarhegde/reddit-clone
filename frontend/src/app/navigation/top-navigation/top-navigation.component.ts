@@ -14,10 +14,22 @@ export class TopNavigationComponent implements OnInit {
 
   async ngOnInit() {
     let usersUrl = 'http://localhost:3030/users';
-    let headerParams = await this.tokenService.checkTokenAndSetHeader();
-    let userID = this.userDetailsService.getUserID();
-    this.httpService.getRequest(`${usersUrl}/${userID}`, headerParams).subscribe(res => {
-      this.userName = res['username'];
-    });
+    let headerParams = this.tokenService.checkTokenAndSetHeader();
+    this.userDetailsService
+      .getUserID()
+      .then(res => {
+        let userID = res;
+        this.httpService.getRequest(`${usersUrl}/${userID}`, headerParams).subscribe(
+          res => {
+            this.userName = res['username'];
+          },
+          err => {
+            console.log(err);
+          }
+        );
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 }

@@ -12,10 +12,11 @@ import { MatSnackBar } from '@angular/material';
 })
 export class CreatePostComponent implements OnInit {
   public communityName: string = 'choose a community';
+  public user: any = {};
   public text: string = '';
   public title: string = '';
   public selectedCommunity: string = '';
-  public userID: string = '';
+  public userID: any = '';
   public headerParams: object = {};
   public communities: object[] = [];
   public postsUrl: string = 'http://localhost:3030/posts';
@@ -33,28 +34,29 @@ export class CreatePostComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.userID = await this.userDetailsService.getUserID();
-    this.headerParams = await this.tokenService.checkTokenAndSetHeader();
-    let query = `?$populate=communities`;
-    await this.http.getRequest(`${this.usersUrl}/${this.userID}${query}`, this.headerParams).subscribe(
-      user => {
-        if (user) {
-          console.log('user: create-post: ngOnInit-------->', user);
-          this.communities = user['communities'];
-        }
-      },
-      err => {
-        console.log(err);
-        const snackbarRef = this.snackbar.open('something went wrong', '', {
-          duration: 2000,
-          verticalPosition: 'top',
-          panelClass: 'login-snackbar'
-        });
-      }
-    );
+    this.userDetailsService
+      .getUserID()
+      .then(res => {
+        this.userID = res;
+      })
+      .catch(err => {
+        this.showErrorNotification(err, 'userID was not recevied: create-post');
+      });
+
+    this.headerParams = this.tokenService.checkTokenAndSetHeader();
+
+    this.userDetailsService
+      .getUserProfile()
+      .then(res => {
+        this.user = res;
+        this.communities = this.user['communities'];
+      })
+      .catch(err => {
+        this.showErrorNotification(err, 'user was not recevied: create-post');
+      });
   }
 
-  async post() {
+  addPost() {
     console.log('userID: post-------->', this.userID);
 
     if (this.title) {
@@ -75,12 +77,7 @@ export class CreatePostComponent implements OnInit {
             }
           },
           err => {
-            console.log(err);
-            const snackbarRef = this.snackbar.open('something went wrong', '', {
-              duration: 2000,
-              verticalPosition: 'top',
-              panelClass: 'login-snackbar'
-            });
+            this.showErrorNotification(err, 'post was not added: create post');
           }
         );
       }
@@ -94,7 +91,12 @@ export class CreatePostComponent implements OnInit {
   }
 
   selectACommunityFirst() {
-    const snackbarRef = this.snackbar.open('please select a community', '', {
+    this.showErrorNotification(null, 'please select a community');
+  }
+
+  showErrorNotification(err, message) {
+    console.log(err);
+    const snackbarRef = this.snackbar.open(message, '', {
       duration: 2000,
       verticalPosition: 'top',
       panelClass: 'login-snackbar'

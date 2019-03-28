@@ -21,10 +21,8 @@ export class TokenService {
     return this._accessToken;
   }
 
-  async checkTokenAndSetHeader() {
-    this._accessToken = (await this.getToken()['user']['accessToken'])
-      ? await this.getToken()['user']['accessToken']
-      : await this.getToken()['user'];
+  checkTokenAndSetHeader() {
+    this._accessToken = this.getToken()['user']['accessToken'] ? this.getToken()['user']['accessToken'] : this.getToken()['user'];
 
     // console.log('checkTokenAndSetHeader---------->', this._accessToken);
 

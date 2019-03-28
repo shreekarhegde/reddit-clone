@@ -2,8 +2,9 @@ import { Component, OnInit, Output } from '@angular/core';
 import { TokenService } from 'src/app/services/token.service';
 import { HttpService } from 'src/app/services/http.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
-import { EventEmitter } from 'events';
+// import { EventEmitter } from 'events';
 import { DataService } from 'src/app/services/data-service.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-subscribe-a-community',
@@ -15,60 +16,90 @@ export class SubscribeACommunityComponent implements OnInit {
   public headerParams: object = {};
   public communitiesUrl: string = 'http://localhost:3030/communities';
   public communityID: string = '';
+  public user: any = {};
   // @Output() subscribedCommunity = new EventEmitter();
   constructor(
     public tokenService: TokenService,
     public httpService: HttpService,
     public userDetailsService: UserDetailsService,
-    public dataService: DataService
+    public dataService: DataService,
+    public snackbar: MatSnackBar
   ) {}
 
   async ngOnInit() {
-    let user = await this.userDetailsService.getUserProfile();
-    console.log('userCommunities: ngOnInit------->', user['communities']);
+    // let user = this.userDetailsService.getUserProfile();
 
-    this.headerParams = await this.tokenService.checkTokenAndSetHeader();
-    this.httpService.getRequest(this.communitiesUrl, this.headerParams).subscribe(
+    this.user = await this.userDetailsService.getUserProfile();
+
+    // temp.then(res => {
+    //   console.log('user: subscribe-a-community====>', res);
+    //   this.user = res;
+    // })
+    // .catch(err => {
+    //   this.showErrorNotification(err, 'user was not recevied: subscribe-a-community');
+    // });
+
+    console.log('userCommunities:subscribe-a-community: ngOnInit------->', this.user['communities']);
+
+    this.headerParams = this.tokenService.checkTokenAndSetHeader();
+
+    let communities = await this.httpService.getRequest(this.communitiesUrl, this.headerParams);
+
+    communities.subscribe(
       communities => {
         console.log('all communities------->', communities['data']);
         if (communities.hasOwnProperty('data')) {
           for (let i = 0; i < communities['data'].length; i++) {
-            if (user['communities'].indexOf(communities['data'][i]['_id']) < 0) {
+            let index = this.user['communities'].findIndex(community => community['_id'] === communities['data'][i]['_id']);
+            if (index < 0) {
               communities['data'][i]['isSubscribed'] = false;
-              console.log('----------------', communities['data'][i]);
               this.communities.push(communities['data'][i]);
             }
           }
         }
       },
       err => {
-        console.log(err);
+        this.showErrorNotification(err, 'communities was not recevied: subscribe-a-community');
       }
     );
   }
 
-  async subscribe(id: string) {
+  subscribeACommunity(id: string) {
     console.log('comunity id----->', id);
+    this.userDetailsService
+      .getUserID()
+      .then(res => {
+        let data = {
+          subscriber: res
+        };
+        console.log('header params--------->', this.headerParams);
+        let query = `?id=${id}`;
+        this.httpService.patchRequest(`http://localhost:3030/update-community` + query, data, this.headerParams).subscribe(
+          res => {
+            console.log('community: subscribe----->', res);
+            let index = this.communities.findIndex(community => community['_id'] === res['_id']);
+            this.communities[index]['isSubscribed'] = true;
+            // this.subscribedCommunity.emit(id);
+            // this.dataService.setCommunityID(id);
+            this.dataService.shareCommunityID(id);
+          },
+          err => {
+            // console.log(err);
+            this.showErrorNotification(err, 'community was not updated: subscribe-a-community');
+          }
+        );
+      })
+      .catch(err => {
+        this.showErrorNotification(err, 'userID was not recevied: subscribe-a-community');
+      });
+  }
 
-    let data = {
-      subscriber: await this.userDetailsService.getUserID()
-    };
-    console.log('subscriber id------->', data);
-
-    console.log('header params--------->', this.headerParams);
-    let query = `?id=${id}`;
-    this.httpService.patchRequest(`http://localhost:3030/update-community` + query, data, this.headerParams).subscribe(
-      res => {
-        console.log('community: subscribe----->', res);
-        let index = this.communities.findIndex(community => community['_id'] === res['_id']);
-        this.communities[index]['isSubscribed'] = true;
-        // this.subscribedCommunity.emit(id);
-        // this.dataService.setCommunityID(id);
-        this.dataService.shareCommunityID(id);
-      },
-      err => {
-        console.log(err);
-      }
-    );
+  showErrorNotification(err, message) {
+    console.log(err);
+    const snackbarRef = this.snackbar.open(message, '', {
+      duration: 2000,
+      verticalPosition: 'top',
+      panelClass: 'login-snackbar'
+    });
   }
 }

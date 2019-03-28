@@ -16,7 +16,7 @@
         ><small>{{ community?.subscribers?.length }}</small>
       </div>
       <div class="col-md-4 subscribe-button">
-        <button class="pb-1 btn" (click)="subscribe(community._id)">
+        <button class="pb-1 btn" (click)="subscribeACommunity(community._id)">
           <small class="sub">{{ community.isSubscribed === false ? 'SUBSCRIBE' : 'SUBSCRIBED' }}</small>
         </button>
       </div>

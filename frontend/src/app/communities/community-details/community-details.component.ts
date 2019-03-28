@@ -25,25 +25,20 @@ export class CommunityDetailsComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.headerParams = await this.tokenService.checkTokenAndSetHeader();
+    this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
-    await this.activeRoute.params.subscribe(
+    this.activeRoute.params.subscribe(
       params => {
         if (params) {
           this.communityID = params['id'];
         }
       },
       err => {
-        console.log('add-comment: err------->', err);
-        const snackbarRef = this.snackbar.open('something went wrong', '', {
-          duration: 2000,
-          verticalPosition: 'top',
-          panelClass: 'login-snackbar'
-        });
+        this.showErrorNotification(err, 'id was not recevied: community-details');
       }
     );
 
-    await this.httpService.getRequest(`${this.communitiesUrl}/${this.communityID}`, this.headerParams).subscribe(
+    this.httpService.getRequest(`${this.communitiesUrl}/${this.communityID}`, this.headerParams).subscribe(
       res => {
         console.log('community--------->', res);
         if (res) {
@@ -51,17 +46,13 @@ export class CommunityDetailsComponent implements OnInit {
         }
       },
       err => {
-        const snackbarRef = this.snackbar.open('something went wrong', '', {
-          duration: 2000,
-          verticalPosition: 'top',
-          panelClass: 'login-snackbar'
-        });
+        this.showErrorNotification(err, 'community was not recevied: community-details');
       }
     );
 
     let query = `?communityID=${this.communityID}&$populate=userID`;
 
-    await this.httpService.getRequest(this.postsUrl + query, this.headerParams).subscribe(
+    this.httpService.getRequest(this.postsUrl + query, this.headerParams).subscribe(
       res => {
         if (res.hasOwnProperty('data')) {
           console.log('posts associated with community-------->', res);
@@ -73,20 +64,24 @@ export class CommunityDetailsComponent implements OnInit {
                 post['comments'] = res['data'];
               },
               err => {
-                console.log(err);
+                this.showErrorNotification(err, 'comments were not recevied: community-details');
               }
             );
           });
         }
       },
       err => {
-        console.log(err);
-        const snackbarRef = this.snackbar.open('something went wrong', '', {
-          duration: 2000,
-          verticalPosition: 'top',
-          panelClass: 'login-snackbar'
-        });
+        this.showErrorNotification(err, 'posts were not recevied: community-details');
       }
     );
+  }
+
+  showErrorNotification(err, message) {
+    console.log(err);
+    const snackbarRef = this.snackbar.open(message, '', {
+      duration: 2000,
+      verticalPosition: 'top',
+      panelClass: 'login-snackbar'
+    });
   }
 }

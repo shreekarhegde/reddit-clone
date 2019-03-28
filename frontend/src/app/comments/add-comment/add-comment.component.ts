@@ -23,7 +23,7 @@ export class AddCommentComponent implements OnInit {
   public headerParams: object = {};
   public postID: string = '';
   public totalVotes: number = 0;
-  public userID: string = '';
+  public userID: any = '';
   public totalComments: number = 0;
   public isDeleted: boolean = false;
   public text: string = '';
@@ -42,8 +42,18 @@ export class AddCommentComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.headerParams = await this.tokenService.checkTokenAndSetHeader();
-    this.userID = await this.userDetailsService.getUserID();
+    this.headerParams = this.tokenService.checkTokenAndSetHeader();
+    // this.userID = await this.userDetailsService.getUserID();
+    console.log('userID: ngOnInit: add-comment.component========>', this.userDetailsService.getUserID());
+
+    this.userDetailsService
+      .getUserID()
+      .then(res => {
+        this.userID = res;
+      })
+      .catch(err => {
+        this.showErrorNotification(err, 'userID was not recevied: add-comment.component');
+      });
 
     this.userDetailsService
       .getUserProfile()
@@ -188,5 +198,14 @@ export class AddCommentComponent implements OnInit {
         console.log('err: comment: add-comment------------>', err);
       }
     );
+  }
+
+  showErrorNotification(err, message) {
+    console.log(err);
+    const snackbarRef = this.snackbar.open(message, '', {
+      duration: 2000,
+      verticalPosition: 'top',
+      panelClass: 'login-snackbar'
+    });
   }
 }

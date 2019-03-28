@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, NgForm } from '@angular/forms';
 import { ToggleService } from '../add-comment/toggle.service';
 import { takeWhile, takeUntil, skip } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-show-comments',
   templateUrl: './show-comments.component.html',
@@ -13,7 +14,7 @@ import { takeWhile, takeUntil, skip } from 'rxjs/operators';
 })
 export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
   public form: FormGroup;
-  public userID: string = '';
+  public userID: any = '';
   public commentsUrl = 'http://localhost:3030/comments';
   public postID: string = '';
   public headerParams: object = {};
@@ -29,13 +30,23 @@ export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
     public userDetailsService: UserDetailsService,
     public tokenService: TokenService,
     public activeRoute: ActivatedRoute,
-    public toggleService: ToggleService
+    public toggleService: ToggleService,
+    public snackbar: MatSnackBar
   ) {}
 
   async ngOnInit() {
-    this.headerParams = await this.tokenService.checkTokenAndSetHeader();
+    this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
-    this.userID = await this.userDetailsService.getUserID();
+    // this.userID = await this.userDetailsService.getUserID();
+
+    this.userDetailsService
+      .getUserID()
+      .then(res => {
+        this.userID = res;
+      })
+      .catch(err => {
+        this.showErrorNotification(err, 'userID was not recevied');
+      });
 
     //get post id sent from display post component
     this.activeRoute.params.subscribe(
@@ -44,7 +55,8 @@ export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
         console.log('postID--------->', this.postID);
       },
       err => {
-        console.log('add-comment: err------->', err);
+        // console.log('add-comment: err------->', err);
+        this.showErrorNotification(err, 'post id was not recevied: show-comments');
       }
     );
     if (this.reOcurringCall) return;
@@ -97,7 +109,8 @@ export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
                   }
                 },
                 err => {
-                  console.log(err);
+                  // console.log(err);
+                  this.showErrorNotification(err, 'child commets was not recevied: show-comments');
                 }
               );
             }
@@ -105,7 +118,7 @@ export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
         }
       },
       err => {
-        console.log(err);
+        this.showErrorNotification(err, 'all commets were not recevied: show-comments');
       }
     );
   }
@@ -130,7 +143,7 @@ export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
               this.toggleService.setToggleValue(true);
             },
             err => {
-              console.log(err);
+              this.showErrorNotification(err, 'comment was not added: show-comments');
             }
           );
         }
@@ -164,5 +177,14 @@ export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.alive = false;
+  }
+
+  showErrorNotification(err, message) {
+    console.log(err);
+    const snackbarRef = this.snackbar.open(message, '', {
+      duration: 2000,
+      verticalPosition: 'top',
+      panelClass: 'login-snackbar'
+    });
   }
 }

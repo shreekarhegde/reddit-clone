@@ -13,14 +13,14 @@ import { DataService } from 'src/app/services/data-service.service';
 export class DisplayPostComponent implements OnInit {
   public postsUrl: string = 'http://localhost:3030/posts';
   public commentsUrl: string = 'http://localhost:3030/comments';
-  public query: string = '';
-  public userID: string = '';
+  public userID: any = '';
   public accessToken: string = '';
   public headerParams: object = {};
   public posts: object[] = [];
   public comments: object[] = [];
   public username: string = '';
   public showSpinner: boolean = true;
+  public user: any = {};
   @Input() subscribedCommunityID: string = '';
 
   constructor(
@@ -32,13 +32,25 @@ export class DisplayPostComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.headerParams = await this.tokenService.checkTokenAndSetHeader();
+    this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
-    this.query = '/?$populate=userID&$populate=communityID';
+    this.userDetailsService
+      .getUserID()
+      .then(res => {
+        this.userID = res;
+      })
+      .catch(err => {
+        this.showErrorNotification(err, 'userID was not recevied');
+      });
 
-    this.userID = await this.userDetailsService.getUserID();
-
-    let user = await this.userDetailsService.getUserProfile();
+    this.userDetailsService
+      .getUserProfile()
+      .then(res => {
+        this.user = res;
+      })
+      .catch(err => {
+        this.showErrorNotification(err, 'user was not recevied: display-post');
+      });
 
     this.dataService.subscribedCommunity$.subscribe(id => {
       if (id) {
@@ -52,13 +64,15 @@ export class DisplayPostComponent implements OnInit {
             });
           },
           err => {
-            console.log(err);
+            this.showErrorNotification(err, 'id was not recevied in watcher');
           }
         );
       }
     });
 
-    this.http.getRequest(this.postsUrl + this.query, this.headerParams).subscribe(
+    let populateQuery = '/?$populate=userID&$populate=communityID';
+
+    this.http.getRequest(this.postsUrl + populateQuery, this.headerParams).subscribe(
       res => {
         if (res.hasOwnProperty('data')) {
           console.log('ngOnInit: posts----->', res);
@@ -72,8 +86,10 @@ export class DisplayPostComponent implements OnInit {
               post['creator'] = false;
             }
 
+            let index = this.user['communities'].findIndex(community => community['_id'] === post['communityID']['_id']);
+
             //show posts only from subscribed communities
-            if (user['communities'].includes(post['communityID']['_id']) && !this.posts.includes(post)) {
+            if (index > -1 && !this.posts.includes(post)) {
               this.posts.push(post);
               this.getComments(post);
             }
@@ -81,7 +97,7 @@ export class DisplayPostComponent implements OnInit {
         }
       },
       err => {
-        console.log('ngOnInit: err--->', err);
+        this.showErrorNotification(err, 'posts was not recevied');
       }
     );
   }
@@ -163,13 +179,23 @@ export class DisplayPostComponent implements OnInit {
         }
       },
       err => {
-        console.log(err);
-        const snackbarRef = this.snackbar.open('something went wrong', '', {
-          duration: 2000,
-          verticalPosition: 'top',
-          panelClass: 'login-snackbar'
-        });
+        // console.log(err);
+        // const snackbarRef = this.snackbar.open('something went wrong', '', {
+        //   duration: 2000,
+        //   verticalPosition: 'top',
+        //   panelClass: 'login-snackbar'
+        // });
+        this.showErrorNotification(err, 'comments was not recevied');
       }
     );
+  }
+
+  showErrorNotification(err, message) {
+    console.log(err);
+    const snackbarRef = this.snackbar.open(message, '', {
+      duration: 2000,
+      verticalPosition: 'top',
+      panelClass: 'login-snackbar'
+    });
   }
 }

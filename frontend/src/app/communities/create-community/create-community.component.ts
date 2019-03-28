@@ -3,6 +3,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { TokenService } from 'src/app/services/token.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 @Component({
   selector: 'app-create-community',
   templateUrl: './create-community.component.html',
@@ -17,13 +18,14 @@ export class CreateCommunityComponent implements OnInit {
     public httpService: HttpService,
     public tokenService: TokenService,
     public userDetailsService: UserDetailsService,
-    public router: Router
+    public router: Router,
+    public snackbar: MatSnackBar
   ) {}
 
   ngOnInit() {}
 
   async createCommunity() {
-    let headerParmas = await this.tokenService.checkTokenAndSetHeader();
+    let headerParmas =  this.tokenService.checkTokenAndSetHeader();
     let data = {
       title: this.title,
       name: this.name,
@@ -32,13 +34,23 @@ export class CreateCommunityComponent implements OnInit {
     if (data) {
       this.httpService.postRequest(this.communityUrl, data, headerParmas).subscribe(
         community => {
-          this.router.navigate(['/r/communities', community['_id']]);
           console.log(community);
+
+          this.router.navigate(['/r/communities', community['_id']]);
         },
         err => {
-          console.log(err);
+          this.showErrorNotification(err, 'community was not posted: create-community');
         }
       );
     }
+  }
+
+  showErrorNotification(err, message) {
+    console.log(err);
+    const snackbarRef = this.snackbar.open(message, '', {
+      duration: 2000,
+      verticalPosition: 'top',
+      panelClass: 'login-snackbar'
+    });
   }
 }

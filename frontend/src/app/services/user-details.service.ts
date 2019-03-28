@@ -9,7 +9,7 @@ import * as jwtDecode from 'jwt-decode';
   providedIn: 'root'
 })
 export class UserDetailsService {
-  public _userID: string = '';
+  public _userID: any = '';
   public url: string = 'http://localhost:3030/users';
   public headerParams: object = {};
   public accessToken: string = '';
@@ -17,24 +17,29 @@ export class UserDetailsService {
 
   getUserID() {
     let store = this.tokenService.getToken();
-    // console.log('getUserID: token', store);
-
     let token = store['user'].hasOwnProperty('accessToken') ? store['user']['accessToken'] : store['user'];
-    var decoded = jwtDecode(token);
-    this._userID = decoded.userId;
-    // console.log('userid from  getUserId--------->', this._userID);
-    return this._userID;
+    return new Promise((resolve, reject) => {
+      var decoded = jwtDecode(token);
+      this._userID = decoded.userId;
+      return resolve(this._userID);
+    });
   }
 
   async getUserProfile() {
-    // console.log('userID: getUserProfile---------->', this._userID);
-    let userID = await this.getUserID();
+    this.getUserID()
+      .then(res => {
+        this._userID = res;
+      })
+      .catch(err => {
+        console.log('err: get user profile: suer-details-service====>', err);
+      });
     console.log('getUserProfile: userID--------->', this._userID);
-    this.headerParams = await this.tokenService.checkTokenAndSetHeader();
+    this.headerParams = this.tokenService.checkTokenAndSetHeader();
+    let query = '/?$populate=communities';
     return new Promise((resolve, reject) => {
-      this.httpService.getRequest(`${this.url}/${userID}`, this.headerParams).subscribe(
+      this.httpService.getRequest(`${this.url}/${this._userID}` + query, this.headerParams).subscribe(
         user => {
-          // console.log('user from getUserProfile--------->', user);
+          console.log('user:getUserProfile:user-details-service======>', user);
           return resolve(user);
         },
         err => {

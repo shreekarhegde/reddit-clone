@@ -67,7 +67,6 @@ export class ShowCommentsComponent implements OnInit, OnDestroy {
       .pipe(skip(1))
       .subscribe(
         res => {
-          console.log('===========', res);
           if (res) {
             this.displayComments();
           }

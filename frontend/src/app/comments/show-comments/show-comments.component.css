@@ -5,3 +5,22 @@
 ul {
   list-style: none;
 }
+.reply {
+  width: 500px !important;
+  height: 200px;
+}
+
+.container {
+  width: 500px;
+  position: relative;
+}
+
+.firstLevel {
+  width: 100%;
+  position: relative;
+}
+
+.innerComments {
+  width: 100%;
+  position: relative;
+}

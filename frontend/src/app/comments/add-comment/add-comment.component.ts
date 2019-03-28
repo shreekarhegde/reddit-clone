@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserDetailsService } from '../../services/user-details.service';
 import { HttpService } from '../../services/http.service';
 import { TokenService } from '../../services/token.service';
+import { ToggleService } from '../add-comment/toggle.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 
@@ -28,8 +29,11 @@ export class AddCommentComponent implements OnInit {
   public text: string = '';
   public parentCommentID: string = '';
   public newComment: object = {};
+  public creator: boolean = false;
+  public refreshCommentsList: boolean = false;
   constructor(
     public userDetailsService: UserDetailsService,
+    public toggleService: ToggleService,
     public httpService: HttpService,
     public tokenService: TokenService,
     public activeRoute: ActivatedRoute,
@@ -71,6 +75,12 @@ export class AddCommentComponent implements OnInit {
           this.postedBy = post['userID']['username'];
           this.totalVotes = post['totalVotes'];
           this.postTitle = post['title'];
+
+          if (this.userID === post['userID']['_id']) {
+            this.creator = true;
+          } else {
+            this.creator = false;
+          }
 
           //get no.of comments
           let postQuery = `/?postID=${post['_id']}`;
@@ -158,18 +168,20 @@ export class AddCommentComponent implements OnInit {
     );
   }
 
-  comment() {
+  addComment() {
     let data = {
       text: this.text,
       postID: this.postID,
       userID: this.userID
     };
+
     this.httpService.postRequest(this.commentsUrl, data, this.headerParams).subscribe(
       res => {
         if (res) {
           console.log('res: comment: add-comment------------>', res);
           this.newComment = res;
           this.totalComments += 1;
+          this.toggleService.setToggleValue(true);
         }
       },
       err => {

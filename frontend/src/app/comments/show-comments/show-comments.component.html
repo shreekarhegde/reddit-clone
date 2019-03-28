@@ -6,18 +6,23 @@
           <div class="row" *ngFor="let innerComment of c1.innerComments; let j = index">
             <ul>
               <li>
-                <form #f="ngForm" (ngSubmit)="comment(f)">
-                  <div *ngIf="j == 0">
+                <form #f="ngForm" (ngSubmit)="addComment(f)">
+                  <div *ngIf="j === 0">
                     <h4>{{ c1.self.text }}</h4>
                     <label for="#{{ c1.self._id }}">reply</label>
-                    <input type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel />
-                    <input type="submit" id="btn{{ c1.self._id }}" />
+                    <div id=" {{ c1.self._id }}">
+                      <input type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel />
+                      <input type="submit" id="btn{{ c1.self._id }}" />
+                    </div>
                   </div>
-
-                  <h6>{{ innerComment.text }}</h6>
-                  <label for="#{{ innerComment._id }}">reply</label>
-                  <input type="text" name="{{ innerComment._id }}" id="{{ innerComment._id }}" ngModel />
-                  <input type="submit" id="btn{{ innerComment._id }}" />
+                  <div>
+                    <h6>{{ innerComment.text }}</h6>
+                    <label for="#{{ innerComment._id }}">reply</label>
+                    <div>
+                      <input type="text" name="{{ innerComment._id }}" id="{{ innerComment._id }}" ngModel />
+                      <input type="submit" id="btn{{ innerComment._id }}" />
+                    </div>
+                  </div>
                 </form>
 
                 <app-show-comments
@@ -33,7 +38,7 @@
         <ng-container *ngIf="(!c1.innerComments || !c1.innerComments.length) && c1.self.text">
           <ul>
             <li>
-              <form #f="ngForm" (ngSubmit)="comment(f)">
+              <form #f="ngForm" (ngSubmit)="addComment(f)">
                 <h5>{{ c1.self.text }}</h5>
                 <label for="#{{ c1.self._id }}">reply</label>
                 <input type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel />
@@ -48,7 +53,7 @@
       <div class="row" *ngFor="let innerComment of innerComments">
         <ul>
           <li>
-            <form #f="ngForm" (ngSubmit)="comment(f)">
+            <form #f="ngForm" (ngSubmit)="addComment(f)">
               <h6>{{ innerComment.text }}</h6>
               <label for="#{{ innerComment._id }}">reply</label>
               <input type="text" name="{{ innerComment._id }}" id="{{ innerComment._id }}" ngModel />

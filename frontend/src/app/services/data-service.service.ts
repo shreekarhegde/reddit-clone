@@ -1,24 +1,17 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  public _communityID: string = '';
+  public idSource: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  @Output() subscribedCommunity = new EventEmitter();
+  subscribedCommunity$ = this.idSource.asObservable();
 
   constructor() {}
 
-  // get communityID() {
-  //   return this._communityID;
-  // }
-  // set communityID(id) {
-  //   this._communityID = id;
-  // }
-
-  shareCommunityID(id) {
-    this._communityID = id;
-    this.subscribedCommunity.emit(this._communityID);
+  shareCommunityID(id: string) {
+    this.idSource.next(id);
   }
 }

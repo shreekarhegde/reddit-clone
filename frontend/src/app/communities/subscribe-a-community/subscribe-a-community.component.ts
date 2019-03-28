@@ -14,6 +14,7 @@ export class SubscribeACommunityComponent implements OnInit {
   public communities: object[] = [];
   public headerParams: object = {};
   public communitiesUrl: string = 'http://localhost:3030/communities';
+  public communityID: string = '';
   // @Output() subscribedCommunity = new EventEmitter();
   constructor(
     public tokenService: TokenService,

@@ -58,7 +58,7 @@
               </div>
             </div>
             <div>
-              <app-show-comments [commentFromAddCommentComponent]="newComment" [reOcurringCall]="false"></app-show-comments>
+              <app-show-comments [reOcurringCall]="false" (messageEvent)="updateCommentsCount($event)"></app-show-comments>
             </div>
           </div>
         </div>

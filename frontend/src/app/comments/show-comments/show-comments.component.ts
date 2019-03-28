@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, ViewChild, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ViewChild, SimpleChanges, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { HttpService } from '../../services/http.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material';
   templateUrl: './show-comments.component.html',
   styleUrls: ['./show-comments.component.css']
 })
-export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
+export class ShowCommentsComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public userID: any = '';
   public commentsUrl = 'http://localhost:3030/comments';
@@ -23,7 +23,8 @@ export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
   public alive: boolean = true;
   @Input() innerComments = [];
   @Input() reOcurringCall = false;
-  // @Input() refreshCommentsList = false;
+  @Output() messageEvent = new EventEmitter<string>();
+
   @Input() commentFromAddCommentComponent: object = {};
   constructor(
     public httpService: HttpService,
@@ -36,8 +37,6 @@ export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
 
   async ngOnInit() {
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
-
-    // this.userID = await this.userDetailsService.getUserID();
 
     this.userDetailsService
       .getUserID()
@@ -139,7 +138,8 @@ export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
           this.httpService.postRequest(this.commentsUrl, data, this.headerParams).subscribe(
             res => {
               console.log('res: comment: show-comments----->', res);
-
+              let message = 'comment added';
+              this.messageEvent.emit(message);
               this.toggleService.setToggleValue(true);
             },
             err => {
@@ -149,30 +149,6 @@ export class ShowCommentsComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    // if (changes.hasOwnProperty('commentFromAddCommentComponent')) {
-    //   console.log('comment from add comment: ngOnChanges---------->', this.commentFromAddCommentComponent);
-    //   let newComment = changes['commentFromAddCommentComponent']['currentValue'];
-    //   if (newComment) {
-    //     this.firstLevelComments.push({ self: newComment, innerComments: [] });
-    //   }
-    // }
-    // if (!this.reOcurringCall && changes.hasOwnProperty('refreshCommentsList')) {
-    //   console.log('showComments ngOnChanges: Refresh request from add comment: changes---------->', changes['refreshCommentsList']);
-    //   let refreshToggle = changes['refreshCommentsList']['currentValue'];
-    // if (refreshToggle) {
-    //   this.displayComments();
-    // }
-    // }
-    console.log(changes);
-    // if (changes.hasOwnProperty('commentFromAddCommentComponent')) {
-    //   console.log('========== onchange', changes['commentFromAddCommentComponent']['currentValue']);
-    //   if (changes['toggleValue$']['currentValue']) {
-    //     this.displayComments();
-    //   }
-    // }
   }
 
   ngOnDestroy() {

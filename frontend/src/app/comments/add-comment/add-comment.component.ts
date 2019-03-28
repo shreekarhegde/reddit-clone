@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserDetailsService } from '../../services/user-details.service';
 import { HttpService } from '../../services/http.service';
 import { TokenService } from '../../services/token.service';
@@ -31,6 +31,7 @@ export class AddCommentComponent implements OnInit {
   public newComment: object = {};
   public creator: boolean = false;
   public refreshCommentsList: boolean = false;
+
   constructor(
     public userDetailsService: UserDetailsService,
     public toggleService: ToggleService,
@@ -207,5 +208,15 @@ export class AddCommentComponent implements OnInit {
       verticalPosition: 'top',
       panelClass: 'login-snackbar'
     });
+  }
+
+  updateCommentsCount($event) {
+    if ($event) {
+      if ($event === 'comment added') {
+        this.totalComments += 1;
+      } else if ($event === 'comment deleted') {
+        this.totalComments -= 1;
+      }
+    }
   }
 }

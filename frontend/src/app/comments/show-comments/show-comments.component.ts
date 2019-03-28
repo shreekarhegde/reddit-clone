@@ -6,11 +6,12 @@ import { ActivatedRoute } from '@angular/router';
 import { FormGroup, NgForm } from '@angular/forms';
 import { ToggleService } from '../add-comment/toggle.service';
 import { takeWhile, takeUntil, skip } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatExpansionPanel } from '@angular/material';
 @Component({
   selector: 'app-show-comments',
   templateUrl: './show-comments.component.html',
-  styleUrls: ['./show-comments.component.css']
+  styleUrls: ['./show-comments.component.css'],
+  viewProviders: [MatExpansionPanel]
 })
 export class ShowCommentsComponent implements OnInit, OnDestroy {
   public form: FormGroup;

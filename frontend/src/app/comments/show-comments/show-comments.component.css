@@ -5,22 +5,20 @@
 ul {
   list-style: none;
 }
-.reply {
-  width: 500px !important;
-  height: 200px;
-}
 
-.container {
+/* ::ng-deep mat-panel-title {
+  width: 100px !important;
+} */
+mat-expansion-panel {
+  box-shadow: none !important;
+}
+textarea {
   width: 500px;
-  position: relative;
 }
 
-.firstLevel {
-  width: 100%;
-  position: relative;
+::ng-deep .mat-expansion-indicator {
+  display: none !important;
 }
-
-.innerComments {
-  width: 100%;
-  position: relative;
+::ng-deep .mat-expansion-panel-header {
+  width: 100px !important;
 }

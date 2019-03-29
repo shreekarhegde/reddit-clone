@@ -20,8 +20,8 @@
                     <div class="community-name">
                       <p class="btn btn-link" [routerLink]="['/r/communities', post.communityID._id]">{{ post.communityID.name }}</p>
                     </div>
-                    <div class="username">
-                      <p>{{ post.userID.username }}</p>
+                    <div class="username ml-2">
+                      <p><small>posted by</small> {{ post.userID.username }}</p>
                     </div>
                     <div class="header pt-2">
                       <h4>{{ post.title }}</h4>

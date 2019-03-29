@@ -86,12 +86,13 @@ export class DisplayPostComponent implements OnInit {
               post['creator'] = false;
             }
 
-            let index = this.user['communities'].findIndex(community => community['_id'] === post['communityID']['_id']);
-
-            //show posts only from subscribed communities
-            if (index > -1 && !this.posts.includes(post)) {
-              this.posts.push(post);
-              this.getComments(post);
+            if (this.user) {
+              //show posts only from subscribed communities
+              let index = this.user['communities'].findIndex(community => community['_id'] === post['communityID']['_id']);
+              if (index > -1 && !this.posts.includes(post)) {
+                this.posts.push(post);
+                this.getComments(post);
+              }
             }
           });
         }

@@ -3,14 +3,14 @@
     <ng-container *ngIf="!reOcurringCall">
       <div class="row" *ngFor="let c1 of firstLevelComments; let i = index">
         <ng-container *ngIf="c1.innerComments">
-          <div class="row" *ngFor="let innerComment of c1.innerComments; let j = index">
+          <ng-container class="row" *ngFor="let innerComment of c1.innerComments; let j = index">
             <ul>
-              <li>
+              <li class="border-left p-2">
                 <form #f="ngForm" (ngSubmit)="addComment(f)">
-                  <div *ngIf="j === 0" class="row form-group">
+                  <ng-container *ngIf="j === 0" class="row form-group">
                     <div class="col-md-12">
                       <div class="row">
-                        <h4>{{ c1.self.text }}</h4>
+                        <h6 class="comment-text">{{ c1.self.text }}</h6>
                       </div>
                       <div class="row">
                         <mat-expansion-panel>
@@ -19,16 +19,18 @@
                               <label for="#{{ c1.self._id }}"> reply</label>
                             </mat-panel-title>
                           </mat-expansion-panel-header>
-                          <div class="row"><textarea type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel></textarea></div>
-                          <div class="row"><input type="submit" id="btn{{ c1.self._id }}" /></div>
+                          <div class="row">
+                            <textarea type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel></textarea>
+                          </div>
+                          <div class="row mt-2"><input type="submit" class="submit-btn btn btn-primary" id="btn{{ c1.self._id }}" /></div>
                         </mat-expansion-panel>
                       </div>
                     </div>
-                  </div>
+                  </ng-container>
                   <div class="row">
                     <div class="col-md-12 ml-5">
                       <div class="row">
-                        <h6>{{ innerComment.text }}</h6>
+                        <h6 class="comment-text">{{ innerComment.text }}</h6>
                       </div>
                       <div class="row">
                         <mat-expansion-panel>
@@ -40,7 +42,9 @@
                           <div class="row">
                             <textarea type="text" name="{{ innerComment._id }}" ngModel></textarea>
                           </div>
-                          <div class="row"><input type="submit" id="btn{{ innerComment._id }}" class="float-right " /></div>
+                          <div class="row mt-2">
+                            <input type="submit" class="submit-btn btn btn-primary" id="btn{{ innerComment._id }}" />
+                          </div>
                         </mat-expansion-panel>
                       </div>
                     </div>
@@ -55,7 +59,7 @@
                 </app-show-comments>
               </li>
             </ul>
-          </div>
+          </ng-container>
         </ng-container>
         <ng-container *ngIf="(!c1.innerComments || !c1.innerComments.length) && c1.self.text">
           <ul>
@@ -65,12 +69,22 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="row">
-                        <h5>{{ c1.self.text }}</h5>
+                        <h6 class="comment-text">{{ c1.self.text }}</h6>
                       </div>
-                      <div class="row"><label for="#{{ c1.self._id }}">reply</label></div>
-                      <div class="row"><textarea type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel></textarea></div>
+                      <div class="row">
+                        <mat-expansion-panel>
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              <label for="#{{ c1.self._id }}">reply</label>
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                          <div class="row">
+                            <textarea type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel></textarea>
+                          </div>
 
-                      <div class="row"><button type="submit" class="float-right">submit</button></div>
+                          <div class="row mt-2"><button type="submit" class="submit-btn btn btn-primary">submit</button></div>
+                        </mat-expansion-panel>
+                      </div>
 
                       <div class="row"></div>
                     </div>
@@ -83,15 +97,15 @@
       </div>
     </ng-container>
     <ng-container *ngIf="reOcurringCall">
-      <div class="row ml-5 border-left" *ngFor="let innerComment of innerComments">
+      <ng-container class="row ml-5 border-left" *ngFor="let innerComment of innerComments">
         <ul>
-          <li>
+          <li class="ml-5 border-left">
             <form #f="ngForm" (ngSubmit)="addComment(f)">
               <div class="from-group">
                 <div class="row ml-5">
                   <div class="col-md-12">
                     <div class="row">
-                      <h6>{{ innerComment.text }}</h6>
+                      <h6 class="comment-text">{{ innerComment.text }}</h6>
                     </div>
                     <div class="row">
                       <mat-expansion-panel>
@@ -103,7 +117,9 @@
                         <div class="row">
                           <textarea type="text" name="{{ innerComment._id }}" id="{{ innerComment._id }}" ngModel></textarea>
                         </div>
-                        <div class="row"><input type="submit" id="btn{{ innerComment._id }}" /></div>
+                        <div class="row mt-2">
+                          <input type="submit" id="btn{{ innerComment._id }}" class="submit-btn btn btn-primary" />
+                        </div>
                       </mat-expansion-panel>
                     </div>
                   </div>
@@ -118,7 +134,7 @@
             ></app-show-comments>
           </li>
         </ul>
-      </div>
+      </ng-container>
     </ng-container>
   </div>
 </div>

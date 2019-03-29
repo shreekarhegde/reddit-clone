@@ -46,3 +46,8 @@
 .list-group-submenu {
   margin-left: 20px;
 }
+textarea {
+  width: 100% !important;
+  height: 200px;
+  padding-right: 20px;
+}

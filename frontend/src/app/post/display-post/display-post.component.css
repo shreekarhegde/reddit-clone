@@ -60,6 +60,7 @@ ul {
   margin-top: 50%;
 }
 
-.content .community-name {
-  display: inline !important;
+.username,
+.community-name {
+  display: inline-block !important;
 }

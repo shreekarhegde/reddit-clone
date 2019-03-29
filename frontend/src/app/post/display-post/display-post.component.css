@@ -61,6 +61,11 @@ ul {
 }
 
 .username,
-.community-name {
+.community-name,
+.time {
   display: inline-block !important;
+}
+.icons,
+.vote-buttons {
+  cursor: pointer;
 }

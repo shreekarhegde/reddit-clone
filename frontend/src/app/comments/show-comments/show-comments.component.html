@@ -3,11 +3,11 @@
     <ng-container *ngIf="!reOcurringCall">
       <div class="row" *ngFor="let c1 of firstLevelComments; let i = index">
         <ng-container *ngIf="c1.innerComments">
-          <ng-container class="row" *ngFor="let innerComment of c1.innerComments; let j = index">
+          <div class="row" *ngFor="let innerComment of c1.innerComments; let j = index">
             <ul>
               <li class="border-left p-2">
                 <form #f="ngForm" (ngSubmit)="addComment(f)">
-                  <ng-container *ngIf="j === 0" class="row form-group">
+                  <div *ngIf="j === 0" class="row form-group">
                     <div class="col-md-12">
                       <div class="row">
                         <h6 class="comment-text">{{ c1.self.text }}</h6>
@@ -26,8 +26,8 @@
                         </mat-expansion-panel>
                       </div>
                     </div>
-                  </ng-container>
-                  <div class="row">
+                  </div>
+                  <div class="row inner">
                     <div class="col-md-12 ml-5">
                       <div class="row">
                         <h6 class="comment-text">{{ innerComment.text }}</h6>
@@ -59,7 +59,7 @@
                 </app-show-comments>
               </li>
             </ul>
-          </ng-container>
+          </div>
         </ng-container>
         <ng-container *ngIf="(!c1.innerComments || !c1.innerComments.length) && c1.self.text">
           <ul>

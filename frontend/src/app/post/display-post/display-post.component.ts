@@ -4,6 +4,7 @@ import { TokenService } from '../../services/token.service';
 import { UserDetailsService } from '../../services/user-details.service';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { DataService } from 'src/app/services/data-service.service';
+import * as momemt from 'moment';
 
 @Component({
   selector: 'app-display-post',
@@ -90,6 +91,8 @@ export class DisplayPostComponent implements OnInit {
               //show posts only from subscribed communities
               let index = this.user['communities'].findIndex(community => community['_id'] === post['communityID']['_id']);
               if (index > -1 && !this.posts.includes(post)) {
+                let time = momemt(post['createdAt']).fromNow();
+                post['createdTimeIntermsOfHours'] = time;
                 this.posts.push(post);
                 this.getComments(post);
               }

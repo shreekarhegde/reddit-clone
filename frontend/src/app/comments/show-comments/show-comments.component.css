@@ -11,6 +11,7 @@ ul {
 }
 mat-expansion-panel {
   box-shadow: none !important;
+  max-width: 90% !important;
   width: 100% !important;
 }
 textarea {
@@ -48,4 +49,7 @@ h6 {
 }
 ::ng-deep ng-container {
   margin-left: 100px !important;
+}
+.inner {
+  width: 900px !important;
 }

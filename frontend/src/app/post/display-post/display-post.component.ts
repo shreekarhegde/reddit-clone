@@ -5,8 +5,6 @@ import { UserDetailsService } from '../../services/user-details.service';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { DataService } from 'src/app/services/data-service.service';
 
-import { CanActivate } from '@angular/router';
-
 import * as momemt from 'moment';
 
 @Component({
@@ -39,25 +37,7 @@ export class DisplayPostComponent implements OnInit {
   async ngOnInit() {
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
-    // this.userDetailsService
-    //   .getUserID()
-    //   .then(res => {
-    //     this.userID = res;
-    //   })
-    //   .catch(err => {
-    //     this.showNotification(err, 'err', 'userID was not recevied');
-    //   });
-
     this.userID = await this.userDetailsService.getUserID();
-
-    // this.userDetailsService
-    //   .getUserProfile()
-    //   .then(res => {
-    //     this.user = res;
-    //   })
-    //   .catch(err => {
-    //     this.showNotification(err, 'err', 'user data was not recevied');
-    //   });
 
     this.user = await this.userDetailsService.getUserProfile();
 
@@ -84,6 +64,7 @@ export class DisplayPostComponent implements OnInit {
     this.http.getRequest(this.postsUrl + populateQuery, this.headerParams).subscribe(
       res => {
         if (res.hasOwnProperty('data')) {
+          this.posts = [];
           console.log('ngOnInit: posts----->', res);
           let allPosts = res['data'];
 

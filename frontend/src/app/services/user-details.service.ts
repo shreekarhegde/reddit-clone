@@ -26,14 +26,7 @@ export class UserDetailsService {
   }
 
   async getUserProfile() {
-    this.getUserID()
-      .then(res => {
-        console.log('expected user id: getuserprofile: user-details.service---->', res);
-        this._userID = res;
-      })
-      .catch(err => {
-        console.log('err: get user profile: suer-details-service====>', err);
-      });
+    this._userID = await this.getUserID();
 
     console.log('getUserProfile: userID--------->', this._userID);
 

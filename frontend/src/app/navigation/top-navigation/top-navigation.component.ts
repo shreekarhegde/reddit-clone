@@ -21,22 +21,15 @@ export class TopNavigationComponent implements OnInit {
   async ngOnInit() {
     let usersUrl = 'http://localhost:3030/users';
     let headerParams = this.tokenService.checkTokenAndSetHeader();
-    this.userDetailsService
-      .getUserID()
-      .then(res => {
-        let userID = res;
-        this.httpService.getRequest(`${usersUrl}/${userID}`, headerParams).subscribe(
-          res => {
-            this.userName = res['username'];
-          },
-          err => {
-            this.showNotification(err, 'err', 'could not receive user name');
-          }
-        );
-      })
-      .catch(err => {
-        this.showNotification(err, 'err', 'could not revceive user name');
-      });
+    let userID = await this.userDetailsService.getUserID();
+    this.httpService.getRequest(`${usersUrl}/${userID}`, headerParams).subscribe(
+      res => {
+        this.userName = res['username'];
+      },
+      err => {
+        this.showNotification(err, 'err', 'could not receive user name');
+      }
+    );
   }
 
   showNotification(err, type, message) {

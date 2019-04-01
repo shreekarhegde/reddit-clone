@@ -7,10 +7,12 @@ import { CreateCommunityComponent } from '../communities/create-community/create
 import { SubscribeACommunityComponent } from '../communities/subscribe-a-community/subscribe-a-community.component';
 import { CommunityDetailsComponent } from '../communities/community-details/community-details.component';
 import { CreatePostComponent } from '../post/create-post/create-post.component';
+import { AuthGuard } from '../auth.guard';
 
 const routes: Routes = [
   {
     path: 'r',
+    canActivate: [AuthGuard],
     component: HomeComponent,
     children: [
       { path: '', component: DisplayPostComponent },

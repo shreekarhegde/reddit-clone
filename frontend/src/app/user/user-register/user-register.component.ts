@@ -39,7 +39,7 @@ export class UserRegisterComponent implements OnInit {
         this.http
           .postRequest(this.authUrl, { strategy: 'local', username: this.username, password: this.password }, null)
           .subscribe(res => {
-            if (res.hasOwnProperty('accessToken')) {
+            if (res) {
               console.log('res from register', res);
               this.tokenService.setToken(res);
               this.router.navigateByUrl('r');

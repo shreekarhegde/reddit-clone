@@ -28,3 +28,15 @@ small {
   padding-top: 5px;
   outline: none;
 }
+::ng-deep .err {
+  background: red;
+}
+::ng-deep .success {
+  background: green;
+}
+::ng-deep .warning {
+  background: yellow;
+}
+.spinner {
+  margin-left: 50px;
+}

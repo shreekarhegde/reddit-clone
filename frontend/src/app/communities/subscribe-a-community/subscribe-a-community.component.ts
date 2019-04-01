@@ -17,6 +17,7 @@ export class SubscribeACommunityComponent implements OnInit {
   public communitiesUrl: string = 'http://localhost:3030/communities';
   public communityID: string = '';
   public user: any = {};
+  public isStillZero: boolean = true;
   // @Output() subscribedCommunity = new EventEmitter();
   constructor(
     public tokenService: TokenService,
@@ -27,19 +28,9 @@ export class SubscribeACommunityComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // let user = this.userDetailsService.getUserProfile();
+    let user = await this.userDetailsService.getUserProfile();
 
-    this.user = await this.userDetailsService.getUserProfile();
-
-    // temp.then(res => {
-    //   console.log('user: subscribe-a-community====>', res);
-    //   this.user = res;
-    // })
-    // .catch(err => {
-    //   this.showErrorNotification(err, 'user was not recevied: subscribe-a-community');
-    // });
-
-    console.log('userCommunities:subscribe-a-community: ngOnInit------->', this.user['communities']);
+    this.user = user;
 
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
@@ -48,7 +39,7 @@ export class SubscribeACommunityComponent implements OnInit {
     communities.subscribe(
       communities => {
         console.log('all communities------->', communities['data']);
-        if (communities.hasOwnProperty('data')) {
+        if (communities.hasOwnProperty('data') && this.user.hasOwnProperty('communities')) {
           for (let i = 0; i < communities['data'].length; i++) {
             let index = this.user['communities'].findIndex(community => community['_id'] === communities['data'][i]['_id']);
             if (index < 0) {
@@ -59,9 +50,13 @@ export class SubscribeACommunityComponent implements OnInit {
         }
       },
       err => {
-        this.showErrorNotification(err, 'communities was not recevied: subscribe-a-community');
+        this.showErrorNotification(err, 'err', 'communities was not recevied: subscribe-a-community');
       }
     );
+
+    setTimeout(() => {
+      this.isStillZero = false;
+    }, 3000);
   }
 
   subscribeACommunity(id: string) {
@@ -85,21 +80,21 @@ export class SubscribeACommunityComponent implements OnInit {
           },
           err => {
             // console.log(err);
-            this.showErrorNotification(err, 'community was not updated: subscribe-a-community');
+            this.showErrorNotification(err, 'err', 'community was not updated: subscribe-a-community');
           }
         );
       })
       .catch(err => {
-        this.showErrorNotification(err, 'userID was not recevied: subscribe-a-community');
+        this.showErrorNotification(err, 'err', 'userID was not recevied: subscribe-a-community');
       });
   }
 
-  showErrorNotification(err, message) {
+  showErrorNotification(err, type, message) {
     console.log(err);
     const snackbarRef = this.snackbar.open(message, '', {
       duration: 2000,
       verticalPosition: 'top',
-      panelClass: 'login-snackbar'
+      panelClass: [type]
     });
   }
 }

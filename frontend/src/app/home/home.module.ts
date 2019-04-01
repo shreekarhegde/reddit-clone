@@ -6,9 +6,11 @@ import { PostModule } from '../post/post.module';
 import { CommentsModule } from '../comments/comments.module';
 import { CommunitiesModule } from '../communities/communities.module';
 import { DataService } from '../services/data-service.service';
+import { NavigationModule } from '../navigation/navigation.module';
+// import { AuthGuardService } from '../services/auth-guard.service';
 @NgModule({
   declarations: [HomeComponent],
-  imports: [CommonModule, HomeRoutingModule, PostModule, CommentsModule, CommunitiesModule],
+  imports: [CommonModule, HomeRoutingModule, PostModule, CommentsModule, CommunitiesModule, NavigationModule],
   exports: [HomeComponent],
   providers: [DataService]
 })

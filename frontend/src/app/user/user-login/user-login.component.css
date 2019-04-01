@@ -31,3 +31,9 @@
 .signup-link {
   display: flex;
 }
+
+::ng-deep .err,
+.warning,
+.success {
+  background: red;
+}

@@ -4,6 +4,9 @@ import { TokenService } from '../../services/token.service';
 import { UserDetailsService } from '../../services/user-details.service';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { DataService } from 'src/app/services/data-service.service';
+
+import { CanActivate } from '@angular/router';
+
 import * as momemt from 'moment';
 
 @Component({
@@ -22,6 +25,7 @@ export class DisplayPostComponent implements OnInit {
   public username: string = '';
   public showSpinner: boolean = true;
   public user: any = {};
+  public isStillLoading: boolean = true;
   @Input() subscribedCommunityID: string = '';
 
   constructor(
@@ -35,23 +39,27 @@ export class DisplayPostComponent implements OnInit {
   async ngOnInit() {
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
-    this.userDetailsService
-      .getUserID()
-      .then(res => {
-        this.userID = res;
-      })
-      .catch(err => {
-        this.showErrorNotification(err, 'userID was not recevied');
-      });
+    // this.userDetailsService
+    //   .getUserID()
+    //   .then(res => {
+    //     this.userID = res;
+    //   })
+    //   .catch(err => {
+    //     this.showNotification(err, 'err', 'userID was not recevied');
+    //   });
 
-    this.userDetailsService
-      .getUserProfile()
-      .then(res => {
-        this.user = res;
-      })
-      .catch(err => {
-        this.showErrorNotification(err, 'user was not recevied: display-post');
-      });
+    this.userID = await this.userDetailsService.getUserID();
+
+    // this.userDetailsService
+    //   .getUserProfile()
+    //   .then(res => {
+    //     this.user = res;
+    //   })
+    //   .catch(err => {
+    //     this.showNotification(err, 'err', 'user data was not recevied');
+    //   });
+
+    this.user = await this.userDetailsService.getUserProfile();
 
     this.dataService.subscribedCommunity$.subscribe(id => {
       if (id) {
@@ -65,7 +73,7 @@ export class DisplayPostComponent implements OnInit {
             });
           },
           err => {
-            this.showErrorNotification(err, 'id was not recevied in watcher');
+            this.showNotification(err, 'err', 'id was not recevied in watcher');
           }
         );
       }
@@ -87,7 +95,7 @@ export class DisplayPostComponent implements OnInit {
               post['creator'] = false;
             }
 
-            if (this.user) {
+            if (this.user.hasOwnProperty('communities')) {
               //show posts only from subscribed communities
               let index = this.user['communities'].findIndex(community => community['_id'] === post['communityID']['_id']);
               if (index > -1 && !this.posts.includes(post)) {
@@ -101,9 +109,13 @@ export class DisplayPostComponent implements OnInit {
         }
       },
       err => {
-        this.showErrorNotification(err, 'posts was not recevied');
+        this.showNotification(err, 'err', 'posts was not recevied');
       }
     );
+
+    setTimeout(() => {
+      this.isStillLoading = false;
+    }, 4000);
   }
 
   upvote(id) {
@@ -124,7 +136,7 @@ export class DisplayPostComponent implements OnInit {
           this.posts[index]['downvotedBy'].pop(this.userID);
         },
         err => {
-          console.log(err);
+          this.showNotification(err, 'err', 'could not upvote');
         }
       );
     }
@@ -146,7 +158,7 @@ export class DisplayPostComponent implements OnInit {
           this.posts[index]['upvotedBy'].pop(this.userID);
         },
         err => {
-          console.log(err);
+          this.showNotification(err, 'err', 'could not downvote');
         }
       );
     }
@@ -158,14 +170,10 @@ export class DisplayPostComponent implements OnInit {
       res => {
         let index = this.posts.findIndex(post => post['_id'] === res['_id']);
         this.posts.splice(index, 1);
-        this.snackbar.open('post was deleted successfully', 'OK', {
-          duration: 1500,
-          verticalPosition: 'top',
-          panelClass: 'login-snackbar'
-        });
+        this.showNotification(null, 'success', 'deleted post successfully');
       },
       err => {
-        console.log(err);
+        this.showNotification(err, 'err', 'could not delete post');
       }
     );
   }
@@ -183,23 +191,18 @@ export class DisplayPostComponent implements OnInit {
         }
       },
       err => {
-        // console.log(err);
-        // const snackbarRef = this.snackbar.open('something went wrong', '', {
-        //   duration: 2000,
-        //   verticalPosition: 'top',
-        //   panelClass: 'login-snackbar'
-        // });
-        this.showErrorNotification(err, 'comments was not recevied');
+        this.showNotification(err, 'err', 'comments was not recevied');
       }
     );
   }
 
-  showErrorNotification(err, message) {
+  showNotification(err, type, message) {
     console.log(err);
+
     const snackbarRef = this.snackbar.open(message, '', {
       duration: 2000,
       verticalPosition: 'top',
-      panelClass: 'login-snackbar'
+      panelClass: [type]
     });
   }
 }

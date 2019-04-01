@@ -16,7 +16,7 @@
             <div class="dropdown-menu w-100">
               <input class="dropdown-item" href="#" placeholder="search communities" />
               <ul>
-                <li class="dropdown-item" href="#" *ngFor="let community of communities" (click)="selectChange(community._id)">
+                <li class="dropdown-item" href="#" *ngFor="let community of communities" (click)="selectCommunity(community._id)">
                   {{ community.name }}
                 </li>
               </ul>

@@ -28,14 +28,19 @@ export class UserDetailsService {
   async getUserProfile() {
     this.getUserID()
       .then(res => {
+        console.log('expected user id: getuserprofile: user-details.service---->', res);
         this._userID = res;
       })
       .catch(err => {
         console.log('err: get user profile: suer-details-service====>', err);
       });
+
     console.log('getUserProfile: userID--------->', this._userID);
+
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
+
     let query = '/?$populate=communities';
+
     return new Promise((resolve, reject) => {
       this.httpService.getRequest(`${this.url}/${this._userID}` + query, this.headerParams).subscribe(
         user => {

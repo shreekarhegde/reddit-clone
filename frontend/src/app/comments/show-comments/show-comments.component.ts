@@ -39,14 +39,7 @@ export class ShowCommentsComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
-    this.userDetailsService
-      .getUserID()
-      .then(res => {
-        this.userID = res;
-      })
-      .catch(err => {
-        this.showErrorNotification(err, 'userID was not recevied');
-      });
+    this.userID = await this.userDetailsService.getUserID();
 
     //get post id sent from display post component
     this.activeRoute.params.subscribe(
@@ -55,7 +48,6 @@ export class ShowCommentsComponent implements OnInit, OnDestroy {
         console.log('postID--------->', this.postID);
       },
       err => {
-        // console.log('add-comment: err------->', err);
         this.showErrorNotification(err, 'post id was not recevied: show-comments');
       }
     );

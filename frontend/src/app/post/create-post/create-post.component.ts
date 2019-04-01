@@ -29,31 +29,36 @@ export class CreatePostComponent implements OnInit {
     public tokenService: TokenService,
     public router: Router,
     public userDetailsService: UserDetailsService,
-    // public dataService: DataService,
     public snackbar: MatSnackBar
   ) {}
 
   async ngOnInit() {
-    this.userDetailsService
-      .getUserID()
-      .then(res => {
-        this.userID = res;
-      })
-      .catch(err => {
-        this.showErrorNotification(err, 'userID was not recevied: create-post');
-      });
+    // this.userDetailsService
+    //   .getUserID()
+    //   .then(res => {
+    //     this.userID = res;
+    //   })
+    //   .catch(err => {
+    //     this.showErrorNotification(err, 'err', 'userID was not recevied');
+    //   });
+
+    this.userID = await this.userDetailsService.getUserID();
 
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
-    this.userDetailsService
-      .getUserProfile()
-      .then(res => {
-        this.user = res;
-        this.communities = this.user['communities'];
-      })
-      .catch(err => {
-        this.showErrorNotification(err, 'user was not recevied: create-post');
-      });
+    // this.userDetailsService
+    //   .getUserProfile()
+    //   .then(res => {
+    //     this.user = res;
+    //     this.communities = this.user['communities'];
+    //   })
+    //   .catch(err => {
+    //     this.showErrorNotification(err, 'err', 'user data was not recevied');
+    //   });
+
+    let user = await this.userDetailsService.getUserProfile();
+
+    this.communities = user['communities'];
   }
 
   addPost() {
@@ -77,29 +82,29 @@ export class CreatePostComponent implements OnInit {
             }
           },
           err => {
-            this.showErrorNotification(err, 'post was not added: create post');
+            this.showErrorNotification(err, 'err', 'post was not added');
           }
         );
       }
     }
   }
 
-  selectChange(id: any) {
+  selectCommunity(id: any) {
     this.selectedCommunity = id;
     this.communityName = this.communities.find(community => community['_id'] === id)['name'];
     console.log('community name------->', this.communityName);
   }
 
   selectACommunityFirst() {
-    this.showErrorNotification(null, 'please select a community');
+    this.showErrorNotification(null, 'warning', 'please select a community');
   }
 
-  showErrorNotification(err, message) {
+  showErrorNotification(err, type, message) {
     console.log(err);
     const snackbarRef = this.snackbar.open(message, '', {
       duration: 2000,
       verticalPosition: 'top',
-      panelClass: 'login-snackbar'
+      panelClass: [type]
     });
   }
 }

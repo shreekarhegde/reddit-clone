@@ -69,3 +69,26 @@ ul {
 .vote-buttons {
   cursor: pointer;
 }
+
+::ng-deep .err {
+  background: red;
+  color: white;
+}
+
+::ng-deep .warning {
+  background: yellow;
+  color: black;
+}
+::ng-deep .success {
+  background: green;
+  color: white;
+}
+
+.spinner {
+  position: relative;
+  margin-left: 150px;
+  margin-top: 100px;
+}
+.suggestion {
+  margin-top: 100px;
+}

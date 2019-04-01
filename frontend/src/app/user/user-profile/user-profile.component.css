@@ -1,0 +1,11 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+.navigation {
+  display: flex;
+  flex-direction: row;
+}
+.txt {
+  margin-top: 1px !important;
+}

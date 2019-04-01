@@ -26,7 +26,7 @@ export class UserRegisterComponent implements OnInit {
     this.email = f.value.email ? f.value.email : null;
   }
 
-  async post() {
+  async sendUserDetails() {
     let userDetails = {
       email: this.email,
       username: this.username,
@@ -47,17 +47,21 @@ export class UserRegisterComponent implements OnInit {
           });
       },
       err => {
-        console.log('post: err-------->', err);
-        const snackbarRef = this.snackbar.open('please choose a user name and password', '', {
-          duration: 2000,
-          verticalPosition: 'top',
-          panelClass: 'login-snackbar'
-        });
+        this.showNotification(err, 'err', 'please choose a user name and password');
       }
     );
   }
 
   backToEmail() {
     this.isNextButtonClicked = false;
+  }
+
+  showNotification(err, type, message) {
+    console.log(err, 'err: show notification: user-register------->', err);
+    const snackbarRef = this.snackbar.open(message, 'OK', {
+      duration: 2000,
+      verticalPosition: 'top',
+      panelClass: [type]
+    });
   }
 }

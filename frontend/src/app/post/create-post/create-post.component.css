@@ -55,3 +55,12 @@ textarea {
 input[class='dropdown-item'] {
   padding: 5px;
 }
+::ng-deep .err {
+  background: red;
+}
+::ng-deep .warning {
+  background: yellow;
+}
+::ng-deep .success {
+  background: green;
+}

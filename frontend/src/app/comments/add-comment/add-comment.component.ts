@@ -44,29 +44,15 @@ export class AddCommentComponent implements OnInit {
 
   async ngOnInit() {
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
-    // this.userID = await this.userDetailsService.getUserID();
-    console.log('userID: ngOnInit: add-comment.component========>', this.userDetailsService.getUserID());
+    let userID = await this.userDetailsService.getUserID();
+    console.log('userID: ngOnInit: add-comment.component========>', userID);
 
-    this.userDetailsService
-      .getUserID()
-      .then(res => {
-        this.userID = res;
-      })
-      .catch(err => {
-        this.showErrorNotification(err, 'userID was not recevied: add-comment.component');
-      });
+    this.userID = userID;
 
-    this.userDetailsService
-      .getUserProfile()
-      .then(user => {
-        console.log('user: addComment------>', user);
-        if (user.hasOwnProperty('username')) {
-          this.profileName = user['username'];
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    let user = await this.userDetailsService.getUserProfile();
+
+    this.profileName = user['username'];
+    console.log('username: ngOnInit: add-comment.component========>', this.profileName);
 
     this.activeRoute.params.subscribe(
       params => {
@@ -100,7 +86,7 @@ export class AddCommentComponent implements OnInit {
               this.totalComments = res['data']['length'];
             },
             err => {
-              console.log('err: ngOnInit: add-comment--------->', err);
+              this.showErrorNotification(err, 'err', 'comments were not received');
             }
           );
 
@@ -131,10 +117,9 @@ export class AddCommentComponent implements OnInit {
         res => {
           this.totalVotes = res['totalVotes'];
           this.bool = true;
-          console.log('upvote: res-------------->', res);
         },
         err => {
-          console.log(err);
+          this.showErrorNotification(err, 'err', 'could not upvote, please try again');
         }
       );
     }
@@ -149,11 +134,10 @@ export class AddCommentComponent implements OnInit {
       this.httpService.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
         res => {
           this.totalVotes = res['totalVotes'];
-          console.log('downvote: res-----------', res);
           this.bool = false;
         },
         err => {
-          console.log(err);
+          this.showErrorNotification(err, 'err', 'could not downvote, please try again');
         }
       );
     }
@@ -197,16 +181,17 @@ export class AddCommentComponent implements OnInit {
       },
       err => {
         console.log('err: comment: add-comment------------>', err);
+        this.showErrorNotification(err, 'err', 'could not add comment, please try again');
       }
     );
   }
 
-  showErrorNotification(err, message) {
-    console.log(err);
+  showErrorNotification(err, type, message) {
+    console.log('err: showErrorNotification: add-comment--------->', err);
     const snackbarRef = this.snackbar.open(message, '', {
       duration: 2000,
       verticalPosition: 'top',
-      panelClass: 'login-snackbar'
+      panelClass: [type]
     });
   }
 

@@ -25,7 +25,7 @@ export class CreateCommunityComponent implements OnInit {
   ngOnInit() {}
 
   async createCommunity() {
-    let headerParmas =  this.tokenService.checkTokenAndSetHeader();
+    let headerParmas = this.tokenService.checkTokenAndSetHeader();
     let data = {
       title: this.title,
       name: this.name,
@@ -34,23 +34,21 @@ export class CreateCommunityComponent implements OnInit {
     if (data) {
       this.httpService.postRequest(this.communityUrl, data, headerParmas).subscribe(
         community => {
-          console.log(community);
-
           this.router.navigate(['/r/communities', community['_id']]);
         },
         err => {
-          this.showErrorNotification(err, 'community was not posted: create-community');
+          this.showErrorNotification(err, 'err', 'community was not posted: create-community');
         }
       );
     }
   }
 
-  showErrorNotification(err, message) {
-    console.log(err);
+  showErrorNotification(err, type, message) {
+    console.log('err:showErrorNotification: create-community-------> ', err);
     const snackbarRef = this.snackbar.open(message, '', {
       duration: 2000,
       verticalPosition: 'top',
-      panelClass: 'login-snackbar'
+      panelClass: [type]
     });
   }
 }

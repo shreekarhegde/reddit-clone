@@ -16,6 +16,7 @@ export class CommunityDetailsComponent implements OnInit {
   public postsUrl: string = 'http://localhost:3030/posts';
   public communitiesUrl: string = 'http://localhost:3030/communities';
   public commentsUrl: string = 'http://localhost:3030/comments';
+  public isStillLoading: boolean = true;
 
   constructor(
     public activeRoute: ActivatedRoute,
@@ -34,7 +35,7 @@ export class CommunityDetailsComponent implements OnInit {
         }
       },
       err => {
-        this.showErrorNotification(err, 'id was not recevied: community-details');
+        this.showErrorNotification(err, 'err', 'id was not recevied');
       }
     );
 
@@ -46,7 +47,7 @@ export class CommunityDetailsComponent implements OnInit {
         }
       },
       err => {
-        this.showErrorNotification(err, 'community was not recevied: community-details');
+        this.showErrorNotification(err, 'err', 'community was not recevied');
       }
     );
 
@@ -64,24 +65,28 @@ export class CommunityDetailsComponent implements OnInit {
                 post['comments'] = res['data'];
               },
               err => {
-                this.showErrorNotification(err, 'comments were not recevied: community-details');
+                this.showErrorNotification(err, 'err', 'comments were not recevied');
               }
             );
           });
         }
       },
       err => {
-        this.showErrorNotification(err, 'posts were not recevied: community-details');
+        this.showErrorNotification(err, 'err', 'posts were not recevied: community-details');
       }
     );
+
+    setTimeout(() => {
+      this.isStillLoading = false;
+    }, 4000);
   }
 
-  showErrorNotification(err, message) {
-    console.log(err);
+  showErrorNotification(err, type, message) {
+    console.log('err: showErrorNotification: community-details----->', err);
     const snackbarRef = this.snackbar.open(message, '', {
       duration: 2000,
       verticalPosition: 'top',
-      panelClass: 'login-snackbar'
+      panelClass: [type]
     });
   }
 }

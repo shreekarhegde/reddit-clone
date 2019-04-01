@@ -59,3 +59,15 @@
   margin-top: 550px;
   height: 50px;
 }
+
+::ng-deep .err {
+  background: red;
+}
+
+::ng-deep .warning {
+  background: yellow;
+}
+
+::ng-deep .success {
+  background: green;
+}

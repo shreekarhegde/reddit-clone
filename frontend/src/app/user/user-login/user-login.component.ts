@@ -24,34 +24,30 @@ export class UserLoginComponent implements OnInit {
     if (this.username && this.password) {
       this.http.postRequest(url, data, null).subscribe(
         user => {
-          if (user.hasOwnProperty('accessToken')) {
+          if (user.hasOwnProperty('accessToken') && user['accessToken']['length'] > 10) {
             console.log('user from login------>', user);
             this.tokenService.setToken(user['accessToken']);
-            const snackbarRef = this.snackbar.open('Login successfull!', '', {
-              duration: 2000,
-              verticalPosition: 'top',
-              panelClass: 'login-snackbar'
-            });
+
+            this.showNotification(null, 'success', 'logged in successfully');
+
             this.router.navigate(['r']);
           }
         },
         err => {
-          console.log('error from login----->', err);
-          const snackbarRef = this.snackbar.open('login failed', 'Try again', {
-            duration: 2000,
-            verticalPosition: 'top',
-            panelClass: 'login-snackbar'
-          });
+          this.showNotification(err, 'err', 'login failed. Please enter valid user name and password');
         }
       );
     } else {
-      console.log('enter valid username and password');
-
-      const snackbarRef = this.snackbar.open('Please enter valid user name and password', 'OK', {
-        duration: 2000,
-        verticalPosition: 'top',
-        panelClass: 'login-snackbar'
-      });
+      this.showNotification(null, 'err', 'Please enter valid user name and password');
     }
+  }
+
+  showNotification(err, type, message) {
+    console.log(err, 'err: show notification: user-login------->', err);
+    const snackbarRef = this.snackbar.open(message, 'OK', {
+      duration: 2000,
+      verticalPosition: 'top',
+      panelClass: [type]
+    });
   }
 }

@@ -53,3 +53,7 @@ h6 {
 .inner {
   width: 900px !important;
 }
+.spinner {
+  margin-left: 300px !important;
+  height: 100px !important;
+}

@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule, MatSnackBarModule } from '@angular/material';
 @NgModule({
   declarations: [DisplayPostComponent, CreatePostComponent, SubscribeACommunityComponent],
   imports: [CommonModule, PostRoutingModule, FormsModule, MatProgressSpinnerModule, MatSnackBarModule],
-  exports: []
+  exports: [],
+  providers: []
 })
 export class PostModule {}

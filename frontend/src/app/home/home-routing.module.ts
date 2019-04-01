@@ -1,4 +1,4 @@
-import { Routes, RouterModule, RouterOutlet } from '@angular/router';
+import { Routes, RouterModule, RouterOutlet, CanActivate } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { HomeComponent } from './home/home.component';
 import { DisplayPostComponent } from '../post/display-post/display-post.component';
@@ -7,13 +7,14 @@ import { CreateCommunityComponent } from '../communities/create-community/create
 import { SubscribeACommunityComponent } from '../communities/subscribe-a-community/subscribe-a-community.component';
 import { CommunityDetailsComponent } from '../communities/community-details/community-details.component';
 import { CreatePostComponent } from '../post/create-post/create-post.component';
+import { AuthGuardService as AuthGuard } from '../services/auth-guard.service';
 
 const routes: Routes = [
   {
     path: 'r',
     component: HomeComponent,
     children: [
-      { path: '', component: DisplayPostComponent },
+      { path: '', canActivateChild: [AuthGuard], component: DisplayPostComponent },
       { path: '', component: SubscribeACommunityComponent },
       { path: 'submit', component: CreatePostComponent },
       { path: 'comments/:id', component: AddCommentComponent },

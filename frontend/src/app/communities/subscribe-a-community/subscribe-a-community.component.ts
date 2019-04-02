@@ -45,6 +45,7 @@ export class SubscribeACommunityComponent implements OnInit {
             if (index < 0) {
               communities['data'][i]['isSubscribed'] = false;
               this.communities.push(communities['data'][i]);
+              this.isStillZero = false;
             }
           }
         }
@@ -76,7 +77,7 @@ export class SubscribeACommunityComponent implements OnInit {
             this.communities[index]['isSubscribed'] = true;
             // this.subscribedCommunity.emit(id);
             // this.dataService.setCommunityID(id);
-            this.dataService.shareCommunityID(id);
+            this.dataService.shareID(id);
           },
           err => {
             // console.log(err);

@@ -1,11 +1,12 @@
 <div class="row">
   <div class="col-md-12">
     <ng-container *ngIf="!reOcurringCall">
-      <!-- <div *ngIf="firstLevelComments.length === 0" class="d-flex flex-row">
+      <div *ngIf="firstLevelComments.length === 0" class="d-flex flex-row">
         <mat-spinner class="spinner"></mat-spinner>
         <p class="mt-3 ml-2">loading comments...</p>
-      </div> -->
+      </div>
       <div class="row" *ngFor="let c1 of firstLevelComments; let i = index">
+      
         <div *ngIf="firstLevelComments.length === 0" class="d-flex flex-row">
           <mat-spinner class="spinner"></mat-spinner>
           <p class="mt-3 ml-2">loading comments...</p>

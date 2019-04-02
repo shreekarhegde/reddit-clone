@@ -7,11 +7,11 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export class DataService {
   public idSource: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
-  subscribedCommunity$ = this.idSource.asObservable();
+  subscribedID$ = this.idSource.asObservable();
 
   constructor() {}
 
-  shareCommunityID(id: string) {
+  shareID(id: string) {
     this.idSource.next(id);
   }
 }

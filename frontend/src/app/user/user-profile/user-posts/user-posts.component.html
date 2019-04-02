@@ -1,0 +1,32 @@
+<div class="row border-top">
+  <div class="col-md-12">
+    <div class="row">
+      <div class="col-md-9 ml-4 mt-4">
+        <ul>
+          <li *ngFor="let post of posts" class="mb-2 bg-white">
+            <div class="row   border-bottom pb-2">
+              <div class="col-md-12">
+                <h5 class=" pt-2 ml-3">{{ post?.title }}</h5>
+                <div class="d-flex flex-row">
+                  <P class="txt ml-3 mr-1 ">
+                    <small class="btn btn-link">{{ post?.communityID.name }}</small> posted by
+                  </P>
+                  <p class="btn btn-link">
+                    {{ post?.userID?.username }}
+                  </p>
+                  <p class="ml-2">{{ post.createdAt }}</p>
+                </div>
+                <button class="btn btn-link txt-black ml-3" [routerLink]="['/r/comments', post._id]">Reply</button>
+                <button class="btn btn-link txt-black ml-2" (click)="deletePost(post._id)">delete</button>
+              </div>
+            </div>
+
+            <div class="row ml-3"></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-3"></div>
+    </div>
+  </div>
+</div>

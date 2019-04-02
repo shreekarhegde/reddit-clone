@@ -41,7 +41,7 @@ export class DisplayPostComponent implements OnInit {
 
     this.user = await this.userDetailsService.getUserProfile();
 
-    this.dataService.subscribedCommunity$.subscribe(id => {
+    this.dataService.subscribedID$.subscribe(id => {
       if (id) {
         console.log('latest subscribed community id===========>', id);
         this.http.getRequest(`${this.postsUrl}/?communityID=${id}&$populate=userID&$populate=communityID`, this.headerParams).subscribe(
@@ -67,7 +67,7 @@ export class DisplayPostComponent implements OnInit {
           this.posts = [];
           console.log('ngOnInit: posts----->', res);
           let allPosts = res['data'];
-
+          this.isStillLoading = false;
           //check for creator of posts and enable delete button only if true.
           allPosts.forEach(post => {
             if (this.userID === post['userID']['_id']) {

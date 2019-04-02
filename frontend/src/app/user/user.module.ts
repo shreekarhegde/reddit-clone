@@ -7,9 +7,11 @@ import { FormsModule } from '@angular/forms';
 import { MatSnackBarModule, MatDialogModule } from '@angular/material';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { NavigationModule } from '../navigation/navigation.module';
+import { UserPostsComponent } from './user-profile/user-posts/user-posts.component';
+import { UserCommentsComponent } from './user-profile/user-comments/user-comments.component';
 
 @NgModule({
-  declarations: [UserRegisterComponent, UserLoginComponent, UserProfileComponent],
+  declarations: [UserRegisterComponent, UserLoginComponent, UserProfileComponent, UserPostsComponent, UserCommentsComponent],
   imports: [CommonModule, UserRoutingModule, FormsModule, MatSnackBarModule, NavigationModule, MatDialogModule],
   exports: []
 })

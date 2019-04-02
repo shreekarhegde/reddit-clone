@@ -44,6 +44,7 @@ export class CommunityDetailsComponent implements OnInit {
         console.log('community--------->', res);
         if (res) {
           this.community = res;
+          this.isStillLoading = false;
         }
       },
       err => {
@@ -75,10 +76,6 @@ export class CommunityDetailsComponent implements OnInit {
         this.showErrorNotification(err, 'err', 'posts were not recevied: community-details');
       }
     );
-
-    setTimeout(() => {
-      this.isStillLoading = false;
-    }, 4000);
   }
 
   showErrorNotification(err, type, message) {

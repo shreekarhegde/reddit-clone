@@ -25,11 +25,13 @@ export class UserPostsComponent implements OnInit {
 
   async ngOnInit() {
     this.userID = this.activatedRoute.snapshot['_urlSegment']['segments'][1]['path'];
+
+    console.log(this.userID, 'userID: gOnInit: user-posts.component');
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
-    let populateQuery = '/?$populate=userID&$populate=communityID';
+    let populateQuery = '&$populate=userID&$populate=communityID';
 
-    this.httpService.getRequest(this.postsUrl + populateQuery, this.headerParams).subscribe(
+    this.httpService.getRequest(`${this.postsUrl}/?userID=${this.userID}` + populateQuery, this.headerParams).subscribe(
       res => {
         if (res.hasOwnProperty('data')) {
           this.posts = [];

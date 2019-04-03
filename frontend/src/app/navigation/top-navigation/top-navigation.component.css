@@ -68,3 +68,12 @@ select:hover {
   margin-top: 10px;
   cursor: pointer;
 }
+::ng-deep .err {
+  background: red;
+}
+::ng-deep .success {
+  background: green;
+}
+::ng-deep .warning {
+  background: yellow;
+}

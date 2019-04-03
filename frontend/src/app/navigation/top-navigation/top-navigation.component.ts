@@ -38,6 +38,10 @@ export class TopNavigationComponent implements OnInit {
   onChange(event) {
     if (event['target']['value'] === 'My profile') {
       this.router.navigate(['', 'users', this.userID, 'comments']);
+    } else if (event['target']['value'] === 'Logout') {
+      localStorage.clear();
+      this.showNotification(null, 'success', 'Logged out successfully');
+      this.router.navigate(['', 'users', 'login']);
     }
   }
 

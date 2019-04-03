@@ -47,7 +47,9 @@ export class UserRegisterComponent implements OnInit {
           });
       },
       err => {
-        this.showNotification(err, 'err', 'please choose a user name and password');
+        if (err['statusText'] === 'Conflict') {
+          this.showNotification(err, 'err', 'This user name is already taken. Please choose a different username.');
+        }
       }
     );
   }

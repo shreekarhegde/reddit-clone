@@ -18,17 +18,16 @@
         <div *ngIf="posts.length === 0 && !isStillLoading" class="suggestion">
           <p>There is nothing to display. Subscribe communities of your interest to see contents from them.</p>
         </div>
-        <!-- <app-display-post></app-display-post> -->
         <ul>
           <li *ngFor="let post of posts">
             <div class="row m-3 border bg-white">
-              <!-- <div class="col-md-1">
+              <div class="col-md-1 bg-light">
                 <div class="vote-buttons p-3 h-100">
-                  <i class="fas fa-arrow-up"></i>
-                  <p class="votes">{{ post.totalVotes }}</p>
-                  <i class="fas fa-arrow-down"></i>
+                  <i class="fas fa-arrow-up" (click)="upvote(post._id)"></i>
+                  <p class="votes">{{ post?.totalVotes }}</p>
+                  <i class="fas fa-arrow-down" (click)="downvote(post._id)"></i>
                 </div>
-              </div> -->
+              </div>
               <div class="col-md-11">
                 <div class="row">
                   <div class="col-md-12">

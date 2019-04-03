@@ -149,6 +149,7 @@ export class DisplayPostComponent implements OnInit {
 
   deletePost(postID) {
     // console.log(postID);
+
     this.http.deleteRequest(`${this.postsUrl}/${postID}`, this.headerParams).subscribe(
       res => {
         let index = this.posts.findIndex(post => post['_id'] === res['_id']);

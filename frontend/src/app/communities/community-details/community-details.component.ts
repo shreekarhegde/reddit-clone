@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpService } from 'src/app/services/http.service';
 import { TokenService } from 'src/app/services/token.service';
 import { MatSnackBar } from '@angular/material';
+import { UserDetailsService } from 'src/app/services/user-details.service';
 @Component({
   selector: 'app-community-details',
   templateUrl: './community-details.component.html',
@@ -17,15 +18,18 @@ export class CommunityDetailsComponent implements OnInit {
   public communitiesUrl: string = 'http://localhost:3030/communities';
   public commentsUrl: string = 'http://localhost:3030/comments';
   public isStillLoading: boolean = true;
-
+  public userID: any = '';
   constructor(
     public activeRoute: ActivatedRoute,
     public httpService: HttpService,
     public tokenService: TokenService,
-    public snackbar: MatSnackBar
+    public snackbar: MatSnackBar,
+    public userDetailsService: UserDetailsService
   ) {}
 
   async ngOnInit() {
+    this.userID = await this.userDetailsService.getUserID();
+
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
     this.activeRoute.params.subscribe(
@@ -35,7 +39,7 @@ export class CommunityDetailsComponent implements OnInit {
         }
       },
       err => {
-        this.showErrorNotification(err, 'err', 'id was not recevied');
+        this.showNotification(err, 'err', 'id was not recevied');
       }
     );
 
@@ -48,7 +52,7 @@ export class CommunityDetailsComponent implements OnInit {
         }
       },
       err => {
-        this.showErrorNotification(err, 'err', 'community was not recevied');
+        this.showNotification(err, 'err', 'community was not recevied');
       }
     );
 
@@ -66,19 +70,65 @@ export class CommunityDetailsComponent implements OnInit {
                 post['comments'] = res['data'];
               },
               err => {
-                this.showErrorNotification(err, 'err', 'comments were not recevied');
+                this.showNotification(err, 'err', 'comments were not recevied');
               }
             );
           });
         }
       },
       err => {
-        this.showErrorNotification(err, 'err', 'posts were not recevied: community-details');
+        this.showNotification(err, 'err', 'posts were not recevied: community-details');
       }
     );
   }
 
-  showErrorNotification(err, type, message) {
+  upvote(id) {
+    let index = this.posts.findIndex(post => post['_id'] === id);
+    // console.log('index-------------->', index);
+    if (!this.posts[index]['upvotedBy'].includes(this.userID) && id) {
+      let voteUrl = 'http://localhost:3030/votes';
+      let query = `?text=upvote&postID=${id}&userID=${this.userID}`;
+
+      this.httpService.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
+        res => {
+          // console.log('upvoted', res);
+          let index = this.posts.findIndex(post => post['_id'] == id);
+          console.log('index of upvoted post---------->', index);
+          this.posts[index]['totalVotes'] = res['totalVotes'];
+          //if user is not present in upvoters array push him on the fly. Nothing do with db.
+          this.posts[index]['upvotedBy'].push(this.userID);
+          this.posts[index]['downvotedBy'].pop(this.userID);
+        },
+        err => {
+          this.showNotification(err, 'err', 'could not upvote');
+        }
+      );
+    }
+  }
+  downvote(id) {
+    let index = this.posts.findIndex(post => post['_id'] === id);
+    if (!this.posts[index]['downvotedBy'].includes(this.userID) && id) {
+      let voteUrl = 'http://localhost:3030/votes';
+      let query = `?text=downvote&postID=${id}&userID=${this.userID}`;
+
+      this.httpService.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
+        res => {
+          // console.log('downvoted', res);
+          let index = this.posts.findIndex(post => post['_id'] == id);
+          console.log('index of downvoted post---------->', index);
+          this.posts[index]['totalVotes'] = res['totalVotes'];
+          //if user is not present in downvoters array push him on the fly. Nothing do with db.
+          this.posts[index]['downvotedBy'].push(this.userID);
+          this.posts[index]['upvotedBy'].pop(this.userID);
+        },
+        err => {
+          this.showNotification(err, 'err', 'could not downvote');
+        }
+      );
+    }
+  }
+
+  showNotification(err, type, message) {
     console.log('err: showErrorNotification: community-details----->', err);
     const snackbarRef = this.snackbar.open(message, '', {
       duration: 2000,

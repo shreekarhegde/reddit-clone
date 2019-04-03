@@ -42,12 +42,12 @@
                     </div>
                     <div class="icons">
                       <i class="fas fa-comment-alt" [routerLink]="['/r/comments', post._id]"> </i
-                      ><span class="ml-1">{{ post?.comments?.length }} comments </span>
+                      ><span class="ml-1" [routerLink]="['/r/comments', post._id]">{{ post?.comments?.length }} comments </span>
                       <!-- <i class="fas fa-share ml-3"></i
                       ><span class="ml-1">Share</span> -->
                       <!-- <i class="fas fa-check ml-3"></i><span class="ml-1">Approve</span> -->
                       <i class="fas fa-trash-alt ml-3" (click)="deletePost(post._id)" *ngIf="post.creator"></i
-                      ><span class="ml-1" *ngIf="post.creator">Remove</span>
+                      ><span class="ml-1" *ngIf="post.creator" (click)="deletePost(post._id)">Remove</span>
                       <!-- <i class="fas fa-dumpster ml-3"> </i
                       ><span class="ml-1">Spam</span> -->
                     </div>

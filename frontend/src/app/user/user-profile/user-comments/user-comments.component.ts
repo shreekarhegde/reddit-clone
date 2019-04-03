@@ -56,11 +56,11 @@ export class UserCommentsComponent implements OnInit {
     );
 
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
-    let query = `/?userID=${this.userID}&$populate=userID&$populate=postID`;
+    let query = `/?userID=${this.userID}&$populate=postID&$populate=userID`;
     let comments = await this.httpService.getRequest(this.commentsUrl + query, this.headerParams);
     comments.subscribe(
       res => {
-        if (res.hasOwnProperty('data')) {
+        if (res.hasOwnProperty('data') && res['data'].length > 0) {
           console.log('comments: user-profile: ngOnInit------>', res);
           this.comments = res['data'];
           this.comments.forEach(async comment => {

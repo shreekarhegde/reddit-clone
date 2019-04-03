@@ -9,7 +9,7 @@ module.exports = function(app) {
   const users = new mongooseClient.Schema(
     {
       email: { type: String },
-      username: { type: String },
+      username: { type: String, required: true, unique: true },
       password: { type: String, required: true },
       communities: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'communities' }]
     },

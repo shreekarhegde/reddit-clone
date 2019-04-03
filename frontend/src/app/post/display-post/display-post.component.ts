@@ -43,7 +43,6 @@ export class DisplayPostComponent implements OnInit {
 
     this.dataService.subscribedID$.subscribe(id => {
       if (id) {
-        this.posts = [];
 
         console.log('latest subscribed community id===========>', id);
         this.http.getRequest(`${this.postsUrl}/?communityID=${id}&$populate=userID&$populate=communityID`, this.headerParams).subscribe(

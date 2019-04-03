@@ -32,6 +32,10 @@
   display: flex;
 }
 
+.side-image {
+  max-height: 100% !important;
+}
+
 ::ng-deep .err,
 .warning,
 .success {

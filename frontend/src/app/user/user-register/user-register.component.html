@@ -1,6 +1,6 @@
-<div *ngIf="isNextButtonClicked === false" class="container">
+<div *ngIf="isNextButtonClicked === false" >
   <div class="row">
-    <img class="side-image" style="height: 820px" src="http://i.imgur.com/zd8Ud.jpg" />
+    <img class="side-image"  src="http://i.imgur.com/zd8Ud.jpg" />
 
     <div class="col-md-10">
       <div class="row">
@@ -11,8 +11,15 @@
           </p>
           <p class="signin-content">Sign up.</p>
           <form #f="ngForm" (ngSubmit)="getUserEmail(f)">
-            <input type="text" class="input-group email" placeholder="Email" name="email" ngModel />
-
+            <input type="text" class="input-group email" placeholder="Email" name="email" type="email" [pattern]="emailPattern" #email="ngModel" ngModel required/>
+            <div *ngIf="email?.errors"> 
+              <div *ngIf="email?.errors?.required"> 
+                 Email is required.
+              </div>			   
+              <div *ngIf="email?.errors?.pattern"> 
+                Email is not valid.
+              </div>	
+            </div> 
             <input type="submit" class="btn btn-primary mt-4 signin-btn" name="NEXT" value="NEXT" />
           </form>
 
@@ -35,7 +42,7 @@
   </div>
 </div>
 
-<div *ngIf="isNextButtonClicked === true">
+<div *ngIf="isNextButtonClicked === true" style="min-width: 100%; min-height: 100%">
   <div id="parent">
     <div class="row mt-3 ml-3">
       <h5>

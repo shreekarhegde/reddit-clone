@@ -14,6 +14,7 @@ export class UserRegisterComponent implements OnInit {
   constructor(public http: HttpService, public router: Router, public tokenService: TokenService, public snackbar: MatSnackBar) {}
   public isNextButtonClicked: boolean = false;
   public email: string = '';
+  public emailPattern = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$');
   public username: string = '';
   public password: string = '';
   public usersUrl: string = 'http://localhost:3030/users';
@@ -22,8 +23,11 @@ export class UserRegisterComponent implements OnInit {
   ngOnInit() {}
 
   getUserEmail(f: NgForm): void {
-    this.isNextButtonClicked = true;
     this.email = f.value.email ? f.value.email : null;
+    console.log(f.value.email)
+    if(this.emailPattern.test(this.email)){
+      this.isNextButtonClicked = true;
+    }
   }
 
   async sendUserDetails() {
@@ -33,7 +37,7 @@ export class UserRegisterComponent implements OnInit {
       password: this.password
     };
 
-    await this.http.postRequest(this.usersUrl, userDetails, null).subscribe(
+    this.http.postRequest(this.usersUrl, userDetails, null).subscribe(
       user => {
         console.log('post: user-------->', user);
         this.http

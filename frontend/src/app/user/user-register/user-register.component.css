@@ -59,6 +59,10 @@
   margin-top: 550px;
   height: 50px;
 }
+#parent{
+  max-width: 100% !important;
+  max-height: 100% !important;
+}
 
 ::ng-deep .err {
   background: red;

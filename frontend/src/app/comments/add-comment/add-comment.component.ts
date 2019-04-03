@@ -197,6 +197,7 @@ export class AddCommentComponent implements OnInit {
 
   updateCommentsCount($event) {
     if ($event) {
+      console.log($event);
       if ($event === 'comment added') {
         this.totalComments += 1;
       } else if ($event === 'comment deleted') {

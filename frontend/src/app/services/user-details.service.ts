@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { TokenService } from './token.service';
-import { HttpHeaders } from '@angular/common/http';
 import * as jwtDecode from 'jwt-decode';
-// const jwtDecode = require('jwt-decode');
 
 @Injectable({
   providedIn: 'root'

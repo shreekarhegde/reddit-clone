@@ -64,6 +64,7 @@ ul {
 .community-name,
 .time {
   display: inline-block !important;
+  cursor: pointer;
 }
 .icons,
 .vote-buttons {

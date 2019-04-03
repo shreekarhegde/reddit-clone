@@ -4,7 +4,7 @@ import { UserRegisterComponent } from './user-register/user-register.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { UserRoutingModule } from './user-routing.module';
 import { FormsModule } from '@angular/forms';
-import { MatSnackBarModule, MatDialogModule } from '@angular/material';
+import { MatSnackBarModule, MatDialogModule, MatProgressSpinnerModule } from '@angular/material';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { NavigationModule } from '../navigation/navigation.module';
 import { UserPostsComponent } from './user-profile/user-posts/user-posts.component';
@@ -12,7 +12,7 @@ import { UserCommentsComponent } from './user-profile/user-comments/user-comment
 
 @NgModule({
   declarations: [UserRegisterComponent, UserLoginComponent, UserProfileComponent, UserPostsComponent, UserCommentsComponent],
-  imports: [CommonModule, UserRoutingModule, FormsModule, MatSnackBarModule, NavigationModule, MatDialogModule],
+  imports: [CommonModule, UserRoutingModule, FormsModule, MatSnackBarModule, NavigationModule, MatDialogModule, MatProgressSpinnerModule],
   exports: []
 })
 export class UserModule {}

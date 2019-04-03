@@ -87,19 +87,23 @@
             Password must be atleast 8 length in character and contain one special character, one capital letter, one small letter and a
             number.
           </div>
-          <div *ngIf="password?.errors?.required">
+          <div *ngIf="password?.errors?.required" class="ml-2">
             pasword is required
           </div>
         </div>
       </div>
-      <div class=" row bg-light" id="back-next">
+      <div class="row spinner" *ngIf="isStillLoading">
+        <mat-spinner></mat-spinner>
+        <p class="mt-3">Logging in. Please wait...</p>
+      </div>
+      <div class=" row bg-light " id="back-next">
         <div class="col-sm m-3">
           <a class="btn btn-link" (click)="backToEmail()">Back</a>
         </div>
         <div class="col-sm"></div>
         <div class="col-sm">
           <!-- <p class="float-right btn btn-link m-3">Next</p> -->
-          <button name="next" value="next" type="submit" class="float-right btn btn-link">next</button>
+          <button name="next" value="next" type="submit" class="float-right btn btn-link mr-3 mt-2 bottom-0">next</button>
         </div>
       </div>
     </form>

@@ -15,7 +15,7 @@ export class UserRegisterComponent implements OnInit {
   public isNextButtonClicked: boolean = false;
   public email: string = '';
   public password: string = '';
-
+  public isStillLoading: boolean = false;
   public emailPattern = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$');
   public passwordPattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
   public username: string = '';
@@ -46,6 +46,7 @@ export class UserRegisterComponent implements OnInit {
         password: this.password
       };
       console.log(userDetails);
+      this.isStillLoading = true;
 
       this.http.postRequest(this.usersUrl, userDetails, null).subscribe(
         user => {
@@ -54,6 +55,7 @@ export class UserRegisterComponent implements OnInit {
             .postRequest(this.authUrl, { strategy: 'local', username: this.username, password: this.password }, null)
             .subscribe(res => {
               if (res) {
+                this.isStillLoading = false;
                 console.log('res from register', res);
                 this.tokenService.setToken(res);
                 this.router.navigateByUrl('r');

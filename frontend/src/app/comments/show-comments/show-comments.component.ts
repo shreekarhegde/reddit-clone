@@ -21,6 +21,7 @@ export class ShowCommentsComponent implements OnInit, OnDestroy {
   public headerParams: object = {};
   public firstLevelComments: object[] = [];
   public childComments: object[] = [];
+  public isStillLoading: boolean = false;
   public alive: boolean = true;
   @Input() innerComments = [];
   @Input() reOcurringCall = false;
@@ -54,7 +55,6 @@ export class ShowCommentsComponent implements OnInit, OnDestroy {
     if (this.reOcurringCall) return;
 
     console.log('show-comments: this.reOcurringCall -->', this.reOcurringCall);
-
     this.toggleService.toggleValue$
       .pipe(takeWhile(() => this.alive))
       .pipe(skip(1))
@@ -72,9 +72,9 @@ export class ShowCommentsComponent implements OnInit, OnDestroy {
   }
 
   displayComments() {
+    this.isStillLoading = true;
+
     this.firstLevelComments = [];
-    // this.serviceToggle = false;
-    // this.toggleService.setToggleValue(false);
 
     let query = `?postID=${this.postID}&$populate=userID`;
 
@@ -83,6 +83,7 @@ export class ShowCommentsComponent implements OnInit, OnDestroy {
       async comments => {
         console.log('show-comments: all comments------->', comments);
         if (comments) {
+          this.isStillLoading = false;
           for (let i = 0; i < comments['data'].length; i++) {
             if (!comments['data'][i].hasOwnProperty('parentCommentID')) {
               let query = '/?parentCommentID=' + comments['data'][i]['_id'];

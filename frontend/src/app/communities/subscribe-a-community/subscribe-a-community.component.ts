@@ -17,7 +17,7 @@ export class SubscribeACommunityComponent implements OnInit {
   public communitiesUrl: string = 'http://localhost:3030/communities';
   public communityID: string = '';
   public user: any = {};
-  public isStillZero: boolean = true;
+  public isStillLoading: boolean = false;
   // @Output() subscribedCommunity = new EventEmitter();
   constructor(
     public tokenService: TokenService,
@@ -28,6 +28,8 @@ export class SubscribeACommunityComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.isStillLoading = true;
+
     let user = await this.userDetailsService.getUserProfile();
 
     this.user = user;
@@ -38,6 +40,8 @@ export class SubscribeACommunityComponent implements OnInit {
 
     communities.subscribe(
       communities => {
+        this.isStillLoading = false;
+
         console.log('all communities------->', communities['data']);
         if (communities.hasOwnProperty('data') && this.user.hasOwnProperty('communities')) {
           for (let i = 0; i < communities['data'].length; i++) {
@@ -45,7 +49,6 @@ export class SubscribeACommunityComponent implements OnInit {
             if (index < 0) {
               communities['data'][i]['isSubscribed'] = false;
               this.communities.push(communities['data'][i]);
-              this.isStillZero = false;
             }
           }
         }
@@ -54,10 +57,6 @@ export class SubscribeACommunityComponent implements OnInit {
         this.showErrorNotification(err, 'err', 'communities was not recevied: subscribe-a-community');
       }
     );
-
-    setTimeout(() => {
-      this.isStillZero = false;
-    }, 3000);
   }
 
   subscribeACommunity(id: string) {

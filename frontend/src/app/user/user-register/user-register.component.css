@@ -79,3 +79,12 @@
 .spinner {
   margin-left: 500px;
 }
+.row {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute;
+}
+.side-image img {
+  width: 100% !important;
+  height: 100% !important;
+}

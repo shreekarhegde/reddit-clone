@@ -41,3 +41,6 @@
 .success {
   background: red;
 }
+.spinner-border {
+  height: 30px !important;
+}

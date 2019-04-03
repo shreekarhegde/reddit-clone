@@ -1,6 +1,6 @@
 <div class="">
   <div class="row">
-    <img class="side-image"  src="http://i.imgur.com/zd8Ud.jpg" />
+    <img class="side-image" src="http://i.imgur.com/zd8Ud.jpg" />
 
     <div class="col-md-10">
       <div class="row">
@@ -15,17 +15,19 @@
             <input type="password" class="input-group user-detail" name="password" [(ngModel)]="password" id="password" />
             <button type="submit" class="btn btn-primary mt-4 signin">
               SIGN IN
+              <div class="spinner-border" role="status" *ngIf="isStillLoading"></div>
             </button>
           </form>
+
           <footer>
-            <div>
+            <!-- <div>
               <button class="btn btn-link mt-2 reset-link">
                 Forgot username
               </button>
               <button class="btn btn-link mt-2 ml-2 reset-link">
                 Forgot password
               </button>
-            </div>
+            </div> -->
             <div class="signup-link">
               <p class="mt-4">New to Reddit?</p>
               <button class="btn btn-link mt-2 ml-2 reset-link mt-4">

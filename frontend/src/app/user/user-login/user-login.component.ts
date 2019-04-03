@@ -13,6 +13,7 @@ export class UserLoginComponent implements OnInit {
   public username: string = '';
   public password: string = '';
   public isLoggedIn: boolean = false;
+  public isStillLoading: boolean = false;
 
   constructor(private http: HttpService, private router: Router, private tokenService: TokenService, public snackbar: MatSnackBar) {}
 
@@ -21,11 +22,13 @@ export class UserLoginComponent implements OnInit {
   login() {
     let url = 'http://localhost:3030/authentication';
     let data = { strategy: 'local', username: this.username, password: this.password };
+    this.isStillLoading = true;
     if (this.username && this.password) {
       this.http.postRequest(url, data, null).subscribe(
         user => {
           if (user.hasOwnProperty('accessToken') && user['accessToken']['length'] > 10) {
             console.log('user from login------>', user);
+            this.isStillLoading = false;
             this.tokenService.setToken(user['accessToken']);
 
             this.showNotification(null, 'success', 'logged in successfully');
@@ -34,10 +37,14 @@ export class UserLoginComponent implements OnInit {
           }
         },
         err => {
+          this.isStillLoading = false;
+
           this.showNotification(err, 'err', 'login failed. Please enter valid user name and password');
         }
       );
     } else {
+      this.isStillLoading = false;
+
       this.showNotification(null, 'err', 'Please enter valid user name and password');
     }
   }

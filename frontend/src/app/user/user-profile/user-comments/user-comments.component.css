@@ -35,3 +35,7 @@ button.active {
   background: darkblue;
   color: white;
 }
+.empty-message {
+  margin-left: 450px;
+  margin-top: 200px;
+}

@@ -28,7 +28,7 @@ export class UserRegisterComponent implements OnInit {
     this.email = f.value.email ? f.value.email : null;
     console.log(f.value.email);
     if (this.emailPattern.test(this.email)) {
-      this.isNextButtonClicked = true;
+    this.isNextButtonClicked = true;
     }
   }
 

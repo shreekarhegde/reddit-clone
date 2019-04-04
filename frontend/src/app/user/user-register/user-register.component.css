@@ -3,19 +3,19 @@
   margin: 0;
 }
 .content {
-  margin-top: 250px;
-  height: 400px;
   margin-left: 20px;
+  align-items: flex-start;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
 }
 .side-image {
-  width: 140px !important;
+  width: 100% !important;
 }
 .reddit-icon {
   height: 40px;
 }
-.text-sign-in {
-  margin-top: 15px;
-}
+
 .email {
   width: 400px;
   margin-top: 15px;
@@ -49,19 +49,13 @@
   font-size: 12px;
   padding-left: 5px;
 }
-.username {
-  height: 50px;
-}
+.username,
 .password {
   height: 50px;
 }
+
 #back-next {
-  margin-top: 530px;
   height: 50px;
-}
-#parent {
-  max-width: 100% !important;
-  max-height: 100% !important;
 }
 
 ::ng-deep .err {

@@ -19,38 +19,9 @@ ul {
 /* post buttons
 ---------------------------------- */
 
-.create-post {
-  margin: 2%;
-  width: 100%;
-  background-color: rgb(23, 119, 230);
-  color: white;
-}
-.create-community {
-  margin: 2%;
-  width: 100%;
-  background-color: white;
-  color: rgb(134, 214, 238);
-}
-
-/* .home {
-  height: 150px;
-} */
-.post {
-  height: 300px;
-}
-.planets-img {
-  height: 42px;
-}
 .reddit-logo-animal {
   height: 80px;
   width: 30px;
-}
-.planets-img img {
-  height: 100%;
-  width: 100%;
-}
-.sub {
-  width: 100%;
 }
 
 .spin {

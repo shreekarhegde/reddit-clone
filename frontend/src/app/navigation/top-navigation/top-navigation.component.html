@@ -1,14 +1,14 @@
-<div class="row d-flex flex-row justify-content-around bg-white">
-  <div class="d-flex flex-row justify-content-around mt-1">
+<div class="row d-flex flex-row justify-content-around bg-white ">
+  <div class="d-flex flex-row justify-content-around mt-1" [routerLink]="['/r']">
     <img
       class="reddit-icon mt-2"
       src="https://cdn3.iconfinder.com/data/icons/2018-social-media-logotypes/1000/2018_social_media_popular_app_logo_reddit-512.png"
     />
-    <h4 class=" mr-2 ml-2 reddit" [routerLink]="['/r']">reddit</h4>
+    <h4 class=" mr-2 ml-2 reddit">reddit</h4>
   </div>
   <div>
     <mat-form-field>
-      <mat-label>Select an option</mat-label>
+      <mat-label>See contents from</mat-label>
       <mat-select (selectionChange)="onChangeFilter($event)">
         <mat-option value="Home"><b>Home</b></mat-option>
         <mat-option value="Popular"><b>Popular</b></mat-option>

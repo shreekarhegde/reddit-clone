@@ -26,7 +26,6 @@
 }
 .reddit {
   margin-top: 10px;
-  cursor: pointer;
 }
 ::ng-deep .err {
   background: red;
@@ -39,4 +38,8 @@
 }
 ::ng-deep .mat-form-field-underline {
   display: none;
+}
+.justify-content-around {
+  outline: none;
+  cursor: pointer;
 }

@@ -5,6 +5,8 @@
 .content {
   margin-top: 250px;
   margin-left: 20px;
+  margin-right: 2%;
+  width: 100%;
 }
 .side-image img {
   width: 100%;
@@ -15,15 +17,16 @@
 }
 .text-sign-in {
   margin-top: 15px;
+  max-width: 100%;
 }
 .user-detail {
-  width: 350px;
+  width: 30%;
+  height: 50px;
   margin-top: 15px;
-  height: 45px;
 }
 .signin {
-  width: 150px;
-  height: 40px;
+  width: 8%;
+  /* height: 40px; */
 }
 .reset-link {
   font-size: 12px;
@@ -46,13 +49,26 @@
   position: absolute;
 }
 
-@media only screen and (max-width: 300px) {
+@media only screen and (max-width: 766px) {
   div .col-md-1 {
     width: 100%;
   }
   .content {
-    margin: 10px;
-    padding: 10px !important;
+    margin-top: auto;
+    padding: 5px !important;
+    margin: 5px !important;
     width: 100% !important;
+  }
+
+  form input {
+    width: 100% !important;
+  }
+
+  div.row {
+    height: 10px;
+  }
+
+  .signin {
+    min-width: 50px;
   }
 }

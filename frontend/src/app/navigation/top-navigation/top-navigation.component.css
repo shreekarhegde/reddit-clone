@@ -2,49 +2,9 @@
   padding: 0;
   margin: 0;
 }
-.top-nav-1 {
-  height: 50px;
-  background: white;
-}
 
 .reddit-icon {
   height: 30px;
-}
-.col-md-1 {
-  display: flex;
-  justify-content: flex-end;
-}
-.bg-white {
-  height: 35px;
-  width: 200px;
-}
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  text-indent: 10px;
-  text-overflow: '';
-  background-image: url('https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png');
-
-  background-repeat: no-repeat;
-  background-position: 170px;
-}
-select:hover {
-  border-color: rgb(224, 221, 221) !important;
-}
-.has-search .form-control {
-  padding-left: 35px;
-}
-
-.has-search .form-control-feedback {
-  position: absolute;
-  z-index: 2;
-  display: block;
-  width: 30px;
-  height: 30px;
-  line-height: 35px;
-  text-align: center;
-  pointer-events: none;
-  color: #aaa;
 }
 
 .form-control:hover {
@@ -76,4 +36,7 @@ select:hover {
 }
 ::ng-deep .warning {
   background: yellow;
+}
+::ng-deep .mat-form-field-underline {
+  display: none;
 }

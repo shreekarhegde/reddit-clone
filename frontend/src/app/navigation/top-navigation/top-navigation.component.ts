@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class TopNavigationComponent implements OnInit {
   public userName: string = '';
   public userID: any = '';
+  public selected: string = 'Home';
   constructor(
     public httpService: HttpService,
     public tokenService: TokenService,
@@ -36,13 +37,19 @@ export class TopNavigationComponent implements OnInit {
   }
 
   onChange(event) {
-    if (event['target']['value'] === 'My profile') {
+    this.selected = event['value'];
+
+    if (event['value'] === 'My profile') {
       this.router.navigate(['', 'users', this.userID, 'comments']);
-    } else if (event['target']['value'] === 'Logout') {
+    } else if (event['value'] === 'Logout') {
       localStorage.clear();
       this.showNotification(null, 'success', 'Logged out successfully');
       this.router.navigate(['', 'users', 'login']);
     }
+  }
+  onChangeFilter(event) {
+    console.log(event.value);
+    // this.selected = event['value'];
   }
 
   showNotification(err, type, message) {

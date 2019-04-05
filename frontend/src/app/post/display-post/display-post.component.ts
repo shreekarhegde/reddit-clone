@@ -2,12 +2,16 @@ import { HttpService } from '../../services/http.service';
 import { MatSnackBar } from '@angular/material';
 import { TokenService } from '../../services/token.service';
 import { UserDetailsService } from '../../services/user-details.service';
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from 'src/app/services/data-service.service';
 
 import * as momemt from 'moment';
 import { skip } from 'rxjs/operators';
 import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
+
+const POSTS_URL = 'http://localhost:3030/posts';
+const COMMENTS_URL = 'http://localhost:3030/comments';
+const VOTES_URL = 'http://localhost:3030/votes';
 
 @Component({
   selector: 'app-display-post',
@@ -15,11 +19,8 @@ import { FilterService } from 'src/app/navigation/top-navigation/filter.service'
   styleUrls: ['./display-post.component.css']
 })
 export class DisplayPostComponent implements OnInit {
-  public postsUrl: string = 'http://localhost:3030/posts';
-  public commentsUrl: string = 'http://localhost:3030/comments';
   public userID: any = '';
-  public accessToken: string = '';
-  public headerParams: object = {};
+  private headerParams: object = {};
   public posts: object[] = [];
   public comments: object[] = [];
   public username: string = '';
@@ -47,10 +48,7 @@ export class DisplayPostComponent implements OnInit {
     this.dataService.subscribedID$.subscribe(async id => {
       if (id) {
         console.log('latest subscribed community id===========>', id);
-        let posts = await this.http.getRequest(
-          `${this.postsUrl}/?communityID=${id}&$populate=userID&$populate=communityID`,
-          this.headerParams
-        );
+        let posts = await this.http.getRequest(`${POSTS_URL}/?communityID=${id}&$populate=userID&$populate=communityID`, this.headerParams);
         posts.subscribe(
           res => {
             console.log('new posts=========>', res);
@@ -96,10 +94,9 @@ export class DisplayPostComponent implements OnInit {
     let index = this.posts.findIndex(post => post['_id'] === id);
     // console.log('index-------------->', index);
     if (!this.posts[index]['upvotedBy'].includes(this.userID) && id) {
-      let voteUrl = 'http://localhost:3030/votes';
       let query = `?text=upvote&postID=${id}&userID=${this.userID}`;
 
-      this.http.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
+      this.http.patchRequest(VOTES_URL + query, null, this.headerParams).subscribe(
         res => {
           // console.log('upvoted', res);
           let index = this.posts.findIndex(post => post['_id'] == id);
@@ -118,10 +115,10 @@ export class DisplayPostComponent implements OnInit {
   downvote(id) {
     let index = this.posts.findIndex(post => post['_id'] === id);
     if (!this.posts[index]['downvotedBy'].includes(this.userID) && id) {
-      let voteUrl = 'http://localhost:3030/votes';
+      let VOTES_URL = 'http://localhost:3030/votes';
       let query = `?text=downvote&postID=${id}&userID=${this.userID}`;
 
-      this.http.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
+      this.http.patchRequest(VOTES_URL + query, null, this.headerParams).subscribe(
         res => {
           // console.log('downvoted', res);
           let index = this.posts.findIndex(post => post['_id'] == id);
@@ -142,7 +139,7 @@ export class DisplayPostComponent implements OnInit {
     // console.log(postID);
     let query = `/?postID=${postID}`;
     if (window.confirm('Are you sure you want to delete this?')) {
-      let comments = await this.http.deleteRequest(this.commentsUrl + query, this.headerParams);
+      let comments = await this.http.deleteRequest(COMMENTS_URL + query, this.headerParams);
       comments.subscribe(
         res => {
           console.log('deleted comments--->', res);
@@ -154,7 +151,7 @@ export class DisplayPostComponent implements OnInit {
         }
       );
 
-      let posts = await this.http.deleteRequest(`${this.postsUrl}/${postID}`, this.headerParams);
+      let posts = await this.http.deleteRequest(`${POSTS_URL}/${postID}`, this.headerParams);
       posts.subscribe(
         res => {
           let index = this.posts.findIndex(post => post['_id'] === res['_id']);
@@ -173,7 +170,7 @@ export class DisplayPostComponent implements OnInit {
 
     let postQuery = '/?postID=' + post['_id'];
 
-    this.http.getRequest(this.commentsUrl + postQuery, this.headerParams).subscribe(
+    this.http.getRequest(COMMENTS_URL + postQuery, this.headerParams).subscribe(
       res => {
         if (res.hasOwnProperty('data')) {
           // console.log('all comments------->', res);
@@ -189,7 +186,7 @@ export class DisplayPostComponent implements OnInit {
   getPosts(query) {
     this.posts = [];
 
-    this.http.getRequest(this.postsUrl + query, this.headerParams).subscribe(
+    this.http.getRequest(POSTS_URL + query, this.headerParams).subscribe(
       res => {
         if (res.hasOwnProperty('data')) {
           console.log('ngOnInit: posts----->', res);

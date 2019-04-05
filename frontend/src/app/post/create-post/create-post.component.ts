@@ -3,8 +3,10 @@ import { HttpService } from '../../services/http.service';
 import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
 import { UserDetailsService } from '../../services/user-details.service';
-// import { DataService } from 'src/app/services/data-service.service';
 import { MatSnackBar } from '@angular/material';
+
+const POSTS_URL = 'http://localhost:3030/posts';
+
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
@@ -16,45 +18,22 @@ export class CreatePostComponent implements OnInit {
   public text: string = '';
   public title: string = '';
   public selectedCommunity: string = '';
-  public userID: any = '';
-  public headerParams: object = {};
+  private userID: any = '';
+  private headerParams: object = {};
   public communities: object[] = [];
-  public postsUrl: string = 'http://localhost:3030/posts';
-  public usersUrl: string = 'http://localhost:3030/users';
-  public communitiesUrl: string = 'http://localhost:3030/communities';
-  public accessToken: string = '';
 
   constructor(
-    public http: HttpService,
-    public tokenService: TokenService,
-    public router: Router,
-    public userDetailsService: UserDetailsService,
-    public snackbar: MatSnackBar
+    private http: HttpService,
+    private tokenService: TokenService,
+    private router: Router,
+    private userDetailsService: UserDetailsService,
+    private snackbar: MatSnackBar
   ) {}
 
   async ngOnInit() {
-    // this.userDetailsService
-    //   .getUserID()
-    //   .then(res => {
-    //     this.userID = res;
-    //   })
-    //   .catch(err => {
-    //     this.showErrorNotification(err, 'err', 'userID was not recevied');
-    //   });
-
     this.userID = await this.userDetailsService.getUserID();
 
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
-
-    // this.userDetailsService
-    //   .getUserProfile()
-    //   .then(res => {
-    //     this.user = res;
-    //     this.communities = this.user['communities'];
-    //   })
-    //   .catch(err => {
-    //     this.showErrorNotification(err, 'err', 'user data was not recevied');
-    //   });
 
     let user = await this.userDetailsService.getUserProfile();
 
@@ -73,8 +52,8 @@ export class CreatePostComponent implements OnInit {
       };
 
       console.log('headerparams: create post------>', this.headerParams);
-      if (data['communityID']['length'] > 0) {
-        this.http.postRequest(this.postsUrl, data, this.headerParams).subscribe(
+      if (data['communityID'] && data['communityID']['length'] > 0) {
+        this.http.postRequest(POSTS_URL, data, this.headerParams).subscribe(
           res => {
             console.log('post: success------------->', res);
             if (res) {

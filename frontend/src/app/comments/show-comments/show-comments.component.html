@@ -20,7 +20,7 @@
 
                 <textarea type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" class="w-100" ngModel></textarea>
 
-                <input type="submit" class="submit-btn btn btn-primary float-right" id="btn{{ c1.self._id }}" />
+                <input type="submit" class="submit-btn btn btn-primary float-right p-2" id="btn{{ c1.self._id }}" />
               </mat-expansion-panel>
             </div>
             <div class="row d-flex flex-column pl-5">
@@ -36,7 +36,7 @@
                   <textarea type="text" name="{{ innerComment._id }}" class="w-100" ngModel></textarea>
                 </div>
                 <div class="row mt-2">
-                  <input type="submit" class="submit-btn btn btn-primary" id="btn{{ innerComment._id }}" />
+                  <input type="submit" class="submit-btn btn btn-primary float-right p-2" id="btn{{ innerComment._id }}" />
                 </div>
               </mat-expansion-panel>
             </div>
@@ -67,7 +67,7 @@
                   </mat-expansion-panel-header>
                   <textarea class=" w-100" type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel></textarea>
 
-                  <button type="submit" class="submit-btn btn btn-primary float-right">submit</button>
+                  <button type="submit" class="submit-btn btn btn-primary float-right p-2">submit</button>
                 </mat-expansion-panel>
               </div>
 
@@ -94,7 +94,7 @@
             </mat-expansion-panel-header>
             <textarea type="text" class="w-100" name="{{ innerComment._id }}" id="{{ innerComment._id }}" ngModel></textarea>
 
-            <input type="submit" id="btn{{ innerComment._id }}" class="submit-btn btn btn-primary float-right" />
+            <input type="submit" id="btn{{ innerComment._id }}" class="submit-btn btn btn-primary float-right p-2" />
           </mat-expansion-panel>
         </form>
 

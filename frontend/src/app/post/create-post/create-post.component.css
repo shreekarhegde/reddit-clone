@@ -60,6 +60,7 @@ input[class='dropdown-item'] {
 }
 ::ng-deep .warning {
   background: yellow;
+  color: black;
 }
 ::ng-deep .success {
   background: green;

@@ -16,6 +16,7 @@ export class UserPostsComponent implements OnInit {
   public posts: object[] = [];
   public user: object = {};
   public postsUrl: string = 'http://localhost:3030/posts';
+  public commentsUrl: string = 'http://localhost:3030/comments';
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -69,6 +70,38 @@ export class UserPostsComponent implements OnInit {
         this.showNotification(err, 'err', 'posts were not recevied');
       }
     );
+  }
+
+  async deletePost(postID) {
+    // console.log(postID);
+    let query = `/?postID=${postID}`;
+    if (window.confirm('Are you sure you want to delete this?')) {
+      let comments = await this.httpService.deleteRequest(this.commentsUrl + query, this.headerParams);
+      comments.subscribe(
+        res => {
+          console.log('deleted comments--->', res);
+          if (res['length'] > 0) {
+            let index = this.posts.findIndex(post => post['_id'] == postID);
+            this.posts[index]['comments'] = [];
+          }
+        },
+        err => {
+          this.showNotification(err, 'err', 'could not delete associated comments to this post');
+        }
+      );
+
+      let posts = await this.httpService.deleteRequest(`${this.postsUrl}/${postID}`, this.headerParams);
+      posts.subscribe(
+        res => {
+          let index = this.posts.findIndex(post => post['_id'] === res['_id']);
+          this.posts.splice(index, 1);
+          this.showNotification(null, 'success', 'deleted post successfully');
+        },
+        err => {
+          this.showNotification(err, 'err', 'could not delete post');
+        }
+      );
+    }
   }
 
   showNotification(err, type, message) {

@@ -15,12 +15,36 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     component: HomeComponent,
     children: [
-      { path: '', component: DisplayPostComponent },
-      { path: '', component: SubscribeACommunityComponent },
-      { path: 'submit', component: CreatePostComponent },
-      { path: 'comments/:id', component: AddCommentComponent },
-      { path: 'communities', component: CreateCommunityComponent },
-      { path: 'communities/:id', component: CommunityDetailsComponent }
+      {
+        path: '',
+        canActivate: [AuthGuard],
+        component: DisplayPostComponent
+      },
+      {
+        path: '',
+        canActivate: [AuthGuard],
+        component: SubscribeACommunityComponent
+      },
+      {
+        path: 'submit',
+        canActivate: [AuthGuard],
+        component: CreatePostComponent
+      },
+      {
+        path: 'comments/:id',
+        canActivate: [AuthGuard],
+        component: AddCommentComponent
+      },
+      {
+        path: 'communities',
+        canActivate: [AuthGuard],
+        component: CreateCommunityComponent
+      },
+      {
+        path: 'communities/:id',
+        canActivate: [AuthGuard],
+        component: CommunityDetailsComponent
+      }
     ]
   }
 ];

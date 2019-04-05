@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserCommentsComponent } from './user-profile/user-comments/user-comments.component';
 import { UserPostsComponent } from './user-profile/user-posts/user-posts.component';
+import { AuthGuard } from '../auth.guard';
 
 const routes: Routes = [
   {
@@ -14,8 +15,21 @@ const routes: Routes = [
       { path: 'register', component: UserRegisterComponent },
       {
         path: ':id',
+        canActivate: [AuthGuard],
+
         component: UserProfileComponent,
-        children: [{ path: 'comments', component: UserCommentsComponent }, { path: 'posts', component: UserPostsComponent }]
+        children: [
+          {
+            path: 'comments',
+            canActivate: [AuthGuard],
+            component: UserCommentsComponent
+          },
+          {
+            path: 'posts',
+            canActivate: [AuthGuard],
+            component: UserPostsComponent
+          }
+        ]
       }
     ]
   }

@@ -141,29 +141,31 @@ export class DisplayPostComponent implements OnInit {
   async deletePost(postID) {
     // console.log(postID);
     let query = `/?postID=${postID}`;
-    let comments = await this.http.deleteRequest(this.commentsUrl + query, this.headerParams);
-    comments.subscribe(
-      res => {
-        console.log('deleted comments--->', res);
-        let index = this.posts.findIndex(post => post['_id'] == postID);
-        this.posts[index]['comments'] = [];
-      },
-      err => {
-        this.showNotification(err, 'err', 'could not delete associated comments to this post');
-      }
-    );
+    if (window.confirm('Are you sure you want to delete this?')) {
+      let comments = await this.http.deleteRequest(this.commentsUrl + query, this.headerParams);
+      comments.subscribe(
+        res => {
+          console.log('deleted comments--->', res);
+          let index = this.posts.findIndex(post => post['_id'] == postID);
+          this.posts[index]['comments'] = [];
+        },
+        err => {
+          this.showNotification(err, 'err', 'could not delete associated comments to this post');
+        }
+      );
 
-    let posts = await this.http.deleteRequest(`${this.postsUrl}/${postID}`, this.headerParams);
-    posts.subscribe(
-      res => {
-        let index = this.posts.findIndex(post => post['_id'] === res['_id']);
-        this.posts.splice(index, 1);
-        this.showNotification(null, 'success', 'deleted post successfully');
-      },
-      err => {
-        this.showNotification(err, 'err', 'could not delete post');
-      }
-    );
+      let posts = await this.http.deleteRequest(`${this.postsUrl}/${postID}`, this.headerParams);
+      posts.subscribe(
+        res => {
+          let index = this.posts.findIndex(post => post['_id'] === res['_id']);
+          this.posts.splice(index, 1);
+          this.showNotification(null, 'success', 'deleted post successfully');
+        },
+        err => {
+          this.showNotification(err, 'err', 'could not delete post');
+        }
+      );
+    }
   }
 
   getComments(post) {

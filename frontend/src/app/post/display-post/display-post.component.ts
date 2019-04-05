@@ -6,6 +6,8 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { DataService } from 'src/app/services/data-service.service';
 
 import * as momemt from 'moment';
+import { skip } from 'rxjs/operators';
+import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
 
 @Component({
   selector: 'app-display-post',
@@ -31,7 +33,8 @@ export class DisplayPostComponent implements OnInit {
     public tokenService: TokenService,
     public userDetailsService: UserDetailsService,
     public snackbar: MatSnackBar,
-    public dataService: DataService
+    public dataService: DataService,
+    public filterService: FilterService
   ) {}
 
   async ngOnInit() {
@@ -41,10 +44,14 @@ export class DisplayPostComponent implements OnInit {
 
     this.user = await this.userDetailsService.getUserProfile();
 
-    this.dataService.subscribedID$.subscribe(id => {
+    this.dataService.subscribedID$.subscribe(async id => {
       if (id) {
         console.log('latest subscribed community id===========>', id);
-        this.http.getRequest(`${this.postsUrl}/?communityID=${id}&$populate=userID&$populate=communityID`, this.headerParams).subscribe(
+        let posts = await this.http.getRequest(
+          `${this.postsUrl}/?communityID=${id}&$populate=userID&$populate=communityID`,
+          this.headerParams
+        );
+        posts.subscribe(
           res => {
             console.log('new posts=========>', res);
             this.posts = this.posts.concat(res['data']);
@@ -59,40 +66,26 @@ export class DisplayPostComponent implements OnInit {
       }
     });
 
-    let populateQuery = '/?$populate=userID&$populate=communityID';
+    this.filterService.filterValue$.pipe(skip(1)).subscribe(
+      async filter => {
+        console.log('filter--------->', filter);
+        if (filter === 'Recent') {
+          let query = `?$populate=userID&$populate=communityID&$sort[createdAt]=-1`;
 
-    this.http.getRequest(this.postsUrl + populateQuery, this.headerParams).subscribe(
-      res => {
-        if (res.hasOwnProperty('data')) {
-          this.posts = [];
-          console.log('ngOnInit: posts----->', res);
-          let allPosts = res['data'];
-          this.isStillLoading = false;
-          //check for creator of posts and enable delete button only if true.
-          allPosts.forEach(post => {
-            if (this.userID === post['userID']['_id']) {
-              post['creator'] = true;
-            } else {
-              post['creator'] = false;
-            }
-
-            if (this.user.hasOwnProperty('communities')) {
-              //show posts only from subscribed communities
-              let index = this.user['communities'].findIndex(community => community['_id'] === post['communityID']['_id']);
-              if (index > -1 && !this.posts.includes(post)) {
-                let time = momemt(post['createdAt']).fromNow();
-                post['createdTimeIntermsOfHours'] = time;
-                this.posts.push(post);
-                this.getComments(post);
-              }
-            }
-          });
+          this.getPosts(query);
+        } else if (filter === 'Old') {
+          let query = `?$populate=userID&$populate=communityID&$sort[createdAt]= 1`;
+          this.getPosts(query);
         }
       },
       err => {
-        this.showNotification(err, 'err', 'posts was not recevied');
+        this.showNotification(err, 'err', 'filter was not recevied');
       }
     );
+
+    let populateQuery = '/?$populate=userID&$populate=communityID';
+
+    this.getPosts(populateQuery);
 
     setTimeout(() => {
       this.isStillLoading = false;
@@ -187,6 +180,42 @@ export class DisplayPostComponent implements OnInit {
       },
       err => {
         this.showNotification(err, 'err', 'comments was not recevied');
+      }
+    );
+  }
+
+  getPosts(query) {
+    this.posts = [];
+
+    this.http.getRequest(this.postsUrl + query, this.headerParams).subscribe(
+      res => {
+        if (res.hasOwnProperty('data')) {
+          console.log('ngOnInit: posts----->', res);
+          let allPosts = res['data'];
+          this.isStillLoading = false;
+          //check for creator of posts and enable delete button only if true.
+          allPosts.forEach(post => {
+            if (this.userID === post['userID']['_id']) {
+              post['creator'] = true;
+            } else {
+              post['creator'] = false;
+            }
+
+            if (this.user.hasOwnProperty('communities')) {
+              //show posts only from subscribed communities
+              let index = this.user['communities'].findIndex(community => community['_id'] === post['communityID']['_id']);
+              if (index > -1 && !this.posts.includes(post)) {
+                let time = momemt(post['createdAt']).fromNow();
+                post['createdTimeIntermsOfHours'] = time;
+                this.posts.push(post);
+                this.getComments(post);
+              }
+            }
+          });
+        }
+      },
+      err => {
+        this.showNotification(err, 'err', 'posts was not recevied');
       }
     );
   }

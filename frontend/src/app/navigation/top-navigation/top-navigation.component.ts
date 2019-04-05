@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { TokenService } from 'src/app/services/token.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/services/data-service.service';
+import { FilterService } from './filter.service';
 
 @Component({
   selector: 'app-top-navigation',
@@ -14,12 +16,14 @@ export class TopNavigationComponent implements OnInit {
   public userName: string = '';
   public userID: any = '';
   public selected: string = 'Home';
+
   constructor(
     public httpService: HttpService,
     public tokenService: TokenService,
     public userDetailsService: UserDetailsService,
     public snackbar: MatSnackBar,
-    public router: Router
+    public router: Router,
+    public filterService: FilterService
   ) {}
 
   async ngOnInit() {
@@ -48,8 +52,7 @@ export class TopNavigationComponent implements OnInit {
     }
   }
   onChangeFilter(event) {
-    console.log(event.value);
-    // this.selected = event['value'];
+    this.filterService.shareFilterValue(event['value']);
   }
 
   showNotification(err, type, message) {

@@ -43,7 +43,6 @@ export class DisplayPostComponent implements OnInit {
 
     this.dataService.subscribedID$.subscribe(id => {
       if (id) {
-
         console.log('latest subscribed community id===========>', id);
         this.http.getRequest(`${this.postsUrl}/?communityID=${id}&$populate=userID&$populate=communityID`, this.headerParams).subscribe(
           res => {
@@ -146,10 +145,23 @@ export class DisplayPostComponent implements OnInit {
     }
   }
 
-  deletePost(postID) {
+  async deletePost(postID) {
     // console.log(postID);
+    let query = `/?postID=${postID}`;
+    let comments = await this.http.deleteRequest(this.commentsUrl + query, this.headerParams);
+    comments.subscribe(
+      res => {
+        console.log('deleted comments--->', res);
+        let index = this.posts.findIndex(post => post['_id'] == postID);
+        this.posts[index]['comments'] = [];
+      },
+      err => {
+        this.showNotification(err, 'err', 'could not delete associated comments to this post');
+      }
+    );
 
-    this.http.deleteRequest(`${this.postsUrl}/${postID}`, this.headerParams).subscribe(
+    let posts = await this.http.deleteRequest(`${this.postsUrl}/${postID}`, this.headerParams);
+    posts.subscribe(
       res => {
         let index = this.posts.findIndex(post => post['_id'] === res['_id']);
         this.posts.splice(index, 1);

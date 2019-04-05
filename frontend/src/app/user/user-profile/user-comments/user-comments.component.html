@@ -1,3 +1,6 @@
+<div *ngIf="!comments.length > 0" class="d-flex flex-row justify-content-center h-100">
+  <p class="pt-5">There are no comments to display as of now.</p>
+</div>
 <div class="row border-top" *ngIf="comments.length > 0">
   <div class="col-md-12">
     <div class="row">

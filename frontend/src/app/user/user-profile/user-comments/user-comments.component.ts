@@ -51,11 +51,10 @@ export class UserCommentsComponent implements OnInit {
         console.log('user: user-profile: ngOnInit------>', this.user);
       },
       err => {
-        console.log('err: user-profile: ngOnInit------>', err);
+        this.showNotification(err, 'err', 'could not revevie user details');
       }
     );
 
-    this.headerParams = this.tokenService.checkTokenAndSetHeader();
     let query = `/?userID=${this.userID}&$populate=postID&$populate=userID`;
     let comments = await this.httpService.getRequest(this.commentsUrl + query, this.headerParams);
     comments.subscribe(

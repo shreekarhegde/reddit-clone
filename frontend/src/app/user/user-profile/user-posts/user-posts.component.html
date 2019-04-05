@@ -20,7 +20,9 @@
                   <p class="ml-2">{{ post.createdAt }}</p>
                 </div>
                 <button class="btn btn-link txt-black ml-3" [routerLink]="['/r/comments', post._id]">Reply</button>
-                <button class="btn btn-link txt-black ml-2" (click)="deletePost(post._id)">delete</button>
+                <button class="btn btn-link txt-black ml-2" (click)="deletePost(post._id)" *ngIf="post.creator === profileOwner">
+                  delete
+                </button>
               </div>
             </div>
 

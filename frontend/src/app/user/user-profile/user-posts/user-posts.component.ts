@@ -5,6 +5,7 @@ import { TokenService } from 'src/app/services/token.service';
 import * as moment from 'moment';
 import { MatSnackBar } from '@angular/material';
 import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
+import { UserDetailsService } from 'src/app/services/user-details.service';
 @Component({
   selector: 'app-user-posts',
   templateUrl: './user-posts.component.html',
@@ -17,16 +18,20 @@ export class UserPostsComponent implements OnInit {
   public user: object = {};
   public postsUrl: string = 'http://localhost:3030/posts';
   public commentsUrl: string = 'http://localhost:3030/comments';
+  public profileOwner: any = '';
 
   constructor(
     public activatedRoute: ActivatedRoute,
     public httpService: HttpService,
     public tokenService: TokenService,
     public snackbar: MatSnackBar,
-    public filterService: FilterService
+    public filterService: FilterService,
+    public userDetailsService: UserDetailsService
   ) {}
 
   async ngOnInit() {
+    this.profileOwner = await this.userDetailsService.getUserID();
+
     this.userID = this.activatedRoute.snapshot['_urlSegment']['segments'][1]['path'];
 
     console.log(this.userID, 'userID: gOnInit: user-posts.component');

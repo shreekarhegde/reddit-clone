@@ -24,6 +24,7 @@ export class UserCommentsComponent implements OnInit {
   public commentsUrl: string = 'http://localhost:3030/comments';
   public postsUrl: string = 'http://localhost:3030/posts';
   public usersUrl: string = 'http://localhost:3030/users';
+  public profileOwner: any = '';
 
   constructor(
     public tokenService: TokenService,
@@ -38,6 +39,8 @@ export class UserCommentsComponent implements OnInit {
 
   async ngOnInit() {
     this.comments = [];
+
+    this.profileOwner = await this.userDetailsService.getUserID();
 
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
 

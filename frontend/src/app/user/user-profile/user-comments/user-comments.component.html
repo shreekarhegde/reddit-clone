@@ -28,7 +28,9 @@
 
             <div class="row ml-3">
               <button class="btn btn-link txt-black" [routerLink]="['/r/comments', comment?.postID?._id]">Reply</button>
-              <button class="btn btn-link txt-black ml-2" (click)="deleteComment(comment._id)">delete</button>
+              <button *ngIf="profileOwner === comment.userID._id" class="btn btn-link txt-black ml-2" (click)="deleteComment(comment._id)">
+                delete
+              </button>
             </div>
           </li>
         </ul>

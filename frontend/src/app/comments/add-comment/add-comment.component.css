@@ -61,3 +61,9 @@ textarea {
 ::ng-deep .warning {
   background: yellow;
 }
+
+h4,
+p {
+  max-width: 100%;
+  word-wrap: break-word;
+}

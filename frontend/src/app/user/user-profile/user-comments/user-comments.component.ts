@@ -8,6 +8,7 @@ import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 
 import * as momemt from 'moment';
 import { DataService } from 'src/app/services/data-service.service';
+import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
 
 @Component({
   selector: 'app-user-comments',
@@ -31,7 +32,8 @@ export class UserCommentsComponent implements OnInit {
     public snackbar: MatSnackBar,
     public activatedRoute: ActivatedRoute,
     public dialog: MatDialog,
-    public dataService: DataService
+    public dataService: DataService,
+    public filterService: FilterService
   ) {}
 
   async ngOnInit() {
@@ -56,6 +58,30 @@ export class UserCommentsComponent implements OnInit {
     );
 
     let query = `/?userID=${this.userID}&$populate=postID&$populate=userID`;
+    this.getComments(query);
+
+    this.filterService.filterValue$.subscribe(res => {
+      if (res === 'Old') {
+        let query = `/?userID=${this.userID}&$populate=postID&$populate=userID&$sort[createdAt]=1`;
+        this.getComments(query);
+      } else if (res == 'Recent') {
+        let query = `/?userID=${this.userID}&$populate=postID&$populate=userID&$sort[createdAt]=-1`;
+        this.getComments(query);
+      }
+    });
+
+    let posts = await this.httpService.getRequest(this.postsUrl + query, this.headerParams);
+    posts.subscribe(
+      res => {
+        this.posts = res['data'];
+      },
+      err => {
+        console.log(err);
+      }
+    );
+  }
+
+  async getComments(query) {
     let comments = await this.httpService.getRequest(this.commentsUrl + query, this.headerParams);
     comments.subscribe(
       res => {
@@ -80,16 +106,6 @@ export class UserCommentsComponent implements OnInit {
       },
       err => {
         this.showNotification(err, 'err', 'could not recevie comments');
-      }
-    );
-
-    let posts = await this.httpService.getRequest(this.postsUrl + query, this.headerParams);
-    posts.subscribe(
-      res => {
-        this.posts = res['data'];
-      },
-      err => {
-        console.log(err);
       }
     );
   }

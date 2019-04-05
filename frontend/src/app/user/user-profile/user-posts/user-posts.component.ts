@@ -4,6 +4,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { TokenService } from 'src/app/services/token.service';
 import * as moment from 'moment';
 import { MatSnackBar } from '@angular/material';
+import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
 @Component({
   selector: 'app-user-posts',
   templateUrl: './user-posts.component.html',
@@ -20,7 +21,8 @@ export class UserPostsComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public httpService: HttpService,
     public tokenService: TokenService,
-    public snackbar: MatSnackBar
+    public snackbar: MatSnackBar,
+    public filterService: FilterService
   ) {}
 
   async ngOnInit() {
@@ -29,9 +31,23 @@ export class UserPostsComponent implements OnInit {
     console.log(this.userID, 'userID: gOnInit: user-posts.component');
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
-    let populateQuery = '&$populate=userID&$populate=communityID';
+    this.filterService.filterValue$.subscribe(res => {
+      if (res === 'Old') {
+        let query = `&$populate=userID&$populate=communityID&$sort[createdAt]=1`;
+        this.getPosts(query);
+      } else if (res === 'Recent') {
+        let query = `&$populate=userID&$populate=communityID&$sort[createdAt]=-1`;
+        this.getPosts(query);
+      }
+    });
 
-    this.httpService.getRequest(`${this.postsUrl}/?userID=${this.userID}` + populateQuery, this.headerParams).subscribe(
+    let populateQuery = '&$populate=userID&$populate=communityID';
+    this.getPosts(populateQuery);
+  }
+
+  async getPosts(query) {
+    let posts = await this.httpService.getRequest(`${this.postsUrl}/?userID=${this.userID}` + query, this.headerParams);
+    posts.subscribe(
       res => {
         if (res.hasOwnProperty('data')) {
           this.posts = [];
@@ -50,7 +66,7 @@ export class UserPostsComponent implements OnInit {
         }
       },
       err => {
-        this.showNotification(err, 'err', 'posts was not recevied');
+        this.showNotification(err, 'err', 'posts were not recevied');
       }
     );
   }

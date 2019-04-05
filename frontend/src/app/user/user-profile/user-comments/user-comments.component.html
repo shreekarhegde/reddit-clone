@@ -22,7 +22,9 @@
               </div>
             </div>
 
-            <div class="row ml-3">{{ comment?.text }}</div>
+            <div class="row ml-3 ">
+              <p class="comment-text">{{ comment?.text }}</p>
+            </div>
 
             <div class="row ml-3">
               <button class="btn btn-link txt-black" [routerLink]="['/r/comments', comment?.postID?._id]">Reply</button>

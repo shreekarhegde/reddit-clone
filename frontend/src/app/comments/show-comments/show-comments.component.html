@@ -1,145 +1,109 @@
-<div class="row">
-  <div class="col-md-12">
-    <ng-container *ngIf="!reOcurringCall">
-      <div *ngIf="isStillLoading" class="d-flex flex-row">
-        <mat-spinner class="spinner"></mat-spinner>
-        <p class="mt-3 ml-2">loading comments...</p>
-      </div>
-      <div class="row" *ngFor="let c1 of firstLevelComments; let i = index">
-        <ng-container *ngIf="c1.innerComments">
-          <div class="row" *ngFor="let innerComment of c1.innerComments; let j = index">
-            <ul>
-              <li class="border-left p-2">
-                <form #f="ngForm" (ngSubmit)="addComment(f)">
-                  <div *ngIf="j === 0" class="row form-group">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <h6 class="comment-text">{{ c1.self.text }}</h6>
-                      </div>
-                      <div class="row">
-                        <mat-expansion-panel>
-                          <mat-expansion-panel-header>
-                            <mat-panel-title class="reply">
-                              <label for="#{{ c1.self._id }}"> reply</label>
-                            </mat-panel-title>
-                          </mat-expansion-panel-header>
-                          <div class="row">
-                            <textarea  type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel></textarea>
-                          </div>
-                          <div class="row mt-2"><input type="submit" class="submit-btn btn btn-primary" id="btn{{ c1.self._id }}" /></div>
-                        </mat-expansion-panel>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row inner">
-                    <div class="col-md-12 ml-5">
-                      <div class="row">
-                        <h6 class="comment-text">{{ innerComment.text }}</h6>
-                      </div>
-                      <div class="row">
-                        <mat-expansion-panel>
-                          <mat-expansion-panel-header>
-                            <mat-panel-title class="reply">
-                              <label for="#{{ innerComment._id }}">reply</label>
-                            </mat-panel-title>
-                          </mat-expansion-panel-header>
-                          <div class="row">
-                            <textarea type="text" name="{{ innerComment._id }}" ngModel></textarea>
-                          </div>
-                          <div class="row mt-2">
-                            <input type="submit" class="submit-btn btn btn-primary" id="btn{{ innerComment._id }}" />
-                          </div>
-                        </mat-expansion-panel>
-                      </div>
-                    </div>
-                  </div>
-                </form>
+<ng-container *ngIf="!reOcurringCall">
+  <div *ngIf="isStillLoading" class="d-flex flex-row">
+    <mat-spinner class="spinner"></mat-spinner>
+    <p class="mt-3 ml-2">loading comments...</p>
+  </div>
+  <div class="  d-flex flex-column" *ngFor="let c1 of firstLevelComments; let i = index">
+    <ng-container *ngIf="c1.innerComments">
+      <ul *ngFor="let innerComment of c1.innerComments; let j = index">
+        <li class="border-left p-2">
+          <form #f="ngForm" (ngSubmit)="addComment(f)">
+            <div *ngIf="j === 0" class="row form-group d-flex flex-column">
+              <h6 class="comment-text">{{ c1.self.text }}</h6>
 
-                <app-show-comments
-                  *ngIf="innerComment.children.data && innerComment.children.data.length"
-                  [innerComments]="innerComment.children.data"
-                  [reOcurringCall]="true"
-                >
-                </app-show-comments>
-              </li>
-            </ul>
-          </div>
-        </ng-container>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="reply">
+                    <label for="#{{ c1.self._id }}"> reply</label>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
 
-        <ng-container *ngIf="(!c1.innerComments || !c1.innerComments.length) && c1.self.text">
-          <ul>
-            <li>
-              <form #f="ngForm" (ngSubmit)="addComment(f)">
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <h6 class="comment-text">{{ c1.self.text }}</h6>
-                      </div>
-                      <div class="row">
-                        <mat-expansion-panel>
-                          <mat-expansion-panel-header>
-                            <mat-panel-title>
-                              <label for="#{{ c1.self._id }}">reply</label>
-                            </mat-panel-title>
-                          </mat-expansion-panel-header>
-                          <div class="row">
-                            <textarea class="txt-area-firstLevelComments" type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel></textarea>
-                          </div>
+                <textarea type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" class="w-100" ngModel></textarea>
 
-                          <div class="row mt-2"><button type="submit" class="submit-btn btn btn-primary">submit</button></div>
-                        </mat-expansion-panel>
-                      </div>
+                <input type="submit" class="submit-btn btn btn-primary float-right" id="btn{{ c1.self._id }}" />
+              </mat-expansion-panel>
+            </div>
+            <div class="row d-flex flex-column pl-5">
+              <h6 class="comment-text">{{ innerComment.text }}</h6>
 
-                      <div class="row"></div>
-                    </div>
-                  </div>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title class="reply">
+                    <label for="#{{ innerComment._id }}">reply</label>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <div class="row">
+                  <textarea type="text" name="{{ innerComment._id }}" class="w-100" ngModel></textarea>
                 </div>
-              </form>
-            </li>
-          </ul>
-        </ng-container>
-      </div>
+                <div class="row mt-2">
+                  <input type="submit" class="submit-btn btn btn-primary" id="btn{{ innerComment._id }}" />
+                </div>
+              </mat-expansion-panel>
+            </div>
+          </form>
+
+          <app-show-comments
+            *ngIf="innerComment.children.data && innerComment.children.data.length"
+            [innerComments]="innerComment.children.data"
+            [reOcurringCall]="true"
+          >
+          </app-show-comments>
+        </li>
+      </ul>
     </ng-container>
-    <ng-container *ngIf="reOcurringCall">
-      <ng-container class="row ml-5 border-left" *ngFor="let innerComment of innerComments">
-        <ul>
-          <li class="ml-5 border-left">
-            <form #f="ngForm" (ngSubmit)="addComment(f)">
-              <div class="from-group">
-                <div class="row ml-5">
-                  <div class="col-md-12">
-                    <div class="row">
-                      <h6 class="comment-text">{{ innerComment.text }}</h6>
-                    </div>
-                    <div class="row">
-                      <mat-expansion-panel>
-                        <mat-expansion-panel-header>
-                          <mat-panel-title class="reply">
-                            <label for="#{{ innerComment._id }}">reply</label>
-                          </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <div class="row">
-                          <textarea type="text" name="{{ innerComment._id }}" id="{{ innerComment._id }}" ngModel></textarea>
-                        </div>
-                        <div class="row mt-2">
-                          <input type="submit" id="btn{{ innerComment._id }}" class="submit-btn btn btn-primary" />
-                        </div>
-                      </mat-expansion-panel>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
 
-            <app-show-comments
-              *ngIf="innerComment.children.data && innerComment.children.data.length"
-              [innerComments]="innerComment.children.data"
-              [reOcurringCall]="true"
-            ></app-show-comments>
-          </li>
-        </ul>
-      </ng-container>
+    <ng-container *ngIf="(!c1.innerComments || !c1.innerComments.length) && c1.self.text" class="d-flex flex-column w-100">
+      <ul class="w-100">
+        <li>
+          <form #f="ngForm" (ngSubmit)="addComment(f)">
+            <div class="d-flex flex-column">
+              <h6 class="w-100">{{ c1.self.text }}</h6>
+              <div>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <label for="#{{ c1.self._id }}">reply</label>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <textarea class=" w-100" type="text" name="{{ c1.self._id }}" id="{{ c1.self._id }}" ngModel></textarea>
+
+                  <button type="submit" class="submit-btn btn btn-primary float-right">submit</button>
+                </mat-expansion-panel>
+              </div>
+
+              <div class="row"></div>
+            </div>
+          </form>
+        </li>
+      </ul>
     </ng-container>
   </div>
-</div>
+</ng-container>
+<ng-container *ngIf="reOcurringCall">
+  <ng-container class="row ml-5 border-left" *ngFor="let innerComment of innerComments">
+    <ul class="ml-5 border-left">
+      <li>
+        <form #f="ngForm" (ngSubmit)="addComment(f)">
+          <h6 class="pl-5">{{ innerComment.text }}</h6>
+
+          <mat-expansion-panel class="pl-5">
+            <mat-expansion-panel-header>
+              <mat-panel-title class="reply">
+                <label for="#{{ innerComment._id }}">reply</label>
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <textarea type="text" class="w-100" name="{{ innerComment._id }}" id="{{ innerComment._id }}" ngModel></textarea>
+
+            <input type="submit" id="btn{{ innerComment._id }}" class="submit-btn btn btn-primary float-right" />
+          </mat-expansion-panel>
+        </form>
+
+        <app-show-comments
+          *ngIf="innerComment.children.data && innerComment.children.data.length"
+          [innerComments]="innerComment.children.data"
+          [reOcurringCall]="true"
+        ></app-show-comments>
+      </li>
+    </ul>
+  </ng-container>
+</ng-container>

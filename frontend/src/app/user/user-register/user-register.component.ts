@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { TokenService } from '../../services/token.service';
 import { MatSnackBar } from '@angular/material';
 
+const USERS_URL = 'http://localhost:3030/users';
+const AUTH_URL = 'http://localhost:3030/authentication';
+
 @Component({
   selector: 'app-user-register',
   templateUrl: './user-register.component.html',
@@ -19,8 +22,6 @@ export class UserRegisterComponent implements OnInit {
   public emailPattern = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$');
   public passwordPattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
   public username: string = '';
-  public usersUrl: string = 'http://localhost:3030/users';
-  public authUrl: string = 'http://localhost:3030/authentication';
 
   ngOnInit() {}
 
@@ -28,7 +29,7 @@ export class UserRegisterComponent implements OnInit {
     this.email = f.value.email ? f.value.email : null;
     console.log(f.value.email);
     if (this.emailPattern.test(this.email)) {
-    this.isNextButtonClicked = true;
+      this.isNextButtonClicked = true;
     }
   }
 
@@ -48,22 +49,22 @@ export class UserRegisterComponent implements OnInit {
       console.log(userDetails);
       this.isStillLoading = true;
 
-      this.http.postRequest(this.usersUrl, userDetails, null).subscribe(
+      this.http.postRequest(USERS_URL, userDetails, null).subscribe(
         user => {
           console.log('post: user-------->', user);
-          this.http
-            .postRequest(this.authUrl, { strategy: 'local', username: this.username, password: this.password }, null)
-            .subscribe(res => {
-              if (res) {
-                this.isStillLoading = false;
-                console.log('res from register', res);
-                this.tokenService.setToken(res);
-                this.router.navigateByUrl('r');
-              }
-            });
+          this.http.postRequest(AUTH_URL, { strategy: 'local', username: this.username, password: this.password }, null).subscribe(res => {
+            if (res) {
+              this.isStillLoading = false;
+              console.log('res from register', res);
+              this.tokenService.setToken(res);
+              this.router.navigateByUrl('r');
+            }
+          });
         },
         err => {
           if (err['statusText'] === 'Conflict') {
+            this.isStillLoading = false;
+
             this.showNotification(err, 'err', 'This user name is already taken. Please choose a different username.');
           }
         }

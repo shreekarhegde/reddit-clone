@@ -4,6 +4,7 @@ import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 
+const USERS_URL = 'http://localhost:3030/authentication';
 @Component({
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
@@ -12,19 +13,18 @@ import { MatSnackBar } from '@angular/material';
 export class UserLoginComponent implements OnInit {
   public username: string = '';
   public password: string = '';
-  public isLoggedIn: boolean = false;
   public isStillLoading: boolean = false;
+  public showPassword: boolean = false;
 
   constructor(private http: HttpService, private router: Router, private tokenService: TokenService, public snackbar: MatSnackBar) {}
 
   ngOnInit() {}
 
   login() {
-    let url = 'http://localhost:3030/authentication';
     let data = { strategy: 'local', username: this.username, password: this.password };
     this.isStillLoading = true;
     if (this.username && this.password) {
-      this.http.postRequest(url, data, null).subscribe(
+      this.http.postRequest(USERS_URL, data, null).subscribe(
         user => {
           if (user.hasOwnProperty('accessToken') && user['accessToken']['length'] > 10) {
             console.log('user from login------>', user);
@@ -47,6 +47,11 @@ export class UserLoginComponent implements OnInit {
 
       this.showNotification(null, 'err', 'Please enter valid user name and password');
     }
+  }
+
+  showHidePassword() {
+    console.log('here');
+    this.showPassword = !this.showPassword;
   }
 
   showNotification(err, type, message) {

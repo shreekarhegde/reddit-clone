@@ -13,7 +13,14 @@
         <h5 class="text-sign-in">Sign in</h5>
         <form (ngSubmit)="login()">
           <input type="text" class="input-group user-detail" name="username" [(ngModel)]="username" id="username" />
-          <input type="password" class="input-group user-detail" name="password" [(ngModel)]="password" id="password" />
+          <div class="d-flex ">
+<input [type]="showPassword ? 'text' : 'password' " class="input-group user-detail" name="password" [(ngModel)]="password" id="password" />
+          <i
+            class="fas fa-eye align-self-center ml-2 mt-1"
+            (click)="showHidePassword()"
+          ></i>
+          </div>
+          
           <button type="submit" class="btn btn-primary mt-4 signin">
             SIGN IN
             <div class="spinner-border" role="status" *ngIf="isStillLoading"></div>

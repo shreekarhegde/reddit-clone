@@ -6,18 +6,19 @@ import * as moment from 'moment';
 import { MatSnackBar } from '@angular/material';
 import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
+
+const POSTS_URL = 'http://localhost:3030/posts';
+const COMMENTS_URL = 'http://localhost:3030/comments';
 @Component({
   selector: 'app-user-posts',
   templateUrl: './user-posts.component.html',
   styleUrls: ['./user-posts.component.css']
 })
 export class UserPostsComponent implements OnInit {
-  public userID: any = '';
-  public headerParams: any = {};
+  private userID: any = '';
+  private headerParams: any = {};
   public posts: object[] = [];
   public user: object = {};
-  public postsUrl: string = 'http://localhost:3030/posts';
-  public commentsUrl: string = 'http://localhost:3030/comments';
   public profileOwner: any = '';
 
   constructor(
@@ -52,7 +53,7 @@ export class UserPostsComponent implements OnInit {
   }
 
   async getPosts(query) {
-    let posts = await this.httpService.getRequest(`${this.postsUrl}/?userID=${this.userID}` + query, this.headerParams);
+    let posts = await this.httpService.getRequest(`${POSTS_URL}/?userID=${this.userID}` + query, this.headerParams);
     posts.subscribe(
       res => {
         if (res.hasOwnProperty('data')) {
@@ -81,7 +82,7 @@ export class UserPostsComponent implements OnInit {
     // console.log(postID);
     let query = `/?postID=${postID}`;
     if (window.confirm('Are you sure you want to delete this?')) {
-      let comments = await this.httpService.deleteRequest(this.commentsUrl + query, this.headerParams);
+      let comments = await this.httpService.deleteRequest(COMMENTS_URL + query, this.headerParams);
       comments.subscribe(
         res => {
           console.log('deleted comments--->', res);
@@ -95,7 +96,7 @@ export class UserPostsComponent implements OnInit {
         }
       );
 
-      let posts = await this.httpService.deleteRequest(`${this.postsUrl}/${postID}`, this.headerParams);
+      let posts = await this.httpService.deleteRequest(`${POSTS_URL}/${postID}`, this.headerParams);
       posts.subscribe(
         res => {
           let index = this.posts.findIndex(post => post['_id'] === res['_id']);

@@ -8,7 +8,7 @@ import { DataService } from 'src/app/services/data-service.service';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
-  public userID: string = '';
+  private userID: string = '';
   constructor(public router: Router, public dataService: DataService) {}
 
   ngOnInit() {

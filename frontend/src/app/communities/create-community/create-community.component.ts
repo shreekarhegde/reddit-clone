@@ -4,6 +4,8 @@ import { TokenService } from 'src/app/services/token.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
+
+const COMMUNITY_URL = 'http://localhost:3030/communities';
 @Component({
   selector: 'app-create-community',
   templateUrl: './create-community.component.html',
@@ -13,7 +15,6 @@ export class CreateCommunityComponent implements OnInit {
   public title: string = '';
   public name: string = '';
   public description: string = '';
-  public communityUrl: string = 'http://localhost:3030/communities';
   constructor(
     public httpService: HttpService,
     public tokenService: TokenService,
@@ -28,19 +29,23 @@ export class CreateCommunityComponent implements OnInit {
     let headerParmas = this.tokenService.checkTokenAndSetHeader();
     let data = {
       title: this.title,
-      name: this.name,
+      name: this.name ? this.name : this.nameMustBeAdded(),
       description: this.description
     };
-    if (data) {
-      this.httpService.postRequest(this.communityUrl, data, headerParmas).subscribe(
+    if (data['name'] && data['name']['length'] > 0) {
+      this.httpService.postRequest(COMMUNITY_URL, data, headerParmas).subscribe(
         community => {
           this.router.navigate(['/r/communities', community['_id']]);
         },
         err => {
-          this.showErrorNotification(err, 'err', 'community was not posted: create-community');
+          this.showErrorNotification(err, 'err', 'community was not created');
         }
       );
     }
+  }
+
+  nameMustBeAdded() {
+    this.showErrorNotification(null, 'warning', 'Name for a community is a must. Please give a name.');
   }
 
   showErrorNotification(err, type, message) {

@@ -4,8 +4,9 @@ import { TokenService } from 'src/app/services/token.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { DataService } from 'src/app/services/data-service.service';
 import { FilterService } from './filter.service';
+
+const USERS_URL = 'http://localhost:3030/users';
 
 @Component({
   selector: 'app-top-navigation',
@@ -14,7 +15,7 @@ import { FilterService } from './filter.service';
 })
 export class TopNavigationComponent implements OnInit {
   public userName: string = '';
-  public userID: any = '';
+  private userID: any = '';
   public selected: string = 'Home';
 
   constructor(
@@ -27,10 +28,9 @@ export class TopNavigationComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    let usersUrl = 'http://localhost:3030/users';
     let headerParams = this.tokenService.checkTokenAndSetHeader();
     this.userID = await this.userDetailsService.getUserID();
-    this.httpService.getRequest(`${usersUrl}/${this.userID}`, headerParams).subscribe(
+    this.httpService.getRequest(`${USERS_URL}/${this.userID}`, headerParams).subscribe(
       res => {
         this.userName = res['username'];
       },

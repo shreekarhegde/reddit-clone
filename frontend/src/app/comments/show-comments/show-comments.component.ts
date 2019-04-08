@@ -1,12 +1,15 @@
-import { Component, OnInit, OnChanges, Input, ViewChild, SimpleChanges, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { HttpService } from '../../services/http.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 import { TokenService } from 'src/app/services/token.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, NgForm } from '@angular/forms';
 import { ToggleService } from '../add-comment/toggle.service';
-import { takeWhile, takeUntil, skip } from 'rxjs/operators';
+import { takeWhile, skip } from 'rxjs/operators';
 import { MatSnackBar, MatExpansionPanel } from '@angular/material';
+
+const COMMENTS_URL = 'http://localhost:3030/comments';
+
 @Component({
   selector: 'app-show-comments',
   templateUrl: './show-comments.component.html',
@@ -16,7 +19,6 @@ import { MatSnackBar, MatExpansionPanel } from '@angular/material';
 export class ShowCommentsComponent implements OnInit, OnDestroy {
   public form: FormGroup;
   public userID: any = '';
-  public commentsUrl = 'http://localhost:3030/comments';
   public postID: string = '';
   public headerParams: object = {};
   public firstLevelComments: object[] = [];
@@ -79,7 +81,7 @@ export class ShowCommentsComponent implements OnInit, OnDestroy {
     let query = `?postID=${this.postID}&$populate=userID`;
 
     //get all comments and check for first level comments. If parentCommentID is null, find their child comments.
-    this.httpService.getRequest(this.commentsUrl + query, this.headerParams).subscribe(
+    this.httpService.getRequest(COMMENTS_URL + query, this.headerParams).subscribe(
       async comments => {
         console.log('show-comments: all comments------->', comments);
         if (comments) {
@@ -128,7 +130,7 @@ export class ShowCommentsComponent implements OnInit, OnDestroy {
         };
         console.log('data----------->', data);
         if (data) {
-          this.httpService.postRequest(this.commentsUrl, data, this.headerParams).subscribe(
+          this.httpService.postRequest(COMMENTS_URL, data, this.headerParams).subscribe(
             res => {
               console.log('res: comment: show-comments----->', res);
               let message = 'comment added';

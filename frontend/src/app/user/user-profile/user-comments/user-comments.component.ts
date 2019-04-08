@@ -4,11 +4,14 @@ import { UserDetailsService } from 'src/app/services/user-details.service';
 import { HttpService } from 'src/app/services/http.service';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 
 import * as momemt from 'moment';
 import { DataService } from 'src/app/services/data-service.service';
 import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
+
+const COMMENTS_URL = 'http://localhost:3030/comments';
+const POSTS_URL = 'http://localhost:3030/posts';
+const USERS_URL = 'http://localhost:3030/users';
 
 @Component({
   selector: 'app-user-comments',
@@ -16,14 +19,11 @@ import { FilterService } from 'src/app/navigation/top-navigation/filter.service'
   styleUrls: ['./user-comments.component.css']
 })
 export class UserCommentsComponent implements OnInit {
-  public userID: any = '';
-  public headerParams: any = {};
+  private userID: any = '';
+  private headerParams: any = {};
   public user: any = {};
   public comments: object[] = [];
   public posts: object[] = [];
-  public commentsUrl: string = 'http://localhost:3030/comments';
-  public postsUrl: string = 'http://localhost:3030/posts';
-  public usersUrl: string = 'http://localhost:3030/users';
   public profileOwner: any = '';
 
   constructor(
@@ -32,7 +32,6 @@ export class UserCommentsComponent implements OnInit {
     public httpService: HttpService,
     public snackbar: MatSnackBar,
     public activatedRoute: ActivatedRoute,
-    public dialog: MatDialog,
     public dataService: DataService,
     public filterService: FilterService
   ) {}
@@ -49,7 +48,7 @@ export class UserCommentsComponent implements OnInit {
     this.dataService.shareID(this.userID);
 
     console.log('snapshot', this.userID);
-    let user = await this.httpService.getRequest(`${this.usersUrl}/${this.userID}`, this.headerParams);
+    let user = await this.httpService.getRequest(`${USERS_URL}/${this.userID}`, this.headerParams);
     user.subscribe(
       res => {
         this.user = res;
@@ -73,7 +72,7 @@ export class UserCommentsComponent implements OnInit {
       }
     });
 
-    let posts = await this.httpService.getRequest(this.postsUrl + query, this.headerParams);
+    let posts = await this.httpService.getRequest(POSTS_URL + query, this.headerParams);
     posts.subscribe(
       res => {
         this.posts = res['data'];
@@ -85,7 +84,7 @@ export class UserCommentsComponent implements OnInit {
   }
 
   async getComments(query) {
-    let comments = await this.httpService.getRequest(this.commentsUrl + query, this.headerParams);
+    let comments = await this.httpService.getRequest(COMMENTS_URL + query, this.headerParams);
     comments.subscribe(
       res => {
         if (res.hasOwnProperty('data') && res['data'].length > 0) {
@@ -93,7 +92,7 @@ export class UserCommentsComponent implements OnInit {
           this.comments = res['data'];
           this.comments.forEach(async comment => {
             let query = `?$populate=userID`;
-            let posts = await this.httpService.getRequest(`${this.postsUrl}/${comment['postID']['_id']}${query}`, this.headerParams);
+            let posts = await this.httpService.getRequest(`${POSTS_URL}/${comment['postID']['_id']}${query}`, this.headerParams);
             posts.subscribe(
               res => {
                 comment['postID']['postedBy'] = res['userID']['username'];
@@ -115,7 +114,7 @@ export class UserCommentsComponent implements OnInit {
 
   deleteComment(id: string) {
     if (window.confirm('Are you sure you want to delete this?')) {
-      let deletedComment = this.httpService.deleteRequest(`${this.commentsUrl}/${id}`, this.headerParams);
+      let deletedComment = this.httpService.deleteRequest(`${COMMENTS_URL}/${id}`, this.headerParams);
       deletedComment.subscribe(
         res => {
           let index = this.comments.findIndex(comment => comment['_id'] === res['_id']);

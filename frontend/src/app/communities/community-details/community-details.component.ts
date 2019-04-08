@@ -4,21 +4,24 @@ import { HttpService } from 'src/app/services/http.service';
 import { TokenService } from 'src/app/services/token.service';
 import { MatSnackBar } from '@angular/material';
 import { UserDetailsService } from 'src/app/services/user-details.service';
+
+const POSTS_URL = 'http://localhost:3030/posts';
+const COMMUNITIES_URL = 'http://localhost:3030/communities';
+const COMMENTS_URL = 'http://localhost:3030/comments';
+const VOTES_URL = 'http://localhost:3030/votes';
+
 @Component({
   selector: 'app-community-details',
   templateUrl: './community-details.component.html',
   styleUrls: ['./community-details.component.css']
 })
 export class CommunityDetailsComponent implements OnInit {
-  public communityID: string = '';
-  public headerParams: object = {};
+  private communityID: string = '';
+  private headerParams: object = {};
   public community: object = {};
   public posts: object[] = [];
-  public postsUrl: string = 'http://localhost:3030/posts';
-  public communitiesUrl: string = 'http://localhost:3030/communities';
-  public commentsUrl: string = 'http://localhost:3030/comments';
   public isStillLoading: boolean = true;
-  public userID: any = '';
+  private userID: any = '';
   constructor(
     public activeRoute: ActivatedRoute,
     public httpService: HttpService,
@@ -43,7 +46,7 @@ export class CommunityDetailsComponent implements OnInit {
       }
     );
 
-    this.httpService.getRequest(`${this.communitiesUrl}/${this.communityID}`, this.headerParams).subscribe(
+    this.httpService.getRequest(`${COMMUNITIES_URL}/${this.communityID}`, this.headerParams).subscribe(
       res => {
         console.log('community--------->', res);
         if (res) {
@@ -58,14 +61,14 @@ export class CommunityDetailsComponent implements OnInit {
 
     let query = `?communityID=${this.communityID}&$populate=userID`;
 
-    this.httpService.getRequest(this.postsUrl + query, this.headerParams).subscribe(
+    this.httpService.getRequest(POSTS_URL + query, this.headerParams).subscribe(
       res => {
         if (res.hasOwnProperty('data')) {
           console.log('posts associated with community-------->', res);
           this.posts = res['data'];
           this.posts.map(post => {
             let postQuery = `postID=${post['_id']}`;
-            this.httpService.getRequest(`${this.commentsUrl}/?${postQuery}`, this.headerParams).subscribe(
+            this.httpService.getRequest(`${COMMENTS_URL}/?${postQuery}`, this.headerParams).subscribe(
               res => {
                 post['comments'] = res['data'];
               },
@@ -86,10 +89,9 @@ export class CommunityDetailsComponent implements OnInit {
     let index = this.posts.findIndex(post => post['_id'] === id);
     // console.log('index-------------->', index);
     if (!this.posts[index]['upvotedBy'].includes(this.userID) && id) {
-      let voteUrl = 'http://localhost:3030/votes';
       let query = `?text=upvote&postID=${id}&userID=${this.userID}`;
 
-      this.httpService.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
+      this.httpService.patchRequest(VOTES_URL + query, null, this.headerParams).subscribe(
         res => {
           // console.log('upvoted', res);
           let index = this.posts.findIndex(post => post['_id'] == id);
@@ -108,10 +110,9 @@ export class CommunityDetailsComponent implements OnInit {
   downvote(id) {
     let index = this.posts.findIndex(post => post['_id'] === id);
     if (!this.posts[index]['downvotedBy'].includes(this.userID) && id) {
-      let voteUrl = 'http://localhost:3030/votes';
       let query = `?text=downvote&postID=${id}&userID=${this.userID}`;
 
-      this.httpService.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
+      this.httpService.patchRequest(VOTES_URL + query, null, this.headerParams).subscribe(
         res => {
           // console.log('downvoted', res);
           let index = this.posts.findIndex(post => post['_id'] == id);

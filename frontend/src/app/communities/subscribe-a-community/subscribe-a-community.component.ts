@@ -1,9 +1,11 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TokenService } from 'src/app/services/token.service';
 import { HttpService } from 'src/app/services/http.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 import { DataService } from 'src/app/services/data-service.service';
 import { MatSnackBar } from '@angular/material';
+
+const COMMUNITIES_URL = 'http://localhost:3030/communities';
 
 @Component({
   selector: 'app-subscribe-a-community',
@@ -13,8 +15,6 @@ import { MatSnackBar } from '@angular/material';
 export class SubscribeACommunityComponent implements OnInit {
   public communities: object[] = [];
   public headerParams: object = {};
-  public communitiesUrl: string = 'http://localhost:3030/communities';
-  public communityID: string = '';
   public user: any = {};
   public isStillLoading: boolean = false;
   constructor(
@@ -34,7 +34,7 @@ export class SubscribeACommunityComponent implements OnInit {
 
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
-    let communities = await this.httpService.getRequest(this.communitiesUrl, this.headerParams);
+    let communities = await this.httpService.getRequest(COMMUNITIES_URL, this.headerParams);
 
     communities.subscribe(
       communities => {
@@ -80,7 +80,7 @@ export class SubscribeACommunityComponent implements OnInit {
       },
       err => {
         console.log(err);
-        this.showErrorNotification(err, 'err', 'community was not updated: subscribe-a-community');
+        this.showErrorNotification(err, 'err', 'community was not updated');
       }
     );
   }

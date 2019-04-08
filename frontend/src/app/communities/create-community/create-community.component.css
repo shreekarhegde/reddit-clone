@@ -58,3 +58,14 @@ input[class='dropdown-item'] {
 .empty {
   height: 15px;
 }
+::ng-deep .err {
+  background: red;
+}
+
+::ng-deep .success {
+  background: green;
+}
+::ng-deep .warning {
+  background: yellow;
+  color: black;
+}

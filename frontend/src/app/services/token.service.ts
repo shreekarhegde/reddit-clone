@@ -8,6 +8,7 @@ export class TokenService {
   public _accessToken: string = '';
   public _headerParams: object = {};
   public isLoggedIn: boolean = false;
+
   constructor() {}
 
   setToken(data) {

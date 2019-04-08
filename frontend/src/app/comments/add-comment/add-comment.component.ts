@@ -6,28 +6,29 @@ import { ToggleService } from '../add-comment/toggle.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 
+const POSTS_URL = 'http://localhost:3030/posts';
+const COMMENTS_URL = 'http://localhost:3030/comments';
+const VOTES_URL = 'http://localhost:3030/votes';
+
 @Component({
   selector: 'app-add-comment',
   templateUrl: './add-comment.component.html',
   styleUrls: ['./add-comment.component.css']
 })
 export class AddCommentComponent implements OnInit {
-  public bool: boolean;
-  public usersUrl: string = 'http://localhost:3030/users';
-  public postsUrl: string = 'http://localhost:3030/posts';
-  public commentsUrl: string = 'http://localhost:3030/comments';
+  private bool: boolean;
+  private headerParams: object = {};
+
   public profileName: string = '';
   public postTitle: string = '';
   public postedBy: string = '';
   public postDescription: string = '';
-  public headerParams: object = {};
   public postID: string = '';
   public totalVotes: number = 0;
   public userID: any = '';
   public totalComments: number = 0;
   public isDeleted: boolean = false;
   public text: string = '';
-  public parentCommentID: string = '';
   public newComment: object = {};
   public creator: boolean = false;
   public refreshCommentsList: boolean = false;
@@ -65,7 +66,9 @@ export class AddCommentComponent implements OnInit {
 
     let query = `?$populate=userID`;
 
-    this.httpService.getRequest(`${this.postsUrl}/${this.postID}` + query, this.headerParams).subscribe(
+    let post = this.httpService.getRequest(`${POSTS_URL}/${this.postID}` + query, this.headerParams);
+
+    post.subscribe(
       post => {
         console.log('add-comment: posts------->', post);
         if (post) {
@@ -81,7 +84,7 @@ export class AddCommentComponent implements OnInit {
 
           //get no.of comments
           let postQuery = `/?postID=${post['_id']}`;
-          this.httpService.getRequest(this.commentsUrl + postQuery, this.headerParams).subscribe(
+          this.httpService.getRequest(COMMENTS_URL + postQuery, this.headerParams).subscribe(
             res => {
               this.totalComments = res['data']['length'];
             },
@@ -103,7 +106,7 @@ export class AddCommentComponent implements OnInit {
         }
       },
       err => {
-        console.log(err);
+        this.showErrorNotification(err, 'err', 'posts were not received');
       }
     );
   }
@@ -111,9 +114,8 @@ export class AddCommentComponent implements OnInit {
   upvote(id) {
     //allow upvote only if bool is false
     if (id && this.bool !== true) {
-      let voteUrl = 'http://localhost:3030/votes';
       let query = `?text=upvote&postID=${id}&userID=${this.userID}`;
-      this.httpService.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
+      this.httpService.patchRequest(VOTES_URL + query, null, this.headerParams).subscribe(
         res => {
           this.totalVotes = res['totalVotes'];
           this.bool = true;
@@ -128,10 +130,9 @@ export class AddCommentComponent implements OnInit {
   downvote(id) {
     //allow downvote only if bool is true
     if (id && this.bool !== false) {
-      let voteUrl = 'http://localhost:3030/votes';
       let query = `?text=downvote&postID=${id}&userID=${this.userID}`;
 
-      this.httpService.patchRequest(voteUrl + query, null, this.headerParams).subscribe(
+      this.httpService.patchRequest(VOTES_URL + query, null, this.headerParams).subscribe(
         res => {
           this.totalVotes = res['totalVotes'];
           this.bool = false;
@@ -145,7 +146,7 @@ export class AddCommentComponent implements OnInit {
 
   deletePost(postID) {
     console.log('postid: add-comment ------->', postID);
-    this.httpService.deleteRequest(`${this.postsUrl}/${postID}`, this.headerParams).subscribe(
+    this.httpService.deleteRequest(`${POSTS_URL}/${postID}`, this.headerParams).subscribe(
       res => {
         console.log('delete post: add comment: res----->', res);
         this.isDeleted = true;
@@ -170,7 +171,7 @@ export class AddCommentComponent implements OnInit {
       userID: this.userID
     };
 
-    this.httpService.postRequest(this.commentsUrl, data, this.headerParams).subscribe(
+    this.httpService.postRequest(COMMENTS_URL, data, this.headerParams).subscribe(
       res => {
         if (res) {
           console.log('res: comment: add-comment------------>', res);

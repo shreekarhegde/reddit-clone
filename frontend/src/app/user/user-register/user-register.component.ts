@@ -14,7 +14,6 @@ const AUTH_URL = 'http://localhost:3030/authentication';
   styleUrls: ['./user-register.component.css']
 })
 export class UserRegisterComponent implements OnInit {
-  constructor(public http: HttpService, public router: Router, public tokenService: TokenService, public snackbar: MatSnackBar) {}
   public isNextButtonClicked: boolean = false;
   public email: string = '';
   public password: string = '';
@@ -22,6 +21,8 @@ export class UserRegisterComponent implements OnInit {
   public emailPattern = new RegExp('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$');
   public passwordPattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
   public username: string = '';
+  public showPassword: boolean = false;
+  constructor(public http: HttpService, public router: Router, public tokenService: TokenService, public snackbar: MatSnackBar) {}
 
   ngOnInit() {}
 
@@ -74,6 +75,10 @@ export class UserRegisterComponent implements OnInit {
 
   backToEmail() {
     this.isNextButtonClicked = false;
+  }
+
+  showHidePassword() {
+    this.showPassword = !this.showPassword;
   }
 
   showNotification(err, type, message) {

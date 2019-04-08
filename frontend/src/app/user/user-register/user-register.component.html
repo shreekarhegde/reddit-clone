@@ -66,17 +66,22 @@
         <input id="username" name="username" placeholder="CHOOSE A USERNAME" type="text" class="username pb-1 w-25" ngModel />
       </div>
       <div class="mt-3">
-        <input
-          id="password"
-          name="password"
-          placeholder="PASSWORD"
-          type="password"
-          class="password pb-1 w-25"
-          [pattern]="passwordPattern"
-          #password="ngModel"
-          ngModel
-          required
-        />
+        <div class="d-flex ">
+          <input
+            #password="ngModel"
+            [type]="showPassword ? 'text' : 'password'"
+            class="input-group  password pb-1 w-25"
+            name="password"
+            id="password"
+            placeholder="PASSWORD"
+            type="password"
+            [pattern]="passwordPattern"
+            ngModel
+            required
+          />
+          <i class="fas fa-eye align-self-center ml-2 mt-1" (click)="showHidePassword()"></i>
+        </div>
+
         <div *ngIf="password?.errors">
           <div *ngIf="password?.errors?.pattern">
             Password must be atleast 8 length in character and contain one special character, one capital letter, one small letter and a
@@ -94,7 +99,7 @@
       <div class="d-flex flex-row justify-content-between mt-5 mr-5">
         <button (click)="backToEmail()" class="btn btn-link"><p class="bg-light p-2">Back</p></button>
         <!-- <p class="float-right btn btn-link m-3">Next</p> -->
-        <button name="next" value="next" type="submit" class=" btn btn-link"> <p class="bg-light p-2">Next</p> </button>
+        <button name="next" value="next" type="submit" class=" btn btn-link"><p class="bg-light p-2">Next</p></button>
       </div>
     </form>
   </div>

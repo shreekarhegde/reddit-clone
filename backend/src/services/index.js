@@ -5,7 +5,6 @@ const findChildComments = require('./find-child-comments/find-child-comments.ser
 const communities = require('./communities/communities.service.js');
 const updateCommunity = require('./update-community/update-community.service.js');
 const votes = require('./votes/votes.service.js');
-const filters = require('./filters/filters.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function(app) {
   app.configure(users);
@@ -15,5 +14,4 @@ module.exports = function(app) {
   app.configure(communities);
   app.configure(updateCommunity);
   app.configure(votes);
-  app.configure(filters);
 };

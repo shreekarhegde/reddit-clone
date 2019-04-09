@@ -42,17 +42,6 @@ function filter() {
         let query = [
           {
             $project: {
-              upvotes: 1,
-              downvotes: 1,
-              totalVotes: 1,
-              title: 1,
-              text: 1,
-              upvotedBy: 1,
-              downvotedBy: 1,
-              userID: 1,
-              communityID: 1,
-              createdAt: 1,
-              updatedAt: 1,
               ratio: {
                 $divide: [
                   '$upvotes',
@@ -60,10 +49,19 @@ function filter() {
                     $hour: '$createdAt'
                   }
                 ]
-              }
+              },
+              document: '$$ROOT'
             }
           },
-          { $match: { ratio: { $gte: 5 } } },
+          {
+            $replaceRoot: {
+              newRoot: { $mergeObjects: ['$$ROOT', '$document'] }
+            }
+          },
+          {
+            $project: { document: 0 }
+          },
+          { $match: { ratio: { $gte: 10 } } },
           {
             $lookup: {
               from: 'users',
@@ -83,21 +81,90 @@ function filter() {
           },
           { $unwind: '$communityID' }
         ];
-        hook.app
-          .service('posts')
-          .Model.aggregate(query)
-          .then(res => {
-            console.log(res);
-            hook['result'] = res;
-            return resolve(hook);
-          })
-          .catch(err => {
-            console.log(err);
-            return reject(err);
-          });
+        dbOperation(hook, 'posts', query, resolve, reject);
+      } else if (hook['params']['query']['filter'] === 'Controversial') {
+        let query = [
+          {
+            $group: {
+              _id: '$postID',
+              count: { $sum: 1 }
+            }
+          },
+
+          {
+            $lookup: {
+              from: 'posts',
+              localField: 'postID',
+              foreignField: 'id',
+              as: 'post'
+            }
+          },
+          { $match: { count: { $gt: 0 } } },
+          { $unwind: '$post' },
+          {
+            $replaceRoot: {
+              newRoot: { $mergeObjects: [{ count: '$count' }, '$post'] }
+            }
+          },
+          {
+            $project: {
+              ratio: {
+                $divide: ['$upvotes', '$count']
+              },
+              document: '$$ROOT'
+            }
+          },
+          {
+            $replaceRoot: {
+              newRoot: { $mergeObjects: ['$$ROOT', '$document'] }
+            }
+          },
+          {
+            $project: {
+              document: 0
+            }
+          },
+          { $match: { ratio: { $gte: 0.3 } } },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'userID',
+              foreignField: '_id',
+              as: 'userID'
+            }
+          },
+          { $unwind: '$userID' },
+          {
+            $lookup: {
+              from: 'communities',
+              localField: 'communityID',
+              foreignField: '_id',
+              as: 'communityID'
+            }
+          },
+          { $unwind: '$communityID' }
+        ];
+
+        dbOperation(hook, 'comments', query, resolve, reject);
       } else {
         return resolve(hook);
       }
     });
   };
+}
+
+function dbOperation(hook, service, query, resolve, reject) {
+  hook.app
+    .service(service)
+    .Model.aggregate(query)
+    .then(res => {
+      console.log(res);
+      hook['result'] = res;
+
+      return resolve(hook);
+    })
+    .catch(err => {
+      console.log(err);
+      return reject(err);
+    });
 }

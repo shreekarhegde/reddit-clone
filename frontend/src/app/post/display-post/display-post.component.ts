@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from 'src/app/services/data-service.service';
 
 import * as momemt from 'moment';
-import { skip } from 'rxjs/operators';
+import { skip, filter } from 'rxjs/operators';
 import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
 
 const POSTS_URL = 'http://localhost:3030/posts';
@@ -21,7 +21,7 @@ const VOTES_URL = 'http://localhost:3030/votes';
 export class DisplayPostComponent implements OnInit {
   public userID: any = '';
   private headerParams: object = {};
-  public posts: object[] = [];
+  public posts: any[] = [];
   public comments: object[] = [];
   public username: string = '';
   public showSpinner: boolean = true;
@@ -69,10 +69,12 @@ export class DisplayPostComponent implements OnInit {
         console.log('filter--------->', filter);
         if (filter === 'Recent') {
           let query = `?$populate=userID&$populate=communityID&$sort[createdAt]=-1`;
-
           this.getPosts(query);
         } else if (filter === 'Old') {
           let query = `?$populate=userID&$populate=communityID&$sort[createdAt]= 1`;
+          this.getPosts(query);
+        } else if (filter === 'Hot' || filter === 'Popular' || filter === 'Controversial' || filter === 'Best') {
+          let query = `/?filter=${filter}`;
           this.getPosts(query);
         }
       },
@@ -112,10 +114,10 @@ export class DisplayPostComponent implements OnInit {
       );
     }
   }
+
   downvote(id) {
     let index = this.posts.findIndex(post => post['_id'] === id);
     if (!this.posts[index]['downvotedBy'].includes(this.userID) && id) {
-      let VOTES_URL = 'http://localhost:3030/votes';
       let query = `?text=downvote&postID=${id}&userID=${this.userID}`;
 
       this.http.patchRequest(VOTES_URL + query, null, this.headerParams).subscribe(
@@ -167,13 +169,13 @@ export class DisplayPostComponent implements OnInit {
 
   getComments(post) {
     post['comments'] = [];
-
+    console.log('post: getComments: display-post--------->', post);
     let postQuery = '/?postID=' + post['_id'];
 
     this.http.getRequest(COMMENTS_URL + postQuery, this.headerParams).subscribe(
       res => {
         if (res.hasOwnProperty('data')) {
-          // console.log('all comments------->', res);
+          console.log('all comments------->', res);
           post['comments'] = res['data'];
         }
       },
@@ -183,33 +185,47 @@ export class DisplayPostComponent implements OnInit {
     );
   }
 
-  getPosts(query) {
+  checkPostForCreatorAndSubscribedCommunity(post) {
+    if (this.userID === post['userID']['_id']) {
+      post['creator'] = true;
+    } else {
+      post['creator'] = false;
+    }
+
+    if (this.user.hasOwnProperty('communities')) {
+      //show posts only from subscribed communities
+      let index = this.user['communities'].findIndex(community => community['_id'] === post['communityID']['_id']);
+      if (index > -1 && !this.posts.includes(post)) {
+        console.log('before assigning time', post);
+        if (post.hasOwnProperty('createdAt')) {
+          let time = momemt(post['createdAt']).fromNow();
+          post['createdTimeIntermsOfHours'] = time;
+          this.posts.push(post);
+          this.getComments(post);
+        }
+      }
+    }
+  }
+
+  async getPosts(query) {
     this.posts = [];
 
-    this.http.getRequest(POSTS_URL + query, this.headerParams).subscribe(
+    let posts = await this.http.getRequest(POSTS_URL + query, this.headerParams);
+    posts.subscribe(
       res => {
+        console.log('ngOnInit: posts----->', res);
+
         if (res.hasOwnProperty('data')) {
           console.log('ngOnInit: posts----->', res);
           let allPosts = res['data'];
           this.isStillLoading = false;
           //check for creator of posts and enable delete button only if true.
           allPosts.forEach(post => {
-            if (this.userID === post['userID']['_id']) {
-              post['creator'] = true;
-            } else {
-              post['creator'] = false;
-            }
-
-            if (this.user.hasOwnProperty('communities')) {
-              //show posts only from subscribed communities
-              let index = this.user['communities'].findIndex(community => community['_id'] === post['communityID']['_id']);
-              if (index > -1 && !this.posts.includes(post)) {
-                let time = momemt(post['createdAt']).fromNow();
-                post['createdTimeIntermsOfHours'] = time;
-                this.posts.push(post);
-                this.getComments(post);
-              }
-            }
+            this.checkPostForCreatorAndSubscribedCommunity(post);
+          });
+        } else if (Array.isArray(res)) {
+          res.forEach(filterdPost => {
+            this.checkPostForCreatorAndSubscribedCommunity(filterdPost);
           });
         }
       },

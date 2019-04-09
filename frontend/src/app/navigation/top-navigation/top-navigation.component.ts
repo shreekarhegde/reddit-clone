@@ -51,6 +51,7 @@ export class TopNavigationComponent implements OnInit {
       this.router.navigate(['', 'users', 'login']);
     }
   }
+
   onChangeFilter(event) {
     this.filterService.shareFilterValue(event['value']);
   }

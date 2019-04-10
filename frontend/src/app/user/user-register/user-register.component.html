@@ -79,7 +79,14 @@
             ngModel
             required
           />
-          <i class="fas fa-eye align-self-center ml-2 mt-1" (click)="showHidePassword()"></i>
+          <i
+            class="fas fa-eye align-self-center ml-2 mt-1"
+            (click)="showHidePassword()"
+            mat-raised-button
+            #tooltip="matTooltip"
+            [matTooltip]="showPassword ? 'hide password' : 'view password'"
+            matTooltipPosition="right"
+          ></i>
         </div>
 
         <div *ngIf="password?.errors">

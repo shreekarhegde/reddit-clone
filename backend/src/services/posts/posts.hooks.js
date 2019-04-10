@@ -46,7 +46,14 @@ function filter() {
                 $divide: [
                   '$upvotes',
                   {
-                    $hour: '$createdAt'
+                    $subtract: [
+                      {
+                        $minute: new Date()
+                      },
+                      {
+                        $minute: '$createdAt'
+                      }
+                    ]
                   }
                 ]
               },
@@ -55,13 +62,24 @@ function filter() {
           },
           {
             $replaceRoot: {
-              newRoot: { $mergeObjects: ['$$ROOT', '$document'] }
+              newRoot: {
+                $mergeObjects: ['$$ROOT', '$document']
+              }
             }
           },
           {
-            $project: { document: 0 }
+            $project: {
+              document: 0
+            }
           },
-          { $match: { ratio: { $gte: 10 } } },
+          //if ratiio is greater than 10 post belongs to hot category
+          {
+            $match: {
+              ratio: {
+                $gte: 10
+              }
+            }
+          },
           {
             $lookup: {
               from: 'users',
@@ -90,16 +108,14 @@ function filter() {
               count: { $sum: 1 }
             }
           },
-
           {
             $lookup: {
               from: 'posts',
-              localField: 'postID',
-              foreignField: 'id',
+              localField: '_id',
+              foreignField: '_id',
               as: 'post'
             }
           },
-          { $match: { count: { $gt: 0 } } },
           { $unwind: '$post' },
           {
             $replaceRoot: {
@@ -124,7 +140,14 @@ function filter() {
               document: 0
             }
           },
-          { $match: { ratio: { $gte: 0.3 } } },
+          {
+            $match: {
+              ratio: {
+                $gte: 0,
+                $lt: 0.3
+              }
+            }
+          },
           {
             $lookup: {
               from: 'users',

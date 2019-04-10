@@ -9,8 +9,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-6">
+      <div class="col-md-8">
         <div class="spinner" *ngIf="isStillLoading">
           <mat-spinner></mat-spinner>
           <p>Loading posts...</p>
@@ -18,48 +17,7 @@
         <div *ngIf="posts.length === 0 && !isStillLoading" class="suggestion">
           <p>There is nothing to display. Subscribe communities of your interest to see contents from them.</p>
         </div>
-        <ul>
-          <li *ngFor="let post of posts">
-            <div class="row m-3 border bg-white">
-              <div class="col-md-1 bg-light">
-                <div class="vote-buttons p-3 h-100">
-                  <i class="fas fa-arrow-up" (click)="upvote(post._id)"></i>
-                  <p class="votes">{{ post?.totalVotes }}</p>
-                  <i class="fas fa-arrow-down" (click)="downvote(post._id)"></i>
-                </div>
-              </div>
-              <div class="col-md-11">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="row bg-white m-3">
-                      <div class="content">
-                        <div>
-                          <p>{{ post.userID.username }}</p>
-                        </div>
-                        <div class="header pt-2">
-                          <h4>{{ post.title }}</h4>
-                        </div>
-                        <div>
-                          <p class="pt-3 pb-3">{{ post.text }}</p>
-                        </div>
-                        <div class="icons">
-                          <i class="fas fa-comment-alt" [routerLink]="['/r/comments', post._id]"></i
-                          ><span class="ml-1">{{ post?.comments?.length }}</span>
-                          <!-- <i class="fas fa-share ml-3"></i
-                          ><span class="ml-1">Share</span>  -->
-                          <!-- <i class="fas fa-check ml-3"></i><span class="ml-1">Approve</span> -->
-                          <!-- <i class="fas fa-trash-alt ml-3"></i><span class="ml-1">Remove</span> -->
-                          <!-- <i class="fas fa-dumpster ml-3"> </i
-                          ><span class="ml-1">Spam</span> -->
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
+        <app-display-post [shouldCallChild]="false"></app-display-post>
       </div>
       <div class="col-md-2 mt-2">
         <div class="row m-2">

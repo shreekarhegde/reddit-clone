@@ -4,6 +4,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { TokenService } from 'src/app/services/token.service';
 import { MatSnackBar } from '@angular/material';
 import { UserDetailsService } from 'src/app/services/user-details.service';
+import { ShareQueryService } from './share-query.service';
 
 const POSTS_URL = 'http://localhost:3030/posts';
 const COMMUNITIES_URL = 'http://localhost:3030/communities';
@@ -22,12 +23,14 @@ export class CommunityDetailsComponent implements OnInit {
   public posts: object[] = [];
   public isStillLoading: boolean = true;
   private userID: any = '';
+  public query: string = '';
   constructor(
     public activeRoute: ActivatedRoute,
     public httpService: HttpService,
     public tokenService: TokenService,
     public snackbar: MatSnackBar,
-    public userDetailsService: UserDetailsService
+    public userDetailsService: UserDetailsService,
+    public shareQueryService: ShareQueryService
   ) {}
 
   async ngOnInit() {
@@ -59,30 +62,32 @@ export class CommunityDetailsComponent implements OnInit {
       }
     );
 
-    let query = `?communityID=${this.communityID}&$populate=userID`;
+    this.query = `?communityID=${this.communityID}&$populate=userID`;
 
-    this.httpService.getRequest(POSTS_URL + query, this.headerParams).subscribe(
-      res => {
-        if (res.hasOwnProperty('data')) {
-          console.log('posts associated with community-------->', res);
-          this.posts = res['data'];
-          this.posts.map(post => {
-            let postQuery = `postID=${post['_id']}`;
-            this.httpService.getRequest(`${COMMENTS_URL}/?${postQuery}`, this.headerParams).subscribe(
-              res => {
-                post['comments'] = res['data'];
-              },
-              err => {
-                this.showNotification(err, 'err', 'comments were not recevied');
-              }
-            );
-          });
-        }
-      },
-      err => {
-        this.showNotification(err, 'err', 'posts were not recevied: community-details');
-      }
-    );
+    this.shareQueryService.shareQuery(this.query);
+
+    // this.httpService.getRequest(POSTS_URL + query, this.headerParams).subscribe(
+    //   res => {
+    //     if (res.hasOwnProperty('data')) {
+    //       console.log('posts associated with community-------->', res);
+    //       this.posts = res['data'];
+    //       this.posts.map(post => {
+    //         let postQuery = `postID=${post['_id']}`;
+    //         this.httpService.getRequest(`${COMMENTS_URL}/?${postQuery}`, this.headerParams).subscribe(
+    //           res => {
+    //             post['comments'] = res['data'];
+    //           },
+    //           err => {
+    //             this.showNotification(err, 'err', 'comments were not recevied');
+    //           }
+    //         );
+    //       });
+    //     }
+    //   },
+    //   err => {
+    //     this.showNotification(err, 'err', 'posts were not recevied: community-details');
+    //   }
+    // );
   }
 
   upvote(id) {

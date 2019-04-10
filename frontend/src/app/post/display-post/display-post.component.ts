@@ -6,8 +6,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DataService } from 'src/app/services/data-service.service';
 
 import * as momemt from 'moment';
-import { skip, filter } from 'rxjs/operators';
+import { skip } from 'rxjs/operators';
 import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
+import { ShareQueryService } from 'src/app/communities/community-details/share-query.service';
 
 const POSTS_URL = 'http://localhost:3030/posts';
 const COMMENTS_URL = 'http://localhost:3030/comments';
@@ -28,6 +29,7 @@ export class DisplayPostComponent implements OnInit {
   public user: any = {};
   public isStillLoading: boolean = true;
   @Input() subscribedCommunityID: string = '';
+  @Input() shouldCallChild: boolean = true;
 
   constructor(
     public http: HttpService,
@@ -35,7 +37,8 @@ export class DisplayPostComponent implements OnInit {
     public userDetailsService: UserDetailsService,
     public snackbar: MatSnackBar,
     public dataService: DataService,
-    public filterService: FilterService
+    public filterService: FilterService,
+    public shareQueryService: ShareQueryService
   ) {}
 
   async ngOnInit() {
@@ -80,6 +83,17 @@ export class DisplayPostComponent implements OnInit {
       },
       err => {
         this.showNotification(err, 'err', 'filter was not recevied');
+      }
+    );
+
+    this.shareQueryService.queryValue$.subscribe(
+      query => {
+        this.posts = [];
+        console.log('shared query: display post----->', query);
+        this.getPosts(query);
+      },
+      err => {
+        this.showNotification(err, 'err', 'query was not recevied');
       }
     );
 
@@ -208,11 +222,11 @@ export class DisplayPostComponent implements OnInit {
   }
 
   async getPosts(query) {
-    this.posts = [];
-
     let posts = await this.http.getRequest(POSTS_URL + query, this.headerParams);
     posts.subscribe(
       res => {
+        this.posts = [];
+
         console.log('ngOnInit: posts----->', res);
 
         if (res.hasOwnProperty('data')) {

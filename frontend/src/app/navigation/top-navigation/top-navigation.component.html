@@ -6,14 +6,13 @@
     />
     <h4 class=" mr-2 ml-2 reddit">reddit</h4>
   </div>
-  <div>
+  <div *ngIf="!shouldHideFilter">
     <mat-form-field>
       <mat-label>Sort By</mat-label>
       <mat-select (selectionChange)="onChangeFilter($event)">
         <mat-option value="Old"><b>Old</b></mat-option>
         <mat-option value="Recent"><b>Recent</b></mat-option>
         <mat-option value="Hot"><b>Hot</b></mat-option>
-        <mat-option value="Best"><b>Best</b></mat-option>
         <mat-option value="Controversial"><b>Controversial</b></mat-option>
       </mat-select>
     </mat-form-field>

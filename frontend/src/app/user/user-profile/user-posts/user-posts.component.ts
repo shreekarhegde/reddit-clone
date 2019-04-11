@@ -63,7 +63,7 @@ export class UserPostsComponent implements OnInit {
           //check for creator of posts and enable delete button only if true.
           this.posts.forEach(post => {
             post['createdAt'] = moment(post['createdAt']).fromNow();
-
+            console.log(this.profileOwner === post['userID']['_id']);
             if (this.userID === post['userID']['_id']) {
               post['creator'] = true;
             } else {

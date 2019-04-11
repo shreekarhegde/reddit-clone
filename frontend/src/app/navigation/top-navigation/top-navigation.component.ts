@@ -1,10 +1,11 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { TokenService } from 'src/app/services/token.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { FilterService } from './filter.service';
+import { MessageService } from 'src/app/communities/community-details/message.service';
 
 const USERS_URL = 'http://localhost:3030/users';
 
@@ -17,17 +18,21 @@ export class TopNavigationComponent implements OnInit {
   public userName: string = '';
   private userID: any = '';
   public selected: string = 'Home';
-
+  @Input() shouldHideFilter: boolean = true;
   constructor(
     public httpService: HttpService,
     public tokenService: TokenService,
     public userDetailsService: UserDetailsService,
     public snackbar: MatSnackBar,
     public router: Router,
-    public filterService: FilterService
+    public filterService: FilterService,
+    public messageService: MessageService
   ) {}
 
   async ngOnInit() {
+    this.messageService.messageValue$.subscribe(bool => {
+      this.shouldHideFilter = bool;
+    });
     let headerParams = this.tokenService.checkTokenAndSetHeader();
     this.userID = await this.userDetailsService.getUserID();
     this.httpService.getRequest(`${USERS_URL}/${this.userID}`, headerParams).subscribe(

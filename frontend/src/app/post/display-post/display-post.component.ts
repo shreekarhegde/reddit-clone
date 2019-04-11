@@ -8,6 +8,7 @@ import { DataService } from 'src/app/services/data-service.service';
 import * as momemt from 'moment';
 import { skip, filter } from 'rxjs/operators';
 import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
+import { MessageService } from 'src/app/communities/community-details/message.service';
 
 const POSTS_URL = 'http://localhost:3030/posts';
 const COMMENTS_URL = 'http://localhost:3030/comments';
@@ -35,10 +36,13 @@ export class DisplayPostComponent implements OnInit {
     public userDetailsService: UserDetailsService,
     public snackbar: MatSnackBar,
     public dataService: DataService,
-    public filterService: FilterService
+    public filterService: FilterService,
+    public messageService: MessageService
   ) {}
 
   async ngOnInit() {
+    this.messageService.shareMessageValue(false);
+
     this.headerParams = this.tokenService.checkTokenAndSetHeader();
 
     this.userID = await this.userDetailsService.getUserID();

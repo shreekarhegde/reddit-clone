@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data-service.service';
+import { MessageService } from 'src/app/communities/community-details/message.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -9,9 +10,10 @@ import { DataService } from 'src/app/services/data-service.service';
 })
 export class UserProfileComponent implements OnInit {
   private userID: string = '';
-  constructor(public router: Router, public dataService: DataService) {}
+  constructor(public router: Router, public dataService: DataService, public messageService: MessageService) {}
 
   ngOnInit() {
+    this.messageService.shareMessageValue(true);
     this.dataService.subscribedID$.subscribe(
       id => {
         this.userID = id;

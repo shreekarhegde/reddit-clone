@@ -4,6 +4,7 @@ import { HttpService } from 'src/app/services/http.service';
 import { TokenService } from 'src/app/services/token.service';
 import { MatSnackBar } from '@angular/material';
 import { UserDetailsService } from 'src/app/services/user-details.service';
+import { MessageService } from './message.service';
 
 const POSTS_URL = 'http://localhost:3030/posts';
 const COMMUNITIES_URL = 'http://localhost:3030/communities';
@@ -22,15 +23,18 @@ export class CommunityDetailsComponent implements OnInit {
   public posts: object[] = [];
   public isStillLoading: boolean = true;
   private userID: any = '';
+
   constructor(
     public activeRoute: ActivatedRoute,
     public httpService: HttpService,
     public tokenService: TokenService,
     public snackbar: MatSnackBar,
-    public userDetailsService: UserDetailsService
+    public userDetailsService: UserDetailsService,
+    public messageService: MessageService
   ) {}
 
   async ngOnInit() {
+    this.messageService.shareMessageValue(true);
     this.userID = await this.userDetailsService.getUserID();
 
     this.headerParams = this.tokenService.checkTokenAndSetHeader();

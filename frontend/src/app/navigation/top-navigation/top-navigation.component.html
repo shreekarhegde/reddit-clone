@@ -6,7 +6,7 @@
     />
     <h4 class=" mr-2 ml-2 reddit">reddit</h4>
   </div>
-  <div>
+  <div *ngIf="!shouldHideFilter">
     <mat-form-field>
       <mat-label>Sort By</mat-label>
       <mat-select (selectionChange)="onChangeFilter($event)">

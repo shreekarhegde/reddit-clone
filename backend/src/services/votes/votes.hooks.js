@@ -41,7 +41,14 @@ function vote() {
       return new Promise((resolve, reject) => {
         hook['app']
           ['service']('/posts')
-          .patch({ _id: postID }, { $inc: { upvotes: 1, totalVotes: 1 }, $addToSet: { upvotedBy: userID }, $pull: { downvotedBy: userID } })
+          .patch(
+            { _id: postID },
+            {
+              $inc: { upvotes: 1, totalVotes: 1 },
+              $addToSet: { upvotedBy: { userID: userID } },
+              $pull: { downvotedBy: userID }
+            }
+          )
           .then(res => {
             console.log('res: votes------------>', res);
             hook['result'] = res;

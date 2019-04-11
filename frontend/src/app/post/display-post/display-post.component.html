@@ -15,7 +15,7 @@
           <div class="col-md-1 bg-light">
             <div class="vote-buttons p-3 h-100">
               <i class="fas fa-arrow-up pointer" (click)="upvote(post._id)"></i>
-              <p class="votes">{{ post?.totalVotes }}</p>
+              <p class="votes">{{ post?.upvotes }}</p>
               <i class="fas fa-arrow-down pointer" (click)="downvote(post._id)"></i>
             </div>
           </div>

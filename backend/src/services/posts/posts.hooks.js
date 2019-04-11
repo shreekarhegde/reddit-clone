@@ -42,22 +42,40 @@ function filter() {
         let query = [
           {
             $project: {
-              ratio: {
-                $divide: [
-                  '$upvotes',
-                  {
-                    $subtract: [
+              upvoteDetails: {
+                $filter: {
+                  input: '$upvotedBy',
+                  as: 'upVote',
+                  cond: {
+                    $lte: [
                       {
-                        $minute: new Date()
+                        $subtract: [new Date(), '$$upVote.upvotedAt']
                       },
-                      {
-                        $minute: '$createdAt'
-                      }
+                      1980000
                     ]
                   }
-                ]
+                }
               },
               document: '$$ROOT'
+            }
+          },
+          {
+            $replaceRoot: {
+              newRoot: {
+                $mergeObjects: ['$$ROOT', '$document']
+              }
+            }
+          },
+          { $project: { document: 0 } },
+          {
+            $project: {
+              count: { $size: '$upvoteDetails' },
+              document: '$$ROOT'
+            }
+          },
+          {
+            $sort: {
+              count: -1
             }
           },
           {
@@ -72,14 +90,6 @@ function filter() {
               document: 0
             }
           },
-          //if ratiio is greater than 10 post belongs to hot category
-          {
-            $match: {
-              ratio: {
-                $gte: 10
-              }
-            }
-          },
           {
             $lookup: {
               from: 'users',
@@ -88,7 +98,12 @@ function filter() {
               as: 'userID'
             }
           },
-          { $unwind: '$userID' },
+          {
+            $unwind: {
+              path: '$userID',
+              preserveNullAndEmptyArrays: true
+            }
+          },
           {
             $lookup: {
               from: 'communities',
@@ -97,7 +112,12 @@ function filter() {
               as: 'communityID'
             }
           },
-          { $unwind: '$communityID' }
+          {
+            $unwind: {
+              path: '$communityID',
+              preserveNullAndEmptyArrays: true
+            }
+          }
         ];
         dbOperation(hook, 'posts', query, resolve, reject);
       } else if (hook['params']['query']['filter'] === 'Controversial') {
@@ -145,7 +165,8 @@ function filter() {
               ratio: {
                 $gte: 0,
                 $lt: 0.3
-              }
+              },
+              count: { $gt: 5 }
             }
           },
           {

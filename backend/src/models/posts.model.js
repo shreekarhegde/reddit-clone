@@ -9,22 +9,24 @@ module.exports = function(app) {
   const mongooseSchema = require('mongoose');
 
   const { Schema } = mongooseClient;
-  const posts = new Schema(
-    {
-      title: { type: String, required: true },
-      text: { type: String },
-      userID: { type: mongooseSchema.Schema.Types.ObjectId, ref: 'users', required: true },
-      communityID: { type: mongooseSchema.Schema.Types.ObjectId, ref: 'communities', required: true },
-      upvotes: { type: Number, default: 0 },
-      downvotes: { type: Number, default: 0 },
-      totalVotes: { type: Number, default: 0 },
-      upvotedBy: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'users' }],
-      downvotedBy: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'users' }]
-    },
-    {
-      timestamps: true
-    }
-  );
+  const posts = new Schema({
+    title: { type: String, required: true },
+    text: { type: String },
+    userID: { type: mongooseSchema.Schema.Types.ObjectId, ref: 'users', required: true },
+    communityID: { type: mongooseSchema.Schema.Types.ObjectId, ref: 'communities', required: true },
+    upvotes: { type: Number, default: 0 },
+    downvotes: { type: Number, default: 0 },
+    totalVotes: { type: Number, default: 0 },
+    // upvotedBy: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'users' }],
+    upvotedBy: [
+      {
+        userID: { type: mongooseSchema.Schema.Types.ObjectId, ref: 'users' },
+        upvotedAt: { type: Date, default: new Date() }
+      }
+    ],
+    downvotedBy: [{ type: mongooseSchema.Schema.Types.ObjectId, ref: 'users' }],
+    createdAt: { type: Date, default: new Date(), required: true }
+  });
 
   return mongooseClient.model('posts', posts);
 };

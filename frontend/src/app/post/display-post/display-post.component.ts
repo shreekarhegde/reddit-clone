@@ -213,7 +213,7 @@ export class DisplayPostComponent implements OnInit {
     let posts = await this.http.getRequest(POSTS_URL + query, this.headerParams);
     posts.subscribe(
       res => {
-        console.log('ngOnInit: posts----->', res);
+        console.log('ngOnInit: posts: getPosts----->', res);
 
         if (res.hasOwnProperty('data')) {
           console.log('ngOnInit: posts----->', res);
@@ -225,6 +225,7 @@ export class DisplayPostComponent implements OnInit {
           });
         } else if (Array.isArray(res)) {
           res.forEach(filterdPost => {
+            console.log(filterdPost);
             this.checkPostForCreatorAndSubscribedCommunity(filterdPost);
           });
         }

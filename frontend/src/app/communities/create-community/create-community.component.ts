@@ -4,6 +4,7 @@ import { TokenService } from 'src/app/services/token.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
+import { MessageService } from '../community-details/message.service';
 
 const COMMUNITY_URL = 'http://localhost:3030/communities';
 @Component({
@@ -20,10 +21,13 @@ export class CreateCommunityComponent implements OnInit {
     public tokenService: TokenService,
     public userDetailsService: UserDetailsService,
     public router: Router,
-    public snackbar: MatSnackBar
+    public snackbar: MatSnackBar,
+    public messageService: MessageService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.messageService.shareMessageValue(true);
+  }
 
   async createCommunity() {
     let headerParmas = this.tokenService.checkTokenAndSetHeader();

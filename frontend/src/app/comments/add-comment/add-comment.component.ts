@@ -89,7 +89,7 @@ export class AddCommentComponent implements OnInit {
               this.totalComments = res['data']['length'];
             },
             err => {
-              this.showErrorNotification(err, 'err', 'comments were not received');
+              this.showNotification(err, 'err', 'comments were not received');
             }
           );
 
@@ -106,7 +106,7 @@ export class AddCommentComponent implements OnInit {
         }
       },
       err => {
-        this.showErrorNotification(err, 'err', 'posts were not received');
+        this.showNotification(err, 'err', 'posts were not received');
       }
     );
   }
@@ -121,7 +121,7 @@ export class AddCommentComponent implements OnInit {
           this.bool = true;
         },
         err => {
-          this.showErrorNotification(err, 'err', 'could not upvote, please try again');
+          this.showNotification(err, 'err', 'could not upvote, please try again');
         }
       );
     }
@@ -138,30 +138,39 @@ export class AddCommentComponent implements OnInit {
           this.bool = false;
         },
         err => {
-          this.showErrorNotification(err, 'err', 'could not downvote, please try again');
+          this.showNotification(err, 'err', 'could not downvote, please try again');
         }
       );
     }
   }
 
-  deletePost(postID) {
+  async deletePost(postID) {
     console.log('postid: add-comment ------->', postID);
-    this.httpService.deleteRequest(`${POSTS_URL}/${postID}`, this.headerParams).subscribe(
-      res => {
-        console.log('delete post: add comment: res----->', res);
-        this.isDeleted = true;
-        this.router.navigate(['r']);
-        const snackbarRef = this.snackbar.open('Deleted post successfully', 'OK', {
-          duration: 1500,
-          verticalPosition: 'top',
-          panelClass: 'login-snackbar'
-        });
-      },
-      err => {
-        this.isDeleted = false;
-        console.log('delete post: add comment: err------>', err);
-      }
-    );
+    if (window.confirm('Are you sure you want to delete this?')) {
+      let query = `/?postID=${postID}`;
+
+      let comments = await this.httpService.deleteRequest(COMMENTS_URL + query, this.headerParams);
+      comments.subscribe(
+        res => {
+          console.log('deleted comments--->', res);
+        },
+        err => {
+          this.showNotification(err, 'err', 'could not delete associated comments to this post');
+        }
+      );
+      this.httpService.deleteRequest(`${POSTS_URL}/${postID}`, this.headerParams).subscribe(
+        res => {
+          console.log('delete post: add comment: res----->', res);
+          this.isDeleted = true;
+          this.router.navigate(['r']);
+          this.showNotification(null, 'success', 'post was deleted successfully');
+        },
+        err => {
+          this.isDeleted = false;
+          console.log('delete post: add comment: err------>', err);
+        }
+      );
+    }
   }
 
   addComment() {
@@ -182,13 +191,13 @@ export class AddCommentComponent implements OnInit {
       },
       err => {
         console.log('err: comment: add-comment------------>', err);
-        this.showErrorNotification(err, 'err', 'could not add comment, please try again');
+        this.showNotification(err, 'err', 'could not add comment, please try again');
       }
     );
   }
 
-  showErrorNotification(err, type, message) {
-    console.log('err: showErrorNotification: add-comment--------->', err);
+  showNotification(err, type, message) {
+    console.log('err: showNotification: add-comment--------->', err);
     const snackbarRef = this.snackbar.open(message, '', {
       duration: 2000,
       verticalPosition: 'top',

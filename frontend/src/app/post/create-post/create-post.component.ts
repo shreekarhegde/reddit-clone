@@ -4,6 +4,7 @@ import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
 import { UserDetailsService } from '../../services/user-details.service';
 import { MatSnackBar } from '@angular/material';
+import { MessageService } from 'src/app/communities/community-details/message.service';
 
 const POSTS_URL = 'http://localhost:3030/posts';
 
@@ -27,10 +28,13 @@ export class CreatePostComponent implements OnInit {
     private tokenService: TokenService,
     private router: Router,
     private userDetailsService: UserDetailsService,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private messageService: MessageService
   ) {}
 
   async ngOnInit() {
+    this.messageService.shareMessageValue(true);
+
     this.userID = await this.userDetailsService.getUserID();
 
     this.headerParams = this.tokenService.checkTokenAndSetHeader();

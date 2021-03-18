@@ -1,0 +1,29 @@
+version: '3'
+services: 
+  nginx: 
+    depends_on:
+      - api
+      - frontend
+    restart: always
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports: 
+      - '4200:80'
+  api:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./api
+    ports:
+      - '3030:3030'
+    volumes:
+      - /app/node_modules
+      - ./api:/app
+  frontend:
+    stdin_open: true
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./frontend
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app

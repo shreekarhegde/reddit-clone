@@ -1,0 +1,24 @@
+// Initializes the `communities` service on path `/communities`
+const createService = require('feathers-mongoose');
+const createModel = require('../../models/communities.model');
+const hooks = require('./communities.hooks');
+
+module.exports = function(app) {
+  const Model = createModel(app);
+  const paginate = app.get('paginate');
+
+  const options = {
+    Model,
+    paginate,
+    multi: true,
+    whitelist: ['$populate']
+  };
+
+  // Initialize our service with any options it requires
+  app.use('/communities', createService(options));
+
+  // Get our initialized service so that we can register hooks
+  const service = app.service('communities');
+
+  service.hooks(hooks);
+};

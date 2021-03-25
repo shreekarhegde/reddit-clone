@@ -1,4 +1,3 @@
-# Stage 0: compile angular frontend
 FROM node:latest as build
 WORKDIR /app
 COPY . . 

@@ -8,6 +8,6 @@ RUN npm run build --prod
 FROM nginx 
 EXPOSE 4200
 #copy dist content to html nginx folder, config nginx to point in index.html
-COPY --from=builder /usr/src/app/dist /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
 COPY ./default.conf /etc/nginx/conf.d/default.conf

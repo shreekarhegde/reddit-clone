@@ -1,0 +1,23 @@
+sudo: required
+services: 
+  - docker
+script:
+  - docker build -t shreekarhegde/frontend ./frontend
+  - docker build -t shreekarhegde/nginx ./nginx
+  - docker build -t shreekarhegde/api ./api  
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push shreekarhegde/frontend
+  - docker push shreekarhegde/nginx
+  - docker push shreekarhegde/api
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'us-east-2'
+  app: 'reddit'
+  env: 'Reddit-env'
+  bucket_name: 'elasticbeanstalk-us-east-2-047565902808'
+  bucket_path: 'reddit'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY

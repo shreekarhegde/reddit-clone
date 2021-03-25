@@ -2,8 +2,8 @@ sudo: required
 services: 
   - docker
 script:
-  - docker build -t shreekarhegde/nginx ./nginx
   - docker build -t shreekarhegde/frontend ./frontend
+  - docker build -t shreekarhegde/nginx ./nginx
   - docker build -t shreekarhegde/api ./api  
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push shreekarhegde/frontend

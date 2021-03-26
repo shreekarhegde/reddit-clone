@@ -14,7 +14,7 @@ deploy:
   provider: elasticbeanstalk
   region: 'ap-south-1'
   app: 'reddit'
-  env: 'Reddit-env'
+  env: 'Reddit-env-1'
   bucket_name: 'elasticbeanstalk-ap-south-1-047565902808'
   bucket_path: 'reddit'
   on:

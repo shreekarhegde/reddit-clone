@@ -4,10 +4,11 @@ services:
 jobs:
   include:
     - stage: Build App
-      script: docker build -t shreekarhegde/frontend:latest ./frontend
-      script: docker build -t shreekarhegde/api:latest ./api  
-      script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin && docker push shreekarhegde/frontend:latest
-      script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin && docker push shreekarhegde/api:latest
+      script: 
+      - docker build -t shreekarhegde/frontend:latest ./frontend
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin && docker push shreekarhegde/frontend:latest
+      - docker build -t shreekarhegde/api:latest ./api  
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin && docker push shreekarhegde/api:latest
 
 deploy:
   provider: elasticbeanstalk

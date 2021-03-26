@@ -6,6 +6,12 @@
 			"image": "shreekarhegde/frontend",
 			"hostname": "frontend",
 			"essential": false,
+			"portMappings": [
+				{
+				   "hostPort": 4200,
+				   "containerPort": 4200
+				}
+			   ],
 			"memory": 128
 		},
 		{
@@ -13,6 +19,12 @@
 			"image": "shreekarhegde/api",
 			"hostname": "api",
 			"essential": false,
+			"portMappings": [
+				{
+				   "hostPort": 3030,
+				   "containerPort": 3030
+				}
+			],
 			"memory": 128
 		},
 		{

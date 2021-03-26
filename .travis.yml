@@ -12,10 +12,10 @@ script:
 
 deploy:
   provider: elasticbeanstalk
-  region: 'us-east-2'
+  region: 'ap-south-1'
   app: 'reddit'
   env: 'Reddit-env'
-  bucket_name: 'elasticbeanstalk-us-east-2-047565902808'
+  bucket_name: 'elasticbeanstalk-ap-south-1-047565902808'
   bucket_path: 'reddit'
   on:
     branch: master

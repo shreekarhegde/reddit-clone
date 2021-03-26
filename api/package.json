@@ -2,7 +2,6 @@
   "name": "reddit",
   "description": "",
   "version": "0.0.0",
-  "homepage": "localhost:3030",
   "main": "src",
   "keywords": [
     "feathers"
@@ -27,7 +26,8 @@
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "dev": "nodemon src/",
     "start": "nodemon --inspect src/",
-    "mocha": "mocha test/ --recursive --exit"
+    "mocha": "mocha test/ --recursive --exit",
+    "prod": "node src/index.js"
   },
   "dependencies": {
     "@feathersjs/authentication": "^2.1.16",

@@ -5,7 +5,7 @@
 			"name": "frontend",
 			"image": "shreekarhegde/frontend",
 			"hostname": "frontend",
-			"essential": false,
+			"essential": true,
 			"portMappings": [
 				{
 				   "hostPort": 80,
@@ -18,7 +18,7 @@
 			"name": "api",
 			"image": "shreekarhegde/api",
 			"hostname": "api",
-			"essential": false,
+			"essential": true,
 			"portMappings": [
 				{
 				   "hostPort": 3030,

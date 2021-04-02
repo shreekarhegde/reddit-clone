@@ -19,12 +19,6 @@
 			"image": "shreekarhegde/api",
 			"hostname": "api",
 			"essential": true,
-			"portMappings": [
-				{
-				   "hostPort": 80,
-				   "containerPort": 3030
-				}
-			],
 			"memory": 128
 		}
 	] 

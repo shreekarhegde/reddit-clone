@@ -22,7 +22,7 @@
 			"portMappings": [
 				{
 				   "hostPort": 80,
-				   "containerPort": 80
+				   "containerPort": 3030
 				}
 			],
 			"memory": 128

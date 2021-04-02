@@ -19,7 +19,7 @@
 			"name": "api",
 			"image": "shreekarhegde/api",
 			"hostname": "api",
-			"essential": true,
+			"essential": false,
 			"memory": 128
 		}
 	] 

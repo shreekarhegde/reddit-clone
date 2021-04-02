@@ -6,7 +6,7 @@ import { UserDetailsService } from '../../services/user-details.service';
 import { MatSnackBar } from '@angular/material';
 import { MessageService } from 'src/app/communities/community-details/message.service';
 
-const POSTS_URL = 'http://localhost:3030/posts';
+const POSTS_URL = '/api/posts';
 
 @Component({
   selector: 'app-create-post',

@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { FilterService } from './filter.service';
 import { MessageService } from 'src/app/communities/community-details/message.service';
 
-const USERS_URL = 'http://localhost:3030/users';
+const USERS_URL = '/api/users';
 
 @Component({
   selector: 'app-top-navigation',

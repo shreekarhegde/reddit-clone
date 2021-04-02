@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       context: ./api
     ports:
-      - '3030:3030'
+      - '3030:80'
     volumes:
       - /app/node_modules
       - ./api:/app

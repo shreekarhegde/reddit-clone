@@ -8,7 +8,7 @@ import { ToggleService } from '../add-comment/toggle.service';
 import { takeWhile, skip } from 'rxjs/operators';
 import { MatSnackBar, MatExpansionPanel } from '@angular/material';
 
-const COMMENTS_URL = 'http://localhost:3030/comments';
+const COMMENTS_URL = 'http://localhost:3030/api/comments';
 
 @Component({
   selector: 'app-show-comments',

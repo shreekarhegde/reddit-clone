@@ -6,10 +6,10 @@ import { MatSnackBar } from '@angular/material';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 import { MessageService } from './message.service';
 
-const POSTS_URL = 'http://localhost:3030/posts';
-const COMMUNITIES_URL = 'http://localhost:3030/communities';
-const COMMENTS_URL = 'http://localhost:3030/comments';
-const VOTES_URL = 'http://localhost:3030/votes';
+const POSTS_URL = 'http://localhost:3030/api/posts';
+const COMMUNITIES_URL = 'http://localhost:3030/api/communities';
+const COMMENTS_URL = 'http://localhost:3030/api/comments';
+const VOTES_URL = 'http://localhost:3030/api/votes';
 
 @Component({
   selector: 'app-community-details',

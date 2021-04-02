@@ -6,7 +6,7 @@ import { TokenService } from '../../services/token.service';
 import { MatSnackBar } from '@angular/material';
 
 const USERS_URL = 'http://localhost:3030/api/users';
-const AUTH_URL = 'http://localhost:3030/api/authentication';
+const AUTH_URL = 'http://localhost:3030/authentication';
 
 @Component({
   selector: 'app-user-register',

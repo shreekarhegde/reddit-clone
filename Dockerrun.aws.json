@@ -21,8 +21,8 @@
 			"essential": true,
 			"portMappings": [
 				{
-				   "hostPort": 3030,
-				   "containerPort": 3030
+				   "hostPort": 80,
+				   "containerPort": 80
 				}
 			],
 			"memory": 128

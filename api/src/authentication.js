@@ -18,9 +18,9 @@ module.exports = function(app) {
   // The `authentication` service is used to create a JWT.
   // The before `create` hook registers strategies that can be used
   // to create a new valid JWT (e.g. local or oauth2)
-  app.service('authentication').hooks({
+  app.service('/api/authentication').hooks({
     before: {
-      create: [authentication.hooks.authenticate(config.strategies)],
+      create: [log(), authentication.hooks.authenticate(config.strategies)],
       remove: [authentication.hooks.authenticate('jwt')]
     },
     after: {
@@ -39,3 +39,7 @@ module.exports = function(app) {
     }
   });
 };
+
+function log(){
+  console.log('reached here: auth')
+}

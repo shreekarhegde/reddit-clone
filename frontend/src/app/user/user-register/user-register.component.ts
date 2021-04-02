@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { TokenService } from '../../services/token.service';
 import { MatSnackBar } from '@angular/material';
 
-const USERS_URL = 'http://localhost:3030/api/users';
+const USERS_URL = 'http://localhost:3030/users';
 const AUTH_URL = 'http://localhost:3030/authentication';
 
 @Component({

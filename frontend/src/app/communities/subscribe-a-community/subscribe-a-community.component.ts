@@ -5,7 +5,7 @@ import { UserDetailsService } from 'src/app/services/user-details.service';
 import { DataService } from 'src/app/services/data-service.service';
 import { MatSnackBar } from '@angular/material';
 
-const COMMUNITIES_URL = 'http://localhost:3030/api/communities';
+const COMMUNITIES_URL = 'http://localhost:3030/communities';
 
 @Component({
   selector: 'app-subscribe-a-community',

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { MessageService } from '../community-details/message.service';
 
-const COMMUNITY_URL = 'http://localhost:3030/api/communities';
+const COMMUNITY_URL = 'http://localhost:3030/communities';
 @Component({
   selector: 'app-create-community',
   templateUrl: './create-community.component.html',

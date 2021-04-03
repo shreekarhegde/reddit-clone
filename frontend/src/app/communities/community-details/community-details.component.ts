@@ -18,9 +18,9 @@ const VOTES_URL = '/votes';
 })
 export class CommunityDetailsComponent implements OnInit {
   private communityID: string = '';
-  private headerParams: object = {};
-  public community: object = {};
-  public posts: object[] = [];
+  private headerParams: any = {};
+  public community: any = {};
+  public posts: any[] = [];
   public isStillLoading: boolean = true;
   private userID: any = '';
 

@@ -5,7 +5,7 @@ import { UserDetailsService } from 'src/app/services/user-details.service';
 import { DataService } from 'src/app/services/data-service.service';
 import { MatSnackBar } from '@angular/material';
 
-const COMMUNITIES_URL = '/api/communities';
+const COMMUNITIES_URL = '/communities';
 
 @Component({
   selector: 'app-subscribe-a-community',
@@ -68,7 +68,7 @@ export class SubscribeACommunityComponent implements OnInit {
 
     let query = `?id=${id}`;
 
-    let community = await this.httpService.patchRequest(`/api/update-community` + query, data, this.headerParams);
+    let community = await this.httpService.patchRequest(`/update-community` + query, data, this.headerParams);
 
     community.subscribe(
       res => {

@@ -9,9 +9,9 @@ import * as momemt from 'moment';
 import { DataService } from 'src/app/services/data-service.service';
 import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
 
-const COMMENTS_URL = '/api/comments';
-const POSTS_URL = '/api/posts';
-const USERS_URL = '/api/users';
+const COMMENTS_URL = '/comments';
+const POSTS_URL = '/posts';
+const USERS_URL = '/users';
 
 @Component({
   selector: 'app-user-comments',

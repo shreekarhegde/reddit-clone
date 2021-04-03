@@ -3,7 +3,7 @@ import { HttpService } from './http.service';
 import { TokenService } from './token.service';
 import * as jwtDecode from 'jwt-decode';
 
-const URL = '/api/users';
+const URL = '/users';
 
 @Injectable({
   providedIn: 'root'

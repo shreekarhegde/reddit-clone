@@ -8,7 +8,7 @@ import { ToggleService } from '../add-comment/toggle.service';
 import { takeWhile, skip } from 'rxjs/operators';
 import { MatSnackBar, MatExpansionPanel } from '@angular/material';
 
-const COMMENTS_URL = '/api/comments';
+const COMMENTS_URL = '/comments';
 
 @Component({
   selector: 'app-show-comments',
@@ -90,7 +90,7 @@ export class ShowCommentsComponent implements OnInit, OnDestroy {
             if (!comments['data'][i].hasOwnProperty('parentCommentID')) {
               let query = '/?parentCommentID=' + comments['data'][i]['_id'];
 
-              let commentsResponse = await this.httpService.getRequest('/api/child-comments' + query, this.headerParams);
+              let commentsResponse = await this.httpService.getRequest('/child-comments' + query, this.headerParams);
 
               commentsResponse.subscribe(
                 res => {

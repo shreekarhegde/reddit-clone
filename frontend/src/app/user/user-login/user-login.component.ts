@@ -4,7 +4,7 @@ import { TokenService } from '../../services/token.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 
-const USERS_URL = '/api/authentication';
+const USERS_URL = '/authentication';
 @Component({
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',

@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { FilterService } from './filter.service';
 import { MessageService } from 'src/app/communities/community-details/message.service';
 
-const USERS_URL = '/api/users';
+const USERS_URL = '/users';
 
 @Component({
   selector: 'app-top-navigation',

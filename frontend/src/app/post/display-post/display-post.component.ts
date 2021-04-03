@@ -10,9 +10,9 @@ import { skip, filter } from 'rxjs/operators';
 import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
 import { MessageService } from 'src/app/communities/community-details/message.service';
 
-const POSTS_URL = '/api/posts';
-const COMMENTS_URL = '/api/comments';
-const VOTES_URL = '/api/votes';
+const POSTS_URL = '/posts';
+const COMMENTS_URL = '/comments';
+const VOTES_URL = '/votes';
 
 @Component({
   selector: 'app-display-post',

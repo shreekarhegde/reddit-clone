@@ -6,9 +6,9 @@ import { ToggleService } from '../add-comment/toggle.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 
-const POSTS_URL = '/api/posts';
-const COMMENTS_URL = '/api/comments';
-const VOTES_URL = '/api/votes';
+const POSTS_URL = '/posts';
+const COMMENTS_URL = '/comments';
+const VOTES_URL = '/votes';
 
 @Component({
   selector: 'app-add-comment',

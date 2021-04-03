@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { TokenService } from '../../services/token.service';
 import { MatSnackBar } from '@angular/material';
 
-const USERS_URL = '/api/users';
-const AUTH_URL = '/api/authentication';
+const USERS_URL = ' users';
+const AUTH_URL = 'authentication';
 
 @Component({
   selector: 'app-user-register',

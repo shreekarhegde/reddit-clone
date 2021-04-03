@@ -7,8 +7,8 @@ import { MatSnackBar } from '@angular/material';
 import { FilterService } from 'src/app/navigation/top-navigation/filter.service';
 import { UserDetailsService } from 'src/app/services/user-details.service';
 
-const POSTS_URL = '/api/posts';
-const COMMENTS_URL = '/api/comments';
+const POSTS_URL = '/posts';
+const COMMENTS_URL = '/comments';
 @Component({
   selector: 'app-user-posts',
   templateUrl: './user-posts.component.html',
